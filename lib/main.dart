@@ -6,8 +6,11 @@ import 'tracker.dart';
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (context) => SpoonTracker(), child: const MyApp()));
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider.value(
+      value: SpoonTracker(),
+    )
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -29,12 +32,18 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   final String title;
   const MyHomePage({super.key, required this.title});
+  void _updateEnergyRate(BuildContext context, int value) {
+    Provider.of<SpoonTracker>(context, listen: false).updateEnergyRate(value);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      floatingActionButton: FloatingActionButton(onPressed: updateEner),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () => _updateEnergyRate(context, 6)),
     );
   }
+
+  buildSlider(BuildContext context) {}
 }
