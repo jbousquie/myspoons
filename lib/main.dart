@@ -50,10 +50,20 @@ class MyHomePage extends StatelessWidget {
   }
 
   buildSlider(BuildContext context, double energyRate) {
-    return Slider(
-      value: energyRate,
-      max: 100,
-      onChanged: (double value) => {_updateEnergyRate(context, value)},
-    );
+    Widget slider = RotatedBox(
+        quarterTurns: -1,
+        child: Slider(
+          value: energyRate,
+          max: 100,
+          onChanged: (double value) => {_updateEnergyRate(context, value)},
+        ));
+
+    Widget sliderTheme = SliderTheme(
+        data: const SliderThemeData(
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 45),
+            trackHeight: 50),
+        child: slider);
+
+    return sliderTheme;
   }
 }
