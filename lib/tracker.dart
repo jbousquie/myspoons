@@ -2,10 +2,10 @@
 import 'package:flutter/foundation.dart';
 
 class SpoonTracker extends ChangeNotifier {
-  int _energyRate = 50;
+  double _energyRate = 50;
   int _spoonNb = 5;
 
-  int get energyRate {
+  double get energyRate {
     return _energyRate;
   }
 
@@ -13,9 +13,10 @@ class SpoonTracker extends ChangeNotifier {
     return _spoonNb;
   }
 
-  void updateEnergyRate(int value) {
+  void updateEnergyRate(double value) {
     _energyRate = value;
     _updateSpoonNb();
+    notifyListeners();
   }
 
   void _updateSpoonNb() {
