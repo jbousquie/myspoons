@@ -1,5 +1,6 @@
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SpoonTracker extends ChangeNotifier {
   double _energyRate = 50;
@@ -21,5 +22,15 @@ class SpoonTracker extends ChangeNotifier {
 
   void _updateSpoonNb() {
     _spoonNb = (_energyRate * 0.1).round();
+  }
+
+  Future<void> _getStoredRate() async {
+    final prefs = await SharedPreferences.getInstance();
+    _energyRate = prefs.getDouble('energyrate') ?? 50;
+  }
+
+  Future<void> _storeRate(double value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('energyrate', value);
   }
 }

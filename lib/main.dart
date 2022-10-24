@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'tracker.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
+// https://flutter.syncfusion.com/#/
 
 void main() {
   const myApp = MyApp();
@@ -40,13 +41,31 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double energyRate = Provider.of<SpoonTracker>(context).energyRate;
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: buildSlider(context, energyRate),
+      body: buildContent(context),
       floatingActionButton:
           FloatingActionButton(onPressed: () => _updateEnergyRate(context, 6)),
     );
+  }
+
+  buildContent(BuildContext context) {
+    double energyRate = Provider.of<SpoonTracker>(context).energyRate;
+    return Column(
+      children: [
+        Expanded(child: buildSlider(context, energyRate)),
+        Text('${energyRate.round()}'),
+        buildInputField(context)
+      ],
+    );
+  }
+
+  buildInputField(BuildContext context) {
+    const textfield = TextField(
+      decoration:
+          InputDecoration(border: OutlineInputBorder(), labelText: 'comment'),
+    );
+    return textfield;
   }
 
   buildSlider(BuildContext context, double energyRate) {
@@ -63,7 +82,6 @@ class MyHomePage extends StatelessWidget {
             thumbShape: RoundSliderThumbShape(enabledThumbRadius: 45),
             trackHeight: 50),
         child: slider);
-
     return sliderTheme;
   }
 }
