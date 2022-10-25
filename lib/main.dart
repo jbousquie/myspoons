@@ -79,7 +79,8 @@ class MyHomePage extends StatelessWidget {
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
           labelText: 'comment',
-          hintText: comment),
+          hintText: comment,
+          hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
     );
     return textfield;
   }
