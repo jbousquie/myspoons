@@ -27,14 +27,15 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: const MyHomePage(title: 'My Spoons'),
+          home: MyHomePage(title: 'My Spoons'),
         ));
   }
 }
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  const MyHomePage({super.key, required this.title});
+  final commentController = TextEditingController();
+  MyHomePage({super.key, required this.title});
 
   void _updateEnergyRate(BuildContext context, double value) {
     Provider.of<SpoonTracker>(context, listen: false).updateEnergyRate(value);
@@ -43,7 +44,7 @@ class MyHomePage extends StatelessWidget {
   void _logData(BuildContext context) {
     double energyRate =
         Provider.of<SpoonTracker>(context, listen: false).energyRate;
-    String comment = 'toto';
+    String comment = commentController.text;
     Provider.of<SpoonTracker>(context, listen: false)
         .logData(energyRate, comment);
   }
@@ -70,9 +71,15 @@ class MyHomePage extends StatelessWidget {
   }
 
   buildInputField(BuildContext context) {
-    const textfield = TextField(
-      decoration:
-          InputDecoration(border: OutlineInputBorder(), labelText: 'comment'),
+    String comment = Provider.of<SpoonTracker>(context).comment;
+    final textfield = TextField(
+      controller: commentController,
+      autofocus: true,
+      keyboardType: TextInputType.text,
+      decoration: InputDecoration(
+          border: const OutlineInputBorder(),
+          labelText: 'comment',
+          hintText: comment),
     );
     return textfield;
   }
