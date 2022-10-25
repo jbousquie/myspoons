@@ -3,8 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SpoonTracker extends ChangeNotifier {
-  double _energyRate = 50;
-  int _spoonNb = 5;
+  late double _energyRate = 50;
+  late int _spoonNb;
+  SpoonTracker() {
+    setbackInitials();
+  }
 
   double get energyRate {
     return _energyRate;
@@ -24,13 +27,15 @@ class SpoonTracker extends ChangeNotifier {
     _spoonNb = (_energyRate * 0.1).round();
   }
 
-  Future<void> _getStoredRate() async {
+  Future<void> setbackInitials() async {
     final prefs = await SharedPreferences.getInstance();
     _energyRate = prefs.getDouble('energyrate') ?? 50;
+    notifyListeners();
   }
 
-  Future<void> _storeRate(double value) async {
+  Future<void> logData(double value, String comment) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setDouble('energyrate', value);
+    await prefs.setString('comment', comment);
   }
 }

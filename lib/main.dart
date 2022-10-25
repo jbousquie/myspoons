@@ -35,8 +35,17 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatelessWidget {
   final String title;
   const MyHomePage({super.key, required this.title});
+
   void _updateEnergyRate(BuildContext context, double value) {
     Provider.of<SpoonTracker>(context, listen: false).updateEnergyRate(value);
+  }
+
+  void _logData(BuildContext context) {
+    double energyRate =
+        Provider.of<SpoonTracker>(context, listen: false).energyRate;
+    String comment = 'toto';
+    Provider.of<SpoonTracker>(context, listen: false)
+        .logData(energyRate, comment);
   }
 
   @override
@@ -45,7 +54,7 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(title: Text(title)),
       body: buildContent(context),
       floatingActionButton:
-          FloatingActionButton(onPressed: () => _updateEnergyRate(context, 6)),
+          FloatingActionButton(onPressed: () => _logData(context)),
     );
   }
 
