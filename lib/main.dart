@@ -27,26 +27,33 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: MyHomePage(title: 'My Spoons'),
+          home: MyHomePage(title: 'My Daily Spoons'),
         ));
   }
 }
 
 class MyHomePage extends StatelessWidget {
   final String title;
+  final spoonIcon =
+      const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
+  //final spoonIcon = const Icon(Icons.flatware_outlined);
   final commentController = TextEditingController();
   MyHomePage({super.key, required this.title});
 
-  void _updateEnergyRate(BuildContext context, double value) {
+  void _updateEnergyRate(BuildContext context, int value) {
     Provider.of<SpoonTracker>(context, listen: false).updateEnergyRate(value);
   }
 
   void _logData(BuildContext context) {
-    double energyRate =
+    int energyRate =
         Provider.of<SpoonTracker>(context, listen: false).energyRate;
     String comment = commentController.text;
+    Provider.of<SpoonTracker>(context, listen: false).comment = comment;
+    String dateString = DateTime.now().toString().substring(0, 19);
+    Provider.of<SpoonTracker>(context, listen: false).dateString = dateString;
     Provider.of<SpoonTracker>(context, listen: false)
-        .logData(energyRate, comment);
+        .logData(dateString, energyRate, comment);
+    commentController.clear();
   }
 
   @override
@@ -60,38 +67,60 @@ class MyHomePage extends StatelessWidget {
   }
 
   buildContent(BuildContext context) {
-    double energyRate = Provider.of<SpoonTracker>(context).energyRate;
+    int energyRate = Provider.of<SpoonTracker>(context).energyRate;
+    int spoonNb = Provider.of<SpoonTracker>(context).spoonNb;
+
     return Column(
       children: [
-        Expanded(child: buildSlider(context, energyRate)),
+        Row(children: [
+          buildSpoonGrid(spoonNb),
+          Expanded(child: buildSlider(context, energyRate))
+        ]),
         Text('${energyRate.round()}'),
         buildInputField(context)
       ],
     );
   }
 
+  buildSpoonGrid(int spoonNb) {
+    return SizedBox(
+        height: 600,
+        width: 200,
+        child: GridView.count(
+            padding: const EdgeInsets.all(20),
+            mainAxisSpacing: 20,
+            crossAxisSpacing: 20,
+            crossAxisCount: 2,
+            reverse: true,
+            children: List.generate(spoonNb, (index) {
+              return spoonIcon;
+            })));
+  }
+
   buildInputField(BuildContext context) {
     String comment = Provider.of<SpoonTracker>(context).comment;
+    String dateString = Provider.of<SpoonTracker>(context).dateString;
     final textfield = TextField(
       controller: commentController,
       autofocus: true,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          labelText: 'comment',
+          labelText: dateString.substring(11),
           hintText: comment,
           hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
     );
     return textfield;
   }
 
-  buildSlider(BuildContext context, double energyRate) {
+  buildSlider(BuildContext context, int energyRate) {
     Widget slider = RotatedBox(
         quarterTurns: -1,
         child: Slider(
-          value: energyRate,
+          value: energyRate.toDouble(),
           max: 100,
-          onChanged: (double value) => {_updateEnergyRate(context, value)},
+          onChanged: (double value) =>
+              {_updateEnergyRate(context, value.toInt())},
         ));
 
     Widget sliderTheme = SliderTheme(

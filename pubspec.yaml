@@ -16,6 +16,7 @@ dependencies:
     sdk: flutter
   provider: ^6.0.4
   shared_preferences: ^2.0.15
+  path_provider: ^2.0.11
 
 
 
@@ -29,7 +30,8 @@ dev_dependencies:
 
 
 flutter:
-
+  assets:
+    - lib/assets/icons/kitchen-spoon-icon.png
 
   uses-material-design: true
 
