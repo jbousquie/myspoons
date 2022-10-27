@@ -32,6 +32,7 @@ dev_dependencies:
 flutter:
   assets:
     - lib/assets/icons/kitchen-spoon-icon.png
+    - lib/assets/icons/spoon.png
 
   uses-material-design: true
 

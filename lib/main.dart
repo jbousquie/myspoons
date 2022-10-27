@@ -5,6 +5,7 @@ import 'tracker.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 // https://flutter.syncfusion.com/#/
+// https://www.flaticon.com/free-icon/spoon_96164#
 
 void main() {
   const myApp = MyApp();
@@ -34,9 +35,8 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  final spoonIcon =
-      const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
-  //final spoonIcon = const Icon(Icons.flatware_outlined);
+  final spoonIcon = const ImageIcon(AssetImage('lib/assets/icons/spoon.png'));
+  final buttonIcon = const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
   final commentController = TextEditingController();
   MyHomePage({super.key, required this.title});
 
@@ -45,14 +45,12 @@ class MyHomePage extends StatelessWidget {
   }
 
   void _logData(BuildContext context) {
-    int energyRate =
-        Provider.of<SpoonTracker>(context, listen: false).energyRate;
+    int energyRate = Provider.of<SpoonTracker>(context, listen: false).energyRate;
     String comment = commentController.text;
     Provider.of<SpoonTracker>(context, listen: false).comment = comment;
     String dateString = DateTime.now().toString().substring(0, 19);
     Provider.of<SpoonTracker>(context, listen: false).dateString = dateString;
-    Provider.of<SpoonTracker>(context, listen: false)
-        .logData(dateString, energyRate, comment);
+    Provider.of<SpoonTracker>(context, listen: false).logData(dateString, energyRate, comment);
     commentController.clear();
   }
 
@@ -61,8 +59,7 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: buildContent(context),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () => _logData(context)),
+      floatingActionButton: FloatingActionButton(child: buttonIcon, onPressed: () => _logData(context)),
     );
   }
 
@@ -71,12 +68,10 @@ class MyHomePage extends StatelessWidget {
     int spoonNb = Provider.of<SpoonTracker>(context).spoonNb;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(children: [
-          buildSpoonGrid(spoonNb),
-          Expanded(child: buildSlider(context, energyRate))
-        ]),
         Text('${energyRate.round()}'),
+        Row(children: [Expanded(child: buildSpoonGrid(spoonNb)), Expanded(child: buildSlider(context, energyRate))]),
         buildInputField(context)
       ],
     );
@@ -84,12 +79,12 @@ class MyHomePage extends StatelessWidget {
 
   buildSpoonGrid(int spoonNb) {
     return SizedBox(
-        height: 600,
+        height: 500,
         width: 200,
         child: GridView.count(
             padding: const EdgeInsets.all(20),
-            mainAxisSpacing: 20,
-            crossAxisSpacing: 20,
+            mainAxisSpacing: 50,
+            crossAxisSpacing: 30,
             crossAxisCount: 2,
             reverse: true,
             children: List.generate(spoonNb, (index) {
@@ -114,19 +109,18 @@ class MyHomePage extends StatelessWidget {
   }
 
   buildSlider(BuildContext context, int energyRate) {
-    Widget slider = RotatedBox(
-        quarterTurns: -1,
-        child: Slider(
-          value: energyRate.toDouble(),
-          max: 100,
-          onChanged: (double value) =>
-              {_updateEnergyRate(context, value.toInt())},
-        ));
+    Widget slider = SizedBox(
+        height: 500,
+        child: RotatedBox(
+            quarterTurns: -1,
+            child: Slider(
+              value: energyRate.toDouble(),
+              max: 100,
+              onChanged: (double value) => {_updateEnergyRate(context, value.toInt())},
+            )));
 
     Widget sliderTheme = SliderTheme(
-        data: const SliderThemeData(
-            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 45),
-            trackHeight: 50),
+        data: const SliderThemeData(thumbShape: RoundSliderThumbShape(enabledThumbRadius: 45), trackHeight: 50),
         child: slider);
     return sliderTheme;
   }
