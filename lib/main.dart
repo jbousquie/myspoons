@@ -35,9 +35,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  final spoonIcon = const ImageIcon(AssetImage('lib/assets/icons/spoon.png'));
   final buttonIcon = const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
   final commentController = TextEditingController();
+
   MyHomePage({super.key, required this.title});
 
   void _updateEnergyRate(BuildContext context, int value) {
@@ -58,8 +58,9 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
-      body: buildContent(context),
+      body: Center(child: SingleChildScrollView(child: buildContent(context))),
       floatingActionButton: FloatingActionButton(child: buttonIcon, onPressed: () => _logData(context)),
+      //resizeToAvoidBottomInset: false,
     );
   }
 
@@ -70,21 +71,30 @@ class MyHomePage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text('${energyRate.round()}'),
-        Row(children: [Expanded(child: buildSpoonGrid(spoonNb)), Expanded(child: buildSlider(context, energyRate))]),
+        //Text('${energyRate.round()}'),
+        Row(children: [
+          Expanded(child: buildSpoonGrid(spoonNb), flex: 2),
+          Expanded(child: buildSlider(context, energyRate))
+        ]),
         buildInputField(context)
       ],
     );
   }
 
+  ImageIcon _spoonIcon(int colorIndex) {
+    return ImageIcon(const AssetImage('lib/assets/icons/spoon.png'),
+        color: Color.fromARGB(120 + colorIndex * 10, 80, 28 * colorIndex, 80));
+  }
+
   buildSpoonGrid(int spoonNb) {
+    final spoonIcon = _spoonIcon(spoonNb);
     return SizedBox(
         height: 500,
         width: 200,
         child: GridView.count(
             padding: const EdgeInsets.all(20),
-            mainAxisSpacing: 50,
-            crossAxisSpacing: 30,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 20,
             crossAxisCount: 2,
             reverse: true,
             children: List.generate(spoonNb, (index) {
@@ -101,7 +111,7 @@ class MyHomePage extends StatelessWidget {
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          labelText: dateString.substring(11),
+          labelText: 'Last record at ${dateString.substring(11)}',
           hintText: comment,
           hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
     );
@@ -114,13 +124,17 @@ class MyHomePage extends StatelessWidget {
         child: RotatedBox(
             quarterTurns: -1,
             child: Slider(
+              label: '$energyRate',
               value: energyRate.toDouble(),
               max: 100,
               onChanged: (double value) => {_updateEnergyRate(context, value.toInt())},
             )));
 
     Widget sliderTheme = SliderTheme(
-        data: const SliderThemeData(thumbShape: RoundSliderThumbShape(enabledThumbRadius: 45), trackHeight: 50),
+        data: const SliderThemeData(
+            thumbShape: RoundSliderThumbShape(enabledThumbRadius: 35),
+            trackHeight: 30,
+            showValueIndicator: ShowValueIndicator.onlyForContinuous),
         child: slider);
     return sliderTheme;
   }
