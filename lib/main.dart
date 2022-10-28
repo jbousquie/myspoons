@@ -83,7 +83,7 @@ class MyHomePage extends StatelessWidget {
 
   ImageIcon _spoonIcon(int colorIndex) {
     return ImageIcon(const AssetImage('lib/assets/icons/spoon.png'),
-        color: Color.fromARGB(120 + colorIndex * 10, 80, 28 * colorIndex, 80));
+        color: Color.fromARGB(95 + colorIndex * 20, 40 + colorIndex * 4, 28 + 27 * colorIndex, 50 + colorIndex * 4));
   }
 
   buildSpoonGrid(int spoonNb) {
@@ -94,7 +94,7 @@ class MyHomePage extends StatelessWidget {
         child: GridView.count(
             padding: const EdgeInsets.all(20),
             mainAxisSpacing: 10,
-            crossAxisSpacing: 20,
+            crossAxisSpacing: 15,
             crossAxisCount: 2,
             reverse: true,
             children: List.generate(spoonNb, (index) {
