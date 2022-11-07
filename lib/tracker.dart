@@ -1,7 +1,12 @@
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
+
+// https://davidserrano.io/best-way-to-handle-permissions-in-your-flutter-app
+
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+
 import 'dart:io';
 
 class SpoonTracker extends ChangeNotifier {
@@ -50,7 +55,9 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   Future<String> get _localPath async {
-    final directory = await getApplicationDocumentsDirectory();
+    final directory =
+        (await getExternalStorageDirectories(type: StorageDirectory.downloads))!
+            .first;
     return directory.path;
   }
 
@@ -62,8 +69,12 @@ class SpoonTracker extends ChangeNotifier {
   Future<File> writeData(
       String dateString, int energyRate, String comment) async {
     final file = await _localFile;
-    final row = '$dateString;$energyRate;$comment\n';
-    return file.writeAsString(row, mode: FileMode.append);
+    final bool hasFilePersmission = await requestFilePermission();
+    if (hasFilePersmission) {
+      final row = '$dateString;$energyRate;$comment\n';
+      file.writeAsString(row, mode: FileMode.append);
+    }
+    return file;
   }
 
   Future<void> setbackInitials() async {
@@ -82,5 +93,21 @@ class SpoonTracker extends ChangeNotifier {
     await prefs.setInt('energyrate', value);
     await prefs.setString('comment', comment);
     await writeData(dateString, energyRate, comment);
+  }
+
+  Future requestFilePermission() async {
+    PermissionStatus result;
+    if (Platform.isAndroid) {
+      result = await Permission.storage.request();
+    } else {
+      result = await Permission.photos.request();
+    }
+
+    if (result.isGranted) {
+      return true;
+    } else if (result.isPermanentlyDenied) {
+      await openAppSettings();
+    }
+    return false;
   }
 }

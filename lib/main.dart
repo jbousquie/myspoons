@@ -35,7 +35,8 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  final buttonIcon = const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
+  final buttonIcon =
+      const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
   final commentController = TextEditingController();
 
   MyHomePage({super.key, required this.title});
@@ -45,12 +46,14 @@ class MyHomePage extends StatelessWidget {
   }
 
   void _logData(BuildContext context) {
-    int energyRate = Provider.of<SpoonTracker>(context, listen: false).energyRate;
+    int energyRate =
+        Provider.of<SpoonTracker>(context, listen: false).energyRate;
     String comment = commentController.text;
     Provider.of<SpoonTracker>(context, listen: false).comment = comment;
     String dateString = DateTime.now().toString().substring(0, 19);
     Provider.of<SpoonTracker>(context, listen: false).dateString = dateString;
-    Provider.of<SpoonTracker>(context, listen: false).logData(dateString, energyRate, comment);
+    Provider.of<SpoonTracker>(context, listen: false)
+        .logData(dateString, energyRate, comment);
     commentController.clear();
   }
 
@@ -59,7 +62,8 @@ class MyHomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(title)),
       body: Center(child: SingleChildScrollView(child: buildContent(context))),
-      floatingActionButton: FloatingActionButton(child: buttonIcon, onPressed: () => _logData(context)),
+      floatingActionButton: FloatingActionButton(
+          child: buttonIcon, onPressed: () => _logData(context)),
       //resizeToAvoidBottomInset: false,
     );
   }
@@ -83,7 +87,8 @@ class MyHomePage extends StatelessWidget {
 
   ImageIcon _spoonIcon(int colorIndex) {
     return ImageIcon(const AssetImage('lib/assets/icons/spoon.png'),
-        color: Color.fromARGB(95 + colorIndex * 20, 40 + colorIndex * 4, 28 + 27 * colorIndex, 50 + colorIndex * 4));
+        color: Color.fromARGB(95 + colorIndex * 20, 40 + colorIndex * 4,
+            28 + 27 * colorIndex, 50 + colorIndex * 4));
   }
 
   buildSpoonGrid(int spoonNb) {
@@ -127,7 +132,8 @@ class MyHomePage extends StatelessWidget {
               label: '$energyRate',
               value: energyRate.toDouble(),
               max: 100,
-              onChanged: (double value) => {_updateEnergyRate(context, value.toInt())},
+              onChanged: (double value) =>
+                  {_updateEnergyRate(context, value.toInt())},
             )));
 
     Widget sliderTheme = SliderTheme(
