@@ -88,7 +88,7 @@ class SpoonTracker extends ChangeNotifier {
     _dateString = prefs.getString('date') ?? stringDateNow();
     _energyRate = prefs.getInt('energyrate') ?? 50;
     _comment = prefs.getString('comment') ?? '';
-    _spoonNb = prefs.getInt('spoonNb') ?? 8;
+    _spoonNb = prefs.getInt('spoonNb') ?? 4;
     notifyListeners();
   }
 

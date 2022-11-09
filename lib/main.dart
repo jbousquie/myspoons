@@ -62,7 +62,9 @@ class MyHomePage extends StatelessWidget {
           onPressed: () {
             _logData(context);
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Spooned !"), duration: Duration(seconds: 2)));
+                content: Text("Spooned !"),
+                duration: Duration(seconds: 2),
+                backgroundColor: Colors.blueAccent));
           }),
       //resizeToAvoidBottomInset: false,
     );
@@ -110,13 +112,21 @@ class MyHomePage extends StatelessWidget {
   buildInputField(BuildContext context) {
     String comment = Provider.of<SpoonTracker>(context).comment;
     String dateString = Provider.of<SpoonTracker>(context).dateString;
+    final String today = DateTime.now().toString().substring(0, 10);
+    final String dayFromDateString = dateString.substring(0, 10);
+    String label;
+    if (today != dayFromDateString) {
+      label = 'No spoon yet today';
+    } else {
+      label = 'Last spoon at ${dateString.substring(11, 16)}';
+    }
     final textfield = TextField(
       controller: commentController,
       autofocus: true,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          labelText: 'Last spoon at ${dateString.substring(11, 16)}',
+          labelText: label,
           hintText: comment,
           hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
     );
