@@ -1,5 +1,5 @@
 name: myspoons
-description: daily spoon number tracker.
+description: Daily spoon number tracker.
 
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -24,11 +24,17 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.10.0
   flutter_test:
     sdk: flutter
 
   flutter_lints: ^2.0.0
 
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/icons/spoon.png"
+  adaptative_icon_background: "#0000ff"
 
 flutter:
   assets:

@@ -10,10 +10,10 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
 class SpoonTracker extends ChangeNotifier {
-  late int _energyRate = 50;
+  int _energyRate = 50;
   late int _spoonNb = _computeSpoonNb(_energyRate);
-  late String _comment = '';
-  late String _dateString = DateTime.now().toString().substring(0, 19);
+  String _comment = '';
+  late String _dateString = stringDateNow();
   final String _filename = 'myspoons.csv';
   SpoonTracker() {
     setbackInitials();
@@ -54,6 +54,11 @@ class SpoonTracker extends ChangeNotifier {
     return (value / 12.5).round();
   }
 
+  String stringDateNow() {
+    final String stdn = DateTime.now().toString().substring(0, 19);
+    return stdn;
+  }
+
   Future<String> get _localPath async {
     final directory =
         (await getExternalStorageDirectories(type: StorageDirectory.downloads))!
@@ -66,12 +71,12 @@ class SpoonTracker extends ChangeNotifier {
     return File('$path/$_filename');
   }
 
-  Future<File> writeData(
-      String dateString, int energyRate, String comment) async {
+  Future<File> _writeData(
+      String dateString, int energyRate, int spoonNb, String comment) async {
     final file = await _localFile;
     final bool hasFilePersmission = await requestFilePermission();
     if (hasFilePersmission) {
-      final row = '$dateString;$energyRate;$comment\n';
+      final row = '$dateString;$energyRate;$spoonNb;$comment\n';
       file.writeAsString(row, mode: FileMode.append);
     }
     return file;
@@ -80,19 +85,21 @@ class SpoonTracker extends ChangeNotifier {
   Future<void> setbackInitials() async {
     final prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
-    _dateString =
-        prefs.getString('date') ?? DateTime.now().toString().substring(0, 19);
+    _dateString = prefs.getString('date') ?? stringDateNow();
     _energyRate = prefs.getInt('energyrate') ?? 50;
     _comment = prefs.getString('comment') ?? '';
+    _spoonNb = prefs.getInt('spoonNb') ?? 8;
     notifyListeners();
   }
 
-  Future<void> logData(String dateString, int value, String comment) async {
+  Future<void> logData() async {
+    _dateString = stringDateNow();
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('date', dateString);
-    await prefs.setInt('energyrate', value);
-    await prefs.setString('comment', comment);
-    await writeData(dateString, energyRate, comment);
+    await prefs.setString('date', _dateString);
+    await prefs.setInt('energyrate', _energyRate);
+    await prefs.setInt('spoonNb', _spoonNb);
+    await prefs.setString('comment', _comment);
+    await _writeData(dateString, _energyRate, _spoonNb, _comment);
   }
 
   Future requestFilePermission() async {

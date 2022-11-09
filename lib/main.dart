@@ -46,14 +46,9 @@ class MyHomePage extends StatelessWidget {
   }
 
   void _logData(BuildContext context) {
-    int energyRate =
-        Provider.of<SpoonTracker>(context, listen: false).energyRate;
     String comment = commentController.text;
     Provider.of<SpoonTracker>(context, listen: false).comment = comment;
-    String dateString = DateTime.now().toString().substring(0, 19);
-    Provider.of<SpoonTracker>(context, listen: false).dateString = dateString;
-    Provider.of<SpoonTracker>(context, listen: false)
-        .logData(dateString, energyRate, comment);
+    Provider.of<SpoonTracker>(context, listen: false).logData();
     commentController.clear();
   }
 
@@ -63,7 +58,12 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(title: Text(title)),
       body: Center(child: SingleChildScrollView(child: buildContent(context))),
       floatingActionButton: FloatingActionButton(
-          child: buttonIcon, onPressed: () => _logData(context)),
+          child: buttonIcon,
+          onPressed: () {
+            _logData(context);
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                content: Text("Spooned !"), duration: Duration(seconds: 2)));
+          }),
       //resizeToAvoidBottomInset: false,
     );
   }
@@ -116,7 +116,7 @@ class MyHomePage extends StatelessWidget {
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
-          labelText: 'Last record at ${dateString.substring(11)}',
+          labelText: 'Last spoon at ${dateString.substring(11, 16)}',
           hintText: comment,
           hintStyle: const TextStyle(fontStyle: FontStyle.italic)),
     );
