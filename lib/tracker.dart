@@ -4,7 +4,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:path_provider/path_provider.dart';
+//import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:io';
@@ -14,6 +14,8 @@ class SpoonTracker extends ChangeNotifier {
   late int _spoonNb = _computeSpoonNb(_energyRate);
   String _comment = '';
   late String _dateString = stringDateNow();
+  final String _path = '/storage/emulated/0/Download';
+  final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;Comment\n';
   final String _filename = 'myspoons.csv';
   SpoonTracker() {
     setbackInitials();
@@ -59,24 +61,37 @@ class SpoonTracker extends ChangeNotifier {
     return stdn;
   }
 
+  int weekDay() {
+    final int wd = DateTime.now().weekday;
+    return wd;
+  }
+
+  /*
   Future<String> get _localPath async {
     final directory =
         (await getExternalStorageDirectories(type: StorageDirectory.downloads))!
             .first;
-    return directory.path;
+      String path = directory.path;
+    return path;
   }
+  */
 
   Future<File> get _localFile async {
-    final path = await _localPath;
-    return File('$path/$_filename');
+    //final path = await _localPath;
+    final String filePath = '$_path/$_filename';
+    final File f = File(filePath);
+    return f;
   }
 
-  Future<File> _writeData(
-      String dateString, int energyRate, int spoonNb, String comment) async {
+  Future<File> _writeData(String dateString, int weekday, int energyRate,
+      int spoonNb, String comment) async {
     final file = await _localFile;
     final bool hasFilePersmission = await requestFilePermission();
     if (hasFilePersmission) {
-      final row = '$dateString;$energyRate;$spoonNb;$comment\n';
+      if (!await file.exists()) {
+        file.writeAsStringSync(_columns);
+      }
+      final row = '$dateString;$weekday;$energyRate;$spoonNb;$comment\n';
       file.writeAsString(row, mode: FileMode.append);
     }
     return file;
@@ -94,12 +109,13 @@ class SpoonTracker extends ChangeNotifier {
 
   Future<void> logData() async {
     _dateString = stringDateNow();
+    final int weekday = weekDay();
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('date', _dateString);
     await prefs.setInt('energyrate', _energyRate);
     await prefs.setInt('spoonNb', _spoonNb);
     await prefs.setString('comment', _comment);
-    await _writeData(dateString, _energyRate, _spoonNb, _comment);
+    await _writeData(_dateString, weekday, _energyRate, _spoonNb, _comment);
   }
 
   Future requestFilePermission() async {
