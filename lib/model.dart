@@ -10,7 +10,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
 
 class SpoonTracker extends ChangeNotifier {
-  int _energyRate = 50;
+  int _energyRate = 100;
   late int _spoonNb = _computeSpoonNb(_energyRate);
   String _comment = '';
   late String _dateString = stringDateNow();

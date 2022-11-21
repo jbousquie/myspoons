@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'tracker.dart';
+import 'model.dart';
+import 'settingsPage.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 // https://flutter.syncfusion.com/#/
@@ -55,7 +56,15 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(title), actions: [
+        IconButton(
+            onPressed: () => {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const SettingsPage(title: 'Settings');
+                  }))
+                },
+            icon: const Icon(Icons.settings))
+      ]),
       body: Center(child: SingleChildScrollView(child: buildContent(context))),
       floatingActionButton: FloatingActionButton(
           child: buttonIcon,
