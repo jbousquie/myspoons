@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 import 'model.dart';
 import 'settingsPage.dart';
@@ -104,18 +105,21 @@ class MyHomePage extends StatelessWidget {
 
   buildSpoonGrid(int spoonNb) {
     final spoonIcon = _spoonIcon(spoonNb);
-    return SizedBox(
-        height: 500,
-        width: 200,
-        child: GridView.count(
-            padding: const EdgeInsets.all(20),
-            mainAxisSpacing: 10,
-            crossAxisSpacing: 15,
-            crossAxisCount: 2,
-            reverse: true,
-            children: List.generate(spoonNb, (index) {
-              return spoonIcon;
-            })));
+    return Transform(
+        transform: Matrix4.rotationY(-pi),
+        alignment: Alignment.center,
+        child: SizedBox(
+            height: 500,
+            width: 200,
+            child: GridView.count(
+                padding: const EdgeInsets.all(20),
+                mainAxisSpacing: 10,
+                crossAxisSpacing: 15,
+                crossAxisCount: 2,
+                reverse: true,
+                children: List.generate(spoonNb, (index) {
+                  return spoonIcon;
+                }))));
   }
 
   buildInputField(BuildContext context) {

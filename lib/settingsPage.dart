@@ -7,13 +7,15 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text(title)),
+      appBar: AppBar(title: Text(title)),
+      /*
         body: Center(
           child: TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
               child: const Text('Back')),
-        ));
+        )*/
+    );
   }
 }
