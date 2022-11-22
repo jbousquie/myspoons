@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SpoonTracker spoonTracker = SpoonTracker();
     Settings settings = Settings();
-    spoonTracker.settings = settings;
+    spoonTracker.linkSettings(settings);
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(

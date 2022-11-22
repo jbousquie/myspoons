@@ -26,15 +26,16 @@ class SettingsPage extends StatelessWidget {
 
   buildMaxSpoonNbSelector(context) {
     List<int> list = [8, 10, 12, 14, 16];
+    int maxSpoonNb = Provider.of<Settings>(context, listen: false).maxSpoonNb;
     return Row(children: [
       const Text('Maximum spoon number'),
       DropdownButton(
-          hint: const Text('8'),
+          value: maxSpoonNb,
           items: _listDropdownMenuItemFromList(list),
-          onChanged: ((value) => {
-                Provider.of<Settings>(context, listen: false)
-                    .updateMaxSpoonNb(value)
-              }))
+          onChanged: ((value) {
+            Provider.of<Settings>(context, listen: false)
+                .updateMaxSpoonNb(value);
+          }))
     ]);
   }
 

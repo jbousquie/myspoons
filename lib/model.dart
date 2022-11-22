@@ -66,6 +66,11 @@ class SpoonTracker extends ChangeNotifier {
     return wd;
   }
 
+  void linkSettings(Settings params) {
+    settings = params;
+    settings.spoonTracker = this;
+  }
+
   Future<File> get _localFile async {
     //final path = await _localPath;
     final String filePath = '$_path/$_filename';
@@ -91,9 +96,9 @@ class SpoonTracker extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
     _dateString = prefs.getString('date') ?? stringDateNow();
-    _energyRate = prefs.getInt('energyrate') ?? 50;
+    _energyRate = prefs.getInt('energyrate') ?? 100;
     _comment = prefs.getString('comment') ?? '';
-    _spoonNb = prefs.getInt('spoonNb') ?? 4;
+    _spoonNb = prefs.getInt('spoonNb') ?? settings.maxSpoonNb;
     notifyListeners();
   }
 
@@ -126,7 +131,11 @@ class SpoonTracker extends ChangeNotifier {
 }
 
 class Settings extends ChangeNotifier {
-  int maxSpoonNb = 8;
+  int maxSpoonNb = 10;
+  late SpoonTracker spoonTracker;
+  Settings() {
+    setbackInitials();
+  }
 
   Future<void> setbackInitials() async {
     final prefs = await SharedPreferences.getInstance();
@@ -135,9 +144,10 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  updateMaxSpoonNb(int value) {
+  Future<void> updateMaxSpoonNb(int value) async {
     // logguer le changement du max
-
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('maxspoonNb', value);
     maxSpoonNb = value;
     notifyListeners();
   }
