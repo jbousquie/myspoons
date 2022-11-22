@@ -4,7 +4,6 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-//import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:io';
@@ -17,6 +16,7 @@ class SpoonTracker extends ChangeNotifier {
   final String _path = '/storage/emulated/0/Download';
   final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;Comment\n';
   final String _filename = 'myspoons.csv';
+  late Settings settings;
   SpoonTracker() {
     setbackInitials();
   }
@@ -53,7 +53,7 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   int _computeSpoonNb(value) {
-    return (value / 12.5).round();
+    return (value * settings.maxSpoonNb / 100).round();
   }
 
   String stringDateNow() {
@@ -65,16 +65,6 @@ class SpoonTracker extends ChangeNotifier {
     final int wd = DateTime.now().weekday;
     return wd;
   }
-
-  /*
-  Future<String> get _localPath async {
-    final directory =
-        (await getExternalStorageDirectories(type: StorageDirectory.downloads))!
-            .first;
-      String path = directory.path;
-    return path;
-  }
-  */
 
   Future<File> get _localFile async {
     //final path = await _localPath;
@@ -132,5 +122,23 @@ class SpoonTracker extends ChangeNotifier {
       await openAppSettings();
     }
     return false;
+  }
+}
+
+class Settings extends ChangeNotifier {
+  int maxSpoonNb = 8;
+
+  Future<void> setbackInitials() async {
+    final prefs = await SharedPreferences.getInstance();
+    //await prefs.clear();
+    maxSpoonNb = prefs.getInt('maxspoonNb') ?? maxSpoonNb;
+    notifyListeners();
+  }
+
+  updateMaxSpoonNb(int value) {
+    // logguer le changement du max
+
+    maxSpoonNb = value;
+    notifyListeners();
   }
 }

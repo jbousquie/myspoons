@@ -19,11 +19,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SpoonTracker spoonTracker = SpoonTracker();
+    Settings settings = Settings();
+    spoonTracker.settings = settings;
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(
-            value: SpoonTracker(),
-          )
+            value: spoonTracker,
+          ),
+          ChangeNotifierProvider.value(value: settings)
         ],
         child: MaterialApp(
           title: 'My Spoons',
@@ -89,7 +93,7 @@ class MyHomePage extends StatelessWidget {
       children: [
         //Text('${energyRate.round()}'),
         Row(children: [
-          Expanded(child: buildSpoonGrid(spoonNb), flex: 2),
+          Expanded(child: buildSpoonGrid(spoonNb, context), flex: 2),
           Expanded(child: buildSlider(context, energyRate))
         ]),
         buildInputField(context)
@@ -97,14 +101,21 @@ class MyHomePage extends StatelessWidget {
     );
   }
 
-  ImageIcon _spoonIcon(int colorIndex) {
-    return ImageIcon(const AssetImage('lib/assets/icons/spoon.png'),
-        color: Color.fromARGB(95 + colorIndex * 20, 40 + colorIndex * 4,
-            28 + 27 * colorIndex, 50 + colorIndex * 4));
+  ImageIcon _spoonIcon(int colorIndex, double ratio) {
+    return ImageIcon(
+      const AssetImage('lib/assets/icons/spoon.png'),
+      color: Color.fromARGB(
+          95 + colorIndex * (20 * ratio).round(),
+          40 + colorIndex * (4 * ratio).round(),
+          28 + colorIndex * (27 * ratio).round(),
+          50 + colorIndex * (4 * ratio).round()),
+    );
   }
 
-  buildSpoonGrid(int spoonNb) {
-    final spoonIcon = _spoonIcon(spoonNb);
+  buildSpoonGrid(int spoonNb, BuildContext context) {
+    final maxSpoonNb = Provider.of<Settings>(context).maxSpoonNb;
+    final ratio = 8 / maxSpoonNb;
+    final spoonIcon = _spoonIcon(spoonNb, ratio);
     return Transform(
         transform: Matrix4.rotationY(-pi),
         alignment: Alignment.center,
@@ -113,10 +124,11 @@ class MyHomePage extends StatelessWidget {
             width: 200,
             child: GridView.count(
                 padding: const EdgeInsets.all(20),
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 15,
+                mainAxisSpacing: 10 * ratio,
+                crossAxisSpacing: 15 * ratio,
                 crossAxisCount: 2,
                 reverse: true,
+                childAspectRatio: 1 / ratio,
                 children: List.generate(spoonNb, (index) {
                   return spoonIcon;
                 }))));
