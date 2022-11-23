@@ -8,11 +8,28 @@ import 'model.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key, required this.title}) : super(key: key);
   final String title;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text(title)),
-        body: buildSettingsContent(context));
+    return WillPopScope(
+        child: Scaffold(
+            appBar: AppBar(title: Text(title)),
+            body: buildSettingsContent(context)),
+        onWillPop: () async {
+          Provider.of<Settings>(context, listen: false).storeSettings();
+          Navigator.of(context).pop();
+          return true;
+        });
+  }
+
+  void _updateMaxSpoonNb(BuildContext context, int value) {
+    Provider.of<Settings>(context, listen: false).updateMaxSpoonNb(value);
+  }
+
+  void _updateNotifier(BuildContext context, bool enabled, int period) {
+    Settings provider = Provider.of<Settings>(context, listen: false);
+    provider.enableReminder = enabled;
+    provider.reminderPeriod = period;
   }
 
   // return a list of DropdownMenuItem from a list of integers
@@ -24,32 +41,37 @@ class SettingsPage extends StatelessWidget {
     return itemList;
   }
 
-  buildMaxSpoonNbSelector(context) {
+  buildMaxSpoonNbSelector(BuildContext context, selectedValue) {
     List<int> list = [8, 10, 12, 14, 16];
-    int maxSpoonNb = Provider.of<Settings>(context, listen: false).maxSpoonNb;
     return Row(children: [
-      const Text('Maximum spoon number'),
+      Text('Maximum spoon number :  < $selectedValue > '),
       DropdownButton(
-          value: maxSpoonNb,
+          value: selectedValue,
           items: _listDropdownMenuItemFromList(list),
-          onChanged: ((value) {
-            Provider.of<Settings>(context, listen: false)
-                .updateMaxSpoonNb(value);
-          }))
+          onChanged: (value) {
+            _updateMaxSpoonNb(context, value);
+            selectedValue = value;
+          })
     ]);
   }
 
-  buildAppNotifierSelector(context) {
+  buildAppNotifierSelector(BuildContext context) {
+    Settings provider = Provider.of<Settings>(context, listen: false);
+    bool enabled = provider.enableReminder;
+    int period = provider.reminderPeriod;
     return Row(children: [
       const Text('Enable reminder'),
       Switch(
-        value: false,
-        onChanged: (value) => {},
+        value: enabled,
+        onChanged: (value) => {_updateNotifier(context, value, period)},
       )
     ]);
   }
 
-  buildAppNotifierParameters(context) {
+  buildAppNotifierParameters(BuildContext context) {
+    Settings provider = Provider.of<Settings>(context, listen: false);
+    bool enabled = provider.enableReminder;
+    int period = provider.reminderPeriod;
     List<int> list = [1, 2, 3, 4];
     return Column(
       children: [
@@ -58,17 +80,22 @@ class SettingsPage extends StatelessWidget {
             const Text('Remind me every '),
             DropdownButton(
                 items: _listDropdownMenuItemFromList(list),
-                onChanged: ((value) => {}))
+                value: period,
+                onChanged: (value) =>
+                    {_updateNotifier(context, enabled, value)}),
+            const Text(' hour(s)')
           ],
         )
       ],
     );
   }
 
-  buildSettingsContent(context) {
+  buildSettingsContent(BuildContext context) {
+    int maxSpoonNb = Provider.of<Settings>(context, listen: false).maxSpoonNb;
     List<Widget> childrenList = [
-      buildMaxSpoonNbSelector(context),
-      buildAppNotifierSelector(context)
+      buildMaxSpoonNbSelector(context, maxSpoonNb),
+      buildAppNotifierSelector(context),
+      buildAppNotifierParameters(context)
     ];
     return Column(children: childrenList);
   }

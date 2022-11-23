@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:io';
+import 'notification_service.dart';
 
 class SpoonTracker extends ChangeNotifier {
   int _energyRate = 100;
@@ -17,8 +18,11 @@ class SpoonTracker extends ChangeNotifier {
   final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;Comment\n';
   final String _filename = 'myspoons.csv';
   late Settings settings;
+  late final LocalNotificationService service;
   SpoonTracker() {
     setbackInitials();
+    service = LocalNotificationService();
+    service.initialize();
   }
 
   int get energyRate {
@@ -132,6 +136,8 @@ class SpoonTracker extends ChangeNotifier {
 
 class Settings extends ChangeNotifier {
   int maxSpoonNb = 10;
+  bool enableReminder = true;
+  int reminderPeriod = 1;
   late SpoonTracker spoonTracker;
   Settings() {
     setbackInitials();
@@ -141,14 +147,30 @@ class Settings extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
     maxSpoonNb = prefs.getInt('maxspoonNb') ?? maxSpoonNb;
+    enableReminder = prefs.getBool('enablereminder') ?? enableReminder;
+    reminderPeriod = prefs.getInt('reminderperiod') ?? reminderPeriod;
+  }
+
+  void updateMaxSpoonNb(int value) {
+    String oldComment = spoonTracker.comment;
+    spoonTracker._comment =
+        'Change max spoon number from $maxSpoonNb to $value';
+    spoonTracker.logData();
+    spoonTracker._comment = oldComment;
+    maxSpoonNb = value;
     notifyListeners();
   }
 
-  Future<void> updateMaxSpoonNb(int value) async {
-    // logguer le changement du max
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setInt('maxspoonNb', value);
-    maxSpoonNb = value;
+  void updateReminder(bool enabled, int period) {
+    enableReminder = enabled;
+    reminderPeriod = period;
     notifyListeners();
+  }
+
+  Future<void> storeSettings() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('maxspoonNb', maxSpoonNb);
+    await prefs.setBool('enableReminder', enableReminder);
+    await prefs.setInt('reminderperiod', reminderPeriod);
   }
 }

@@ -6,7 +6,6 @@ import 'model.dart';
 import 'settingsPage.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
-// https://flutter.syncfusion.com/#/
 // https://www.flaticon.com/free-icon/spoon_96164#
 
 void main() {
