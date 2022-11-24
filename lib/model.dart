@@ -2,7 +2,7 @@
 
 // https://davidserrano.io/best-way-to-handle-permissions-in-your-flutter-app
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -18,11 +18,8 @@ class SpoonTracker extends ChangeNotifier {
   final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;Comment\n';
   final String _filename = 'myspoons.csv';
   late Settings settings;
-  late final LocalNotificationService service;
   SpoonTracker() {
     setbackInitials();
-    service = LocalNotificationService();
-    service.initialize();
   }
 
   int get energyRate {
@@ -82,8 +79,7 @@ class SpoonTracker extends ChangeNotifier {
     return f;
   }
 
-  Future<File> _writeData(String dateString, int weekday, int energyRate,
-      int spoonNb, String comment) async {
+  Future<File> _writeData(String dateString, int weekday, int energyRate, int spoonNb, String comment) async {
     final file = await _localFile;
     final bool hasFilePersmission = await requestFilePermission();
     if (hasFilePersmission) {
@@ -138,8 +134,15 @@ class Settings extends ChangeNotifier {
   int maxSpoonNb = 10;
   bool enableReminder = true;
   int reminderPeriod = 1;
+  static int defaultHourStart = 9;
+  static int defaultHourStop = 20;
+  TimeOfDay reminderStart = TimeOfDay(hour: defaultHourStart, minute: 0);
+  TimeOfDay reminderStop = TimeOfDay(hour: defaultHourStop, minute: 0);
   late SpoonTracker spoonTracker;
+  late final LocalNotificationService localNotificationService;
   Settings() {
+    localNotificationService = LocalNotificationService();
+    localNotificationService.initialize();
     setbackInitials();
   }
 
@@ -153,8 +156,7 @@ class Settings extends ChangeNotifier {
 
   void updateMaxSpoonNb(int value) {
     String oldComment = spoonTracker.comment;
-    spoonTracker._comment =
-        'Change max spoon number from $maxSpoonNb to $value';
+    spoonTracker._comment = 'Change max spoon number from $maxSpoonNb to $value';
     spoonTracker.logData();
     spoonTracker._comment = oldComment;
     maxSpoonNb = value;
@@ -162,8 +164,10 @@ class Settings extends ChangeNotifier {
   }
 
   void updateReminder(bool enabled, int period) {
+    localNotificationService.plugin.cancelAll();
     enableReminder = enabled;
     reminderPeriod = period;
+    if (enableReminder) {}
     notifyListeners();
   }
 

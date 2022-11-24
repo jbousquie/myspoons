@@ -12,10 +12,12 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        child: Scaffold(
-            appBar: AppBar(title: Text(title)),
-            body: buildSettingsContent(context)),
+        child: Scaffold(appBar: AppBar(title: Text(title)), body: buildSettingsContent(context)),
+        //On leaving the Settings page
         onWillPop: () async {
+          Provider.of<Settings>(context, listen: false)
+              .localNotificationService
+              .showScheduledNotification(id: 0, title: 'test sche', body: "Coucou", seconds: 4);
           Provider.of<Settings>(context, listen: false).storeSettings();
           Navigator.of(context).pop();
           return true;
@@ -34,8 +36,7 @@ class SettingsPage extends StatelessWidget {
 
   // return a list of DropdownMenuItem from a list of integers
   List<DropdownMenuItem> _listDropdownMenuItemFromList(List<int> list) {
-    List<DropdownMenuItem> itemList =
-        list.map<DropdownMenuItem<int>>((int value) {
+    List<DropdownMenuItem> itemList = list.map<DropdownMenuItem<int>>((int value) {
       return DropdownMenuItem<int>(value: value, child: Text(value.toString()));
     }).toList();
     return itemList;
@@ -72,6 +73,12 @@ class SettingsPage extends StatelessWidget {
     Settings provider = Provider.of<Settings>(context, listen: false);
     bool enabled = provider.enableReminder;
     int period = provider.reminderPeriod;
+    TimeOfDay notifierStart = provider.reminderStart;
+    TimeOfDay notifierStop = provider.reminderStop;
+    final localizations = MaterialLocalizations.of(context);
+    final formattedStart = localizations.formatTimeOfDay(notifierStart);
+    final formattedStop = localizations.formatTimeOfDay(notifierStop);
+
     List<int> list = [1, 2, 3, 4];
     return Column(
       children: [
@@ -81,9 +88,11 @@ class SettingsPage extends StatelessWidget {
             DropdownButton(
                 items: _listDropdownMenuItemFromList(list),
                 value: period,
-                onChanged: (value) =>
-                    {_updateNotifier(context, enabled, value)}),
-            const Text(' hour(s)')
+                onChanged: (value) => {_updateNotifier(context, enabled, value)}),
+            const Text(' hour(s) from '),
+            Text(formattedStart),
+            const Text(' to '),
+            Text(formattedStop)
           ],
         )
       ],
