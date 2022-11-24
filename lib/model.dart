@@ -132,10 +132,14 @@ class SpoonTracker extends ChangeNotifier {
 
 class Settings extends ChangeNotifier {
   int maxSpoonNb = 10;
-  bool enableReminder = true;
+  bool enableReminder = false;
   int reminderPeriod = 1;
   static int defaultHourStart = 9;
   static int defaultHourStop = 20;
+  int hourStart = defaultHourStart;
+  int minuteStart = 0;
+  int hourStop = defaultHourStop;
+  int minuteStop = 0;
   TimeOfDay reminderStart = TimeOfDay(hour: defaultHourStart, minute: 0);
   TimeOfDay reminderStop = TimeOfDay(hour: defaultHourStop, minute: 0);
   late SpoonTracker spoonTracker;
@@ -152,6 +156,13 @@ class Settings extends ChangeNotifier {
     maxSpoonNb = prefs.getInt('maxspoonNb') ?? maxSpoonNb;
     enableReminder = prefs.getBool('enablereminder') ?? enableReminder;
     reminderPeriod = prefs.getInt('reminderperiod') ?? reminderPeriod;
+    hourStart = prefs.getInt('reminderhourstart') ?? hourStart;
+    minuteStart = prefs.getInt('reminderminutestart') ?? minuteStart;
+    hourStop = prefs.getInt('reminderhourstop') ?? hourStop;
+    minuteStop = prefs.getInt('reminderminutestop') ?? minuteStop;
+    reminderStart = TimeOfDay(hour: hourStart, minute: minuteStart);
+    reminderStop = TimeOfDay(hour: hourStop, minute: minuteStop);
+    notifyListeners();
   }
 
   void updateMaxSpoonNb(int value) {
@@ -160,14 +171,17 @@ class Settings extends ChangeNotifier {
     spoonTracker.logData();
     spoonTracker._comment = oldComment;
     maxSpoonNb = value;
+    storeSettings();
     notifyListeners();
   }
 
-  void updateReminder(bool enabled, int period) {
+  void updateReminder(bool enabled, int period, TimeOfDay notifierStart, TimeOfDay notifierStop) {
     localNotificationService.plugin.cancelAll();
     enableReminder = enabled;
     reminderPeriod = period;
-    if (enableReminder) {}
+    reminderStart = notifierStart;
+    reminderStop = notifierStop;
+    storeSettings();
     notifyListeners();
   }
 
@@ -176,5 +190,13 @@ class Settings extends ChangeNotifier {
     await prefs.setInt('maxspoonNb', maxSpoonNb);
     await prefs.setBool('enableReminder', enableReminder);
     await prefs.setInt('reminderperiod', reminderPeriod);
+    hourStart = reminderStart.hour;
+    minuteStart = reminderStart.minute;
+    hourStop = reminderStop.hour;
+    minuteStop = reminderStop.minute;
+    await prefs.setInt('reminderhourstart', hourStart);
+    await prefs.setInt('reminderminutestart', minuteStart);
+    await prefs.setInt('reminderjourstop', hourStop);
+    await prefs.setInt('reminderminutestop', minuteStop);
   }
 }

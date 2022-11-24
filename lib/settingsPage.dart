@@ -28,12 +28,6 @@ class SettingsPage extends StatelessWidget {
     Provider.of<Settings>(context, listen: false).updateMaxSpoonNb(value);
   }
 
-  void _updateNotifier(BuildContext context, bool enabled, int period) {
-    Settings provider = Provider.of<Settings>(context, listen: false);
-    provider.enableReminder = enabled;
-    provider.reminderPeriod = period;
-  }
-
   // return a list of DropdownMenuItem from a list of integers
   List<DropdownMenuItem> _listDropdownMenuItemFromList(List<int> list) {
     List<DropdownMenuItem> itemList = list.map<DropdownMenuItem<int>>((int value) {
@@ -58,21 +52,18 @@ class SettingsPage extends StatelessWidget {
 
   buildAppNotifierSelector(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: false);
-    bool enabled = provider.enableReminder;
-    int period = provider.reminderPeriod;
     return Row(children: [
       const Text('Enable reminder'),
       Switch(
-        value: enabled,
-        onChanged: (value) => {_updateNotifier(context, value, period)},
+        value: provider.enableReminder,
+        onChanged: (value) =>
+            {provider.updateReminder(value, provider.reminderPeriod, provider.reminderStart, provider.reminderStop)},
       )
     ]);
   }
 
   buildAppNotifierParameters(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: false);
-    bool enabled = provider.enableReminder;
-    int period = provider.reminderPeriod;
     TimeOfDay notifierStart = provider.reminderStart;
     TimeOfDay notifierStop = provider.reminderStop;
     final localizations = MaterialLocalizations.of(context);
@@ -82,19 +73,38 @@ class SettingsPage extends StatelessWidget {
     List<int> list = [1, 2, 3, 4];
     return Column(
       children: [
-        Row(
-          children: [
-            const Text('Remind me every '),
-            DropdownButton(
-                items: _listDropdownMenuItemFromList(list),
-                value: period,
-                onChanged: (value) => {_updateNotifier(context, enabled, value)}),
-            const Text(' hour(s) from '),
-            Text(formattedStart),
-            const Text(' to '),
-            Text(formattedStop)
-          ],
-        )
+        Row(children: [
+          const Text('Remind me every '),
+          DropdownButton(
+              items: _listDropdownMenuItemFromList(list),
+              value: provider.reminderPeriod,
+              onChanged: (value) {
+                provider.updateReminder(provider.enableReminder, value, provider.reminderStart, provider.reminderStop);
+              }),
+          const Text(' hour(s)'),
+        ]),
+        Row(children: [
+          const Text('from '),
+          TextButton(
+            child: Text(formattedStart),
+            onPressed: () async {
+              TimeOfDay? startHour = await showTimePicker(context: context, initialTime: provider.reminderStart);
+              notifierStart = startHour ?? provider.reminderStart;
+              provider.updateReminder(
+                  provider.enableReminder, provider.reminderPeriod, provider.reminderStart, provider.reminderStop);
+            },
+          ),
+          const Text(' to '),
+          TextButton(
+            child: Text(formattedStop),
+            onPressed: () async {
+              TimeOfDay? stopHour = await showTimePicker(context: context, initialTime: provider.reminderStop);
+              notifierStop = stopHour ?? provider.reminderStop;
+              provider.updateReminder(
+                  provider.enableReminder, provider.reminderPeriod, provider.reminderStart, provider.reminderStop);
+            },
+          )
+        ])
       ],
     );
   }
