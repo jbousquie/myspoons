@@ -15,7 +15,8 @@ class SpoonTracker extends ChangeNotifier {
   String _comment = '';
   late String _dateString = stringDateNow();
   final String _path = '/storage/emulated/0/Download';
-  final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;Comment\n';
+  final String _columns =
+      'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
   final String _filename = 'myspoons.csv';
   late Settings settings;
   SpoonTracker() {
@@ -80,14 +81,15 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   Future<File> _writeData(String dateString, int weekday, int energyRate,
-      int spoonNb, String comment) async {
+      int spoonNb, int maxSpoonNb, String comment) async {
     final file = await _localFile;
     final bool hasFilePersmission = await requestFilePermission();
     if (hasFilePersmission) {
       if (!await file.exists()) {
         file.writeAsStringSync(_columns);
       }
-      final row = '$dateString;$weekday;$energyRate;$spoonNb;$comment\n';
+      final row =
+          '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$comment\n';
       file.writeAsString(row, mode: FileMode.append);
     }
     return file;
@@ -111,7 +113,8 @@ class SpoonTracker extends ChangeNotifier {
     await prefs.setInt('energyrate', _energyRate);
     await prefs.setInt('spoonNb', _spoonNb);
     await prefs.setString('comment', _comment);
-    await _writeData(_dateString, weekday, _energyRate, _spoonNb, _comment);
+    await _writeData(_dateString, weekday, _energyRate, _spoonNb,
+        settings.maxSpoonNb, _comment);
   }
 
   Future requestFilePermission() async {
@@ -163,17 +166,10 @@ class Settings extends ChangeNotifier {
     minuteStop = prefs.getInt('reminderminutestop') ?? minuteStop;
     reminderStart = TimeOfDay(hour: hourStart, minute: minuteStart);
     reminderStop = TimeOfDay(hour: hourStop, minute: minuteStop);
-    notifyListeners();
   }
 
   void updateMaxSpoonNb(int value) {
-    String oldComment = spoonTracker.comment;
-    spoonTracker._comment =
-        'Change max spoon number from $maxSpoonNb to $value';
-    spoonTracker.logData();
-    spoonTracker._comment = oldComment;
     maxSpoonNb = value;
-    storeSettings();
     notifyListeners();
   }
 
@@ -184,7 +180,6 @@ class Settings extends ChangeNotifier {
     reminderPeriod = period;
     reminderStart = notifierStart;
     reminderStop = notifierStop;
-    storeSettings();
     notifyListeners();
   }
 
