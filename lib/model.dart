@@ -79,7 +79,8 @@ class SpoonTracker extends ChangeNotifier {
     return f;
   }
 
-  Future<File> _writeData(String dateString, int weekday, int energyRate, int spoonNb, String comment) async {
+  Future<File> _writeData(String dateString, int weekday, int energyRate,
+      int spoonNb, String comment) async {
     final file = await _localFile;
     final bool hasFilePersmission = await requestFilePermission();
     if (hasFilePersmission) {
@@ -167,7 +168,8 @@ class Settings extends ChangeNotifier {
 
   void updateMaxSpoonNb(int value) {
     String oldComment = spoonTracker.comment;
-    spoonTracker._comment = 'Change max spoon number from $maxSpoonNb to $value';
+    spoonTracker._comment =
+        'Change max spoon number from $maxSpoonNb to $value';
     spoonTracker.logData();
     spoonTracker._comment = oldComment;
     maxSpoonNb = value;
@@ -175,7 +177,8 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateReminder(bool enabled, int period, TimeOfDay notifierStart, TimeOfDay notifierStop) {
+  void updateReminder(bool enabled, int period, TimeOfDay notifierStart,
+      TimeOfDay notifierStop) {
     localNotificationService.plugin.cancelAll();
     enableReminder = enabled;
     reminderPeriod = period;
