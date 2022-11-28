@@ -68,15 +68,26 @@ class LocalNotificationService {
     final DateTime now = DateTime.now();
     final DateTime start =
         DateTime(now.year, now.month, now.day, from.hour, from.minute);
-    final DateTime stop = start.add(const Duration(days: 7));
+    DateTime currentDayStop =
+        DateTime(now.year, now.month, now.day, to.hour, to.minute);
+    final DateTime stop = currentDayStop.add(const Duration(days: 7));
     final periodDuration = Duration(hours: period);
     final List<DateTime> schedules = [];
-    DateTime current = start;
-    while (current.isBefore(stop)) {
-      if (current.isAfter(start)) {
+    const Duration oneDay = Duration(days: 1);
+    DateTime currentDayStart = start;
+
+    DateTime current = currentDayStart;
+    while (!current.isAfter(stop)) {
+      if (!current.isBefore(now) &&
+          !current.isBefore(currentDayStart) &&
+          !current.isAfter(currentDayStop)) {
         schedules.add(current);
       }
       current = current.add(periodDuration);
+      if (current.isAfter(currentDayStop)) {
+        currentDayStart = currentDayStart.add(oneDay);
+        currentDayStop = currentDayStop.add(oneDay);
+      }
     }
     int id = 0;
     for (var schedule in schedules) {
