@@ -183,6 +183,7 @@ class Settings extends ChangeNotifier {
 
   void updateMaxSpoonNb(int value) {
     maxSpoonNb = value;
+    storeSettings();
     notifyListeners();
   }
 
@@ -193,12 +194,16 @@ class Settings extends ChangeNotifier {
     reminderPeriod = period;
     reminderStart = notifierStart;
     reminderStop = notifierStop;
-    lastNotificationDate = await localNotificationService.scheduleNotifications(
-        notificationTitle,
-        notificationBody,
-        period,
-        notifierStart,
-        notifierStop);
+    if (enableReminder) {
+      lastNotificationDate =
+          await localNotificationService.scheduleNotifications(
+              notificationTitle,
+              notificationBody,
+              period,
+              notifierStart,
+              notifierStop);
+    }
+    storeSettings();
     notifyListeners();
   }
 

@@ -11,16 +11,9 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        child: Scaffold(
-            appBar: AppBar(title: Text(title)),
-            body: buildSettingsContent(context)),
-        //On leaving the Settings page
-        onWillPop: () async {
-          Provider.of<Settings>(context, listen: false).storeSettings();
-          Navigator.of(context).pop();
-          return true;
-        });
+    return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: buildSettingsContent(context));
   }
 
   void _updateMaxSpoonNb(BuildContext context, int value) {
@@ -37,7 +30,7 @@ class SettingsPage extends StatelessWidget {
   }
 
   buildMaxSpoonNbSelector(BuildContext context) {
-    List<int> list = [8, 10, 12, 14, 16];
+    List<int> list = [8, 10, 12, 14, 16, 18, 20];
     int selectedValue = Provider.of<Settings>(context, listen: true).maxSpoonNb;
     return Row(children: [
       const Text('Maximum spoon number : '),
@@ -65,21 +58,26 @@ class SettingsPage extends StatelessWidget {
     ]);
   }
 
-  buildAppNotifierParameters(BuildContext context) {
+  Widget buildAppNotifierParameters(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: true);
     bool enabled = provider.enableReminder;
+    if (!enabled) {
+      return const SizedBox(width: 0, height: 0);
+    }
     int period = provider.reminderPeriod;
     TimeOfDay notifierStart = provider.reminderStart;
     TimeOfDay notifierStop = provider.reminderStop;
     final localizations = MaterialLocalizations.of(context);
-    final formattedStart = localizations.formatTimeOfDay(notifierStart);
-    final formattedStop = localizations.formatTimeOfDay(notifierStop);
+    final formattedStart = localizations.formatTimeOfDay(notifierStart,
+        alwaysUse24HourFormat: true);
+    final formattedStop = localizations.formatTimeOfDay(notifierStop,
+        alwaysUse24HourFormat: true);
 
-    List<int> list = [1, 2, 3, 4];
+    List<int> list = [1, 2, 3, 4, 5, 6, 7, 8];
     return Column(
       children: [
         Row(children: [
-          const Text('Remind me daily for a week every '),
+          const Text('Remind me for a week every '),
           DropdownButton(
               items: _listDropdownMenuItemFromList(list),
               value: period,
@@ -90,7 +88,7 @@ class SettingsPage extends StatelessWidget {
           const Text(' hour(s)'),
         ]),
         Row(children: [
-          const Text('from '),
+          const Text('from'),
           TextButton(
             child: Text(formattedStart),
             onPressed: () async {
@@ -101,7 +99,7 @@ class SettingsPage extends StatelessWidget {
                   enabled, period, notifierStart, notifierStop);
             },
           ),
-          const Text(' to '),
+          const Text(' to'),
           TextButton(
             child: Text(formattedStop),
             onPressed: () async {
@@ -111,7 +109,8 @@ class SettingsPage extends StatelessWidget {
               provider.updateReminder(
                   enabled, period, notifierStart, notifierStop);
             },
-          )
+          ),
+          const Text('daily')
         ])
       ],
     );
@@ -123,6 +122,8 @@ class SettingsPage extends StatelessWidget {
       buildAppNotifierSelector(context),
       buildAppNotifierParameters(context)
     ];
-    return Column(children: childrenList);
+    return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(children: childrenList));
   }
 }
