@@ -140,12 +140,15 @@ class Settings extends ChangeNotifier {
   int reminderPeriod = 1;
   static int defaultHourStart = 9;
   static int defaultHourStop = 20;
+  static String notificationTitle = "My Daily Spoon";
+  static String notificationBody = 'Please log your spoon in';
   int hourStart = defaultHourStart;
   int minuteStart = 0;
   int hourStop = defaultHourStop;
   int minuteStop = 0;
   TimeOfDay reminderStart = TimeOfDay(hour: defaultHourStart, minute: 0);
   TimeOfDay reminderStop = TimeOfDay(hour: defaultHourStop, minute: 0);
+  late DateTime lastNotificationDate;
   late SpoonTracker spoonTracker;
   late final LocalNotificationService localNotificationService;
   Settings() {
@@ -166,6 +169,16 @@ class Settings extends ChangeNotifier {
     minuteStop = prefs.getInt('reminderminutestop') ?? minuteStop;
     reminderStart = TimeOfDay(hour: hourStart, minute: minuteStart);
     reminderStop = TimeOfDay(hour: hourStop, minute: minuteStop);
+    DateTime now = DateTime.now();
+    final String dtst = prefs.getString('lastnotificationdate') ?? '';
+    if (dtst == '') {
+      lastNotificationDate = now.add(const Duration(days: 7));
+    } else {
+      lastNotificationDate = DateTime.parse(dtst);
+    }
+    if (now.isAfter(lastNotificationDate)) {
+      enableReminder = false;
+    }
   }
 
   void updateMaxSpoonNb(int value) {
@@ -173,13 +186,19 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateReminder(bool enabled, int period, TimeOfDay notifierStart,
-      TimeOfDay notifierStop) {
+  Future<void> updateReminder(bool enabled, int period, TimeOfDay notifierStart,
+      TimeOfDay notifierStop) async {
     localNotificationService.plugin.cancelAll();
     enableReminder = enabled;
     reminderPeriod = period;
     reminderStart = notifierStart;
     reminderStop = notifierStop;
+    lastNotificationDate = await localNotificationService.scheduleNotifications(
+        notificationTitle,
+        notificationBody,
+        period,
+        notifierStart,
+        notifierStop);
     notifyListeners();
   }
 
@@ -196,5 +215,7 @@ class Settings extends ChangeNotifier {
     await prefs.setInt('reminderminutestart', minuteStart);
     await prefs.setInt('reminderjourstop', hourStop);
     await prefs.setInt('reminderminutestop', minuteStop);
+    String dtst = lastNotificationDate.toString();
+    await prefs.setString('lastnotificationdate', dtst);
   }
 }

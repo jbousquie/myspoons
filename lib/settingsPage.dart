@@ -17,10 +17,6 @@ class SettingsPage extends StatelessWidget {
             body: buildSettingsContent(context)),
         //On leaving the Settings page
         onWillPop: () async {
-          Provider.of<Settings>(context, listen: false)
-              .localNotificationService
-              .showScheduledNotification(
-                  id: 0, title: 'test sche', body: "Coucou", seconds: 4);
           Provider.of<Settings>(context, listen: false).storeSettings();
           Navigator.of(context).pop();
           return true;
@@ -44,7 +40,7 @@ class SettingsPage extends StatelessWidget {
     List<int> list = [8, 10, 12, 14, 16];
     int selectedValue = Provider.of<Settings>(context, listen: true).maxSpoonNb;
     return Row(children: [
-      Text('Maximum spoon number :  < $selectedValue > '),
+      const Text('Maximum spoon number : '),
       DropdownButton(
           value: selectedValue,
           items: _listDropdownMenuItemFromList(list),
@@ -83,7 +79,7 @@ class SettingsPage extends StatelessWidget {
     return Column(
       children: [
         Row(children: [
-          const Text('Remind me every '),
+          const Text('Remind me daily for a week every '),
           DropdownButton(
               items: _listDropdownMenuItemFromList(list),
               value: period,
