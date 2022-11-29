@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
     SpoonTracker spoonTracker = SpoonTracker();
     Settings settings = Settings();
     spoonTracker.linkSettings(settings);
+    spoonTracker.checkLastSession();
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: spoonTracker),

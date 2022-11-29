@@ -16,10 +16,6 @@ class SettingsPage extends StatelessWidget {
         body: buildSettingsContent(context));
   }
 
-  void _updateMaxSpoonNb(BuildContext context, int value) {
-    Provider.of<Settings>(context, listen: false).updateMaxSpoonNb(value);
-  }
-
   // return a list of DropdownMenuItem from a list of integers
   List<DropdownMenuItem> _listDropdownMenuItemFromList(List<int> list) {
     List<DropdownMenuItem> itemList =
@@ -31,30 +27,45 @@ class SettingsPage extends StatelessWidget {
 
   buildMaxSpoonNbSelector(BuildContext context) {
     List<int> list = [8, 10, 12, 14, 16, 18, 20];
-    int selectedValue = Provider.of<Settings>(context, listen: true).maxSpoonNb;
-    return Row(children: [
-      const Text('Maximum spoon number : '),
-      DropdownButton(
-          value: selectedValue,
-          items: _listDropdownMenuItemFromList(list),
-          onChanged: (value) {
-            _updateMaxSpoonNb(context, value);
-            selectedValue = value;
-          })
+    Settings provider = Provider.of<Settings>(context, listen: true);
+    int selectedValue = provider.maxSpoonNb;
+    bool enableReset = provider.enableMaxSpoonReset;
+    TimeOfDay resetTime = provider.resetMaxSpoonTime;
+
+    return Column(children: [
+      Row(children: [
+        const Text('Maximum spoon number : '),
+        DropdownButton(
+            value: selectedValue,
+            items: _listDropdownMenuItemFromList(list),
+            onChanged: (value) {
+              provider.updateMaxSpoonNb(value, enableReset, resetTime);
+              selectedValue = value;
+            })
+      ]),
+      Row(children: [
+        Switch(
+            value: enableReset,
+            onChanged: (value) {
+              provider.updateMaxSpoonNb(selectedValue, value, resetTime);
+              enableReset = value;
+            }),
+        const Text('Daily reset the initial spoon\nnumber to its maximum value')
+      ])
     ]);
   }
 
   buildAppNotifierSelector(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: true);
     return Row(children: [
-      const Text('Enable reminder'),
       Switch(
         value: provider.enableReminder,
         onChanged: (value) => {
           provider.updateReminder(value, provider.reminderPeriod,
               provider.reminderStart, provider.reminderStop)
         },
-      )
+      ),
+      const Text('Enable reminder'),
     ]);
   }
 
@@ -88,7 +99,7 @@ class SettingsPage extends StatelessWidget {
           const Text(' hour(s)'),
         ]),
         Row(children: [
-          const Text('from'),
+          const Text('        from'),
           TextButton(
             child: Text(formattedStart),
             onPressed: () async {

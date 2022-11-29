@@ -10,7 +10,8 @@ import 'dart:io';
 import 'notification_service.dart';
 
 class SpoonTracker extends ChangeNotifier {
-  int _energyRate = 100;
+  static int maxEnergyRate = 100;
+  int _energyRate = maxEnergyRate;
   late int _spoonNb = _computeSpoonNb(_energyRate);
   String _comment = '';
   late String _dateString = stringDateNow();
@@ -19,6 +20,9 @@ class SpoonTracker extends ChangeNotifier {
       'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
   final String _filename = 'myspoons.csv';
   late Settings settings;
+  DateTime now = DateTime.now();
+  late int dayLastSession = now.day;
+  late int monthLastSession = now.month;
   SpoonTracker() {
     setbackInitials();
   }
@@ -55,7 +59,7 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   int _computeSpoonNb(value) {
-    return (value * settings.maxSpoonNb / 100).round();
+    return (value * settings.maxSpoonNb / maxEnergyRate).round();
   }
 
   String stringDateNow() {
@@ -99,9 +103,12 @@ class SpoonTracker extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
     _dateString = prefs.getString('date') ?? stringDateNow();
-    _energyRate = prefs.getInt('energyrate') ?? 100;
+    _energyRate = prefs.getInt('energyrate') ?? maxEnergyRate;
     _comment = prefs.getString('comment') ?? '';
     _spoonNb = prefs.getInt('spoonNb') ?? settings.maxSpoonNb;
+
+    monthLastSession = prefs.getInt('monthlastsession') ?? monthLastSession;
+    dayLastSession = prefs.getInt('daylastsession') ?? dayLastSession;
     notifyListeners();
   }
 
@@ -115,6 +122,12 @@ class SpoonTracker extends ChangeNotifier {
     await prefs.setString('comment', _comment);
     await _writeData(_dateString, weekday, _energyRate, _spoonNb,
         settings.maxSpoonNb, _comment);
+
+    DateTime now = DateTime.now();
+    monthLastSession = now.month;
+    dayLastSession = now.day;
+    await prefs.setInt('monthlastsession', monthLastSession);
+    await prefs.setInt('daylastsession', dayLastSession);
   }
 
   Future requestFilePermission() async {
@@ -132,20 +145,33 @@ class SpoonTracker extends ChangeNotifier {
     }
     return false;
   }
+
+  void checkLastSession() {
+    DateTime now = DateTime.now();
+    if (now.month != monthLastSession || now.day != dayLastSession) {
+      updateEnergyRate(maxEnergyRate);
+    }
+  }
 }
 
 class Settings extends ChangeNotifier {
   int maxSpoonNb = 10;
+  bool enableMaxSpoonReset = true;
+  bool alreadyResetToday = false;
   bool enableReminder = false;
   int reminderPeriod = 1;
+  static int defaultResetMaxSpoonHour = 6;
   static int defaultHourStart = 9;
   static int defaultHourStop = 20;
   static String notificationTitle = "My Daily Spoon";
-  static String notificationBody = 'Please log your spoon in';
+  static String notificationBody = 'Please check in your spoon';
   int hourStart = defaultHourStart;
   int minuteStart = 0;
   int hourStop = defaultHourStop;
   int minuteStop = 0;
+
+  TimeOfDay resetMaxSpoonTime =
+      TimeOfDay(hour: defaultResetMaxSpoonHour, minute: 0);
   TimeOfDay reminderStart = TimeOfDay(hour: defaultHourStart, minute: 0);
   TimeOfDay reminderStop = TimeOfDay(hour: defaultHourStop, minute: 0);
   late DateTime lastNotificationDate;
@@ -167,6 +193,7 @@ class Settings extends ChangeNotifier {
     minuteStart = prefs.getInt('reminderminutestart') ?? minuteStart;
     hourStop = prefs.getInt('reminderhourstop') ?? hourStop;
     minuteStop = prefs.getInt('reminderminutestop') ?? minuteStop;
+
     reminderStart = TimeOfDay(hour: hourStart, minute: minuteStart);
     reminderStop = TimeOfDay(hour: hourStop, minute: minuteStop);
     DateTime now = DateTime.now();
@@ -181,7 +208,9 @@ class Settings extends ChangeNotifier {
     }
   }
 
-  void updateMaxSpoonNb(int value) {
+  void updateMaxSpoonNb(int value, bool reset, TimeOfDay resetTime) {
+    resetMaxSpoonTime = resetTime;
+    enableMaxSpoonReset = reset;
     maxSpoonNb = value;
     storeSettings();
     notifyListeners();
