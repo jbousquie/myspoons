@@ -25,8 +25,12 @@ class ChartsPageState extends State<ChartsPage> {
           initialUrl: 'about: blank',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
+            webViewController.clearCache();
             _controller = webViewController;
             _loadHtmlFromAssets();
+          },
+          onPageFinished: (String _) {
+            _runJS("TOTOTOTO");
           },
         ));
   }
@@ -36,5 +40,9 @@ class ChartsPageState extends State<ChartsPage> {
     _controller.loadUrl(Uri.dataFromString(fileText,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
+  }
+
+  _runJS(String data) {
+    _controller.runJavascript('fromFlutter("$data");');
   }
 }

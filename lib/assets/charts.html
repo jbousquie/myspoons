@@ -5,9 +5,12 @@
         <meta charset="utf-8">
     </head>
     <body>
-        Coucou
-        <script>
-            alert('toto');
-        </script>
+        <div id="content"></div>
+
     </body>
+    <script>
+        function fromFlutter(data) {
+            document.getElementById("content").innerHTML = "coucou";
+        }
+    </script>
 </html>
