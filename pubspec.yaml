@@ -20,6 +20,7 @@ dependencies:
   permission_handler: ^10.2.0
   flutter_local_notifications: ^12.0.4
   timezone: ^0.9.0
+  webview_flutter: ^3.0.4
 
 
   cupertino_icons: ^1.0.2
@@ -41,6 +42,7 @@ flutter:
   assets:
     - lib/assets/icons/kitchen-spoon-icon.png
     - lib/assets/icons/spoon.png
+    - lib/assets/charts.html
 
   uses-material-design: true
 

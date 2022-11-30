@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'model.dart';
 import 'settingsPage.dart';
+import 'chartsPage.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 // https://www.flaticon.com/free-icon/spoon_96164#
@@ -60,6 +61,13 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(title), actions: [
+        IconButton(
+            onPressed: () => {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return const ChartsPage(title: 'Charts');
+                  }))
+                },
+            icon: const Icon(Icons.show_chart)),
         IconButton(
             onPressed: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -147,7 +155,6 @@ class MyHomePage extends StatelessWidget {
     }
     final textfield = TextField(
       controller: commentController,
-      autofocus: true,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
           border: const OutlineInputBorder(),
