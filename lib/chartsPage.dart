@@ -3,6 +3,8 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:myspoons/model.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ChartsPage extends StatefulWidget {
@@ -30,19 +32,26 @@ class ChartsPageState extends State<ChartsPage> {
             _loadHtmlFromAssets();
           },
           onPageFinished: (String _) {
-            _runJS("TOTOTOTO");
+            Future<String> data = getData();
+            _runJS(data);
           },
         ));
   }
 
-  _loadHtmlFromAssets() async {
+  void _loadHtmlFromAssets() async {
     String fileText = await rootBundle.loadString('lib/assets/charts.html');
     _controller.loadUrl(Uri.dataFromString(fileText,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
         .toString());
   }
 
-  _runJS(String data) {
+  Future<String> getData() async {
+    SpoonTracker provider = Provider.of<SpoonTracker>(context, listen: false);
+    String data = await provider.getDataFromFile();
+    return data;
+  }
+
+  _runJS(Future<String> data) {
     _controller.runJavascript('fromFlutter("$data");');
   }
 }

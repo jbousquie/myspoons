@@ -16,9 +16,9 @@ class SpoonTracker extends ChangeNotifier {
   String _comment = '';
   late String _dateString = stringDateNow();
   final String _path = '/storage/emulated/0/Download';
+  final String _filename = 'myspoons.csv';
   final String _columns =
       'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
-  final String _filename = 'myspoons.csv';
   late Settings settings;
   DateTime now = DateTime.now();
   late int dayLastSession = now.day;
@@ -52,6 +52,10 @@ class SpoonTracker extends ChangeNotifier {
     notifyListeners();
   }
 
+  String get filePath {
+    return '$_path/$_filename';
+  }
+
   void updateEnergyRate(int value) {
     _energyRate = value;
     _spoonNb = _computeSpoonNb(value);
@@ -77,16 +81,14 @@ class SpoonTracker extends ChangeNotifier {
     settings.spoonTracker = this;
   }
 
-  Future<File> get _localFile async {
-    //final path = await _localPath;
-    final String filePath = '$_path/$_filename';
+  Future<File> get localFile async {
     final File f = File(filePath);
     return f;
   }
 
   Future<File> _writeData(String dateString, int weekday, int energyRate,
       int spoonNb, int maxSpoonNb, String comment) async {
-    final file = await _localFile;
+    final file = await localFile;
     final bool hasFilePersmission = await requestFilePermission();
     if (hasFilePersmission) {
       if (!await file.exists()) {
@@ -97,6 +99,15 @@ class SpoonTracker extends ChangeNotifier {
       file.writeAsString(row, mode: FileMode.append);
     }
     return file;
+  }
+
+  Future<String> getDataFromFile() async {
+    final file = await localFile;
+    String data = 'No data avalaible';
+    if (await file.exists()) {
+      data = file.readAsStringSync();
+    }
+    return data;
   }
 
   Future<void> setbackInitials() async {
