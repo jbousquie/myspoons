@@ -40,8 +40,9 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatelessWidget {
   final String title;
-  final buttonIcon =
-      const ImageIcon(AssetImage('lib/assets/icons/kitchen-spoon-icon.png'));
+  static String iconButtonFile = 'lib/assets/icons/kitchen-spoon-icon.png';
+  static String imageIconFile = 'lib/assets/icons/spoon.png';
+  final buttonIcon = ImageIcon(AssetImage(iconButtonFile));
   final commentController = TextEditingController();
 
   MyHomePage({super.key, required this.title});
@@ -82,17 +83,14 @@ class MyHomePage extends StatelessWidget {
           onPressed: () {
             _logData(context);
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Spooned !"),
-                duration: Duration(seconds: 2),
-                backgroundColor: Colors.blueAccent));
+                content: Text("Spooned !"), duration: Duration(seconds: 2), backgroundColor: Colors.blueAccent));
           }),
       //resizeToAvoidBottomInset: false,
     );
   }
 
   buildContent(BuildContext context) {
-    int energyRate =
-        Provider.of<SpoonTracker>(context, listen: true).energyRate;
+    int energyRate = Provider.of<SpoonTracker>(context, listen: true).energyRate;
     int spoonNb = Provider.of<SpoonTracker>(context, listen: true).spoonNb;
 
     return Column(
@@ -110,12 +108,9 @@ class MyHomePage extends StatelessWidget {
 
   ImageIcon _spoonIcon(int colorIndex, double ratio) {
     return ImageIcon(
-      const AssetImage('lib/assets/icons/spoon.png'),
-      color: Color.fromARGB(
-          95 + colorIndex * (20 * ratio).round(),
-          40 + colorIndex * (4 * ratio).round(),
-          28 + colorIndex * (27 * ratio).round(),
-          50 + colorIndex * (4 * ratio).round()),
+      AssetImage(imageIconFile),
+      color: Color.fromARGB(95 + colorIndex * (20 * ratio).round(), 40 + colorIndex * (4 * ratio).round(),
+          28 + colorIndex * (27 * ratio).round(), 50 + colorIndex * (4 * ratio).round()),
     );
   }
 
@@ -143,8 +138,7 @@ class MyHomePage extends StatelessWidget {
 
   buildInputField(BuildContext context) {
     String comment = Provider.of<SpoonTracker>(context, listen: true).comment;
-    String dateString =
-        Provider.of<SpoonTracker>(context, listen: true).dateString;
+    String dateString = Provider.of<SpoonTracker>(context, listen: true).dateString;
     final String today = DateTime.now().toString().substring(0, 10);
     final String dayFromDateString = dateString.substring(0, 10);
     String label;
@@ -174,8 +168,7 @@ class MyHomePage extends StatelessWidget {
               label: '$energyRate',
               value: energyRate.toDouble(),
               max: 100,
-              onChanged: (double value) =>
-                  {_updateEnergyRate(context, value.toInt())},
+              onChanged: (double value) => {_updateEnergyRate(context, value.toInt())},
             )));
 
     Widget sliderTheme = SliderTheme(

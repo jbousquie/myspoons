@@ -43,6 +43,8 @@ flutter:
     - lib/assets/icons/kitchen-spoon-icon.png
     - lib/assets/icons/spoon.png
     - lib/assets/charts.html
+    - lib/assets/chart.min.js
+    - lib/assets/mycharts.js
 
   uses-material-design: true
 

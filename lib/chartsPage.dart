@@ -7,6 +7,8 @@ import 'package:myspoons/model.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+// https://stackoverflow.com/questions/44816042/flutter-read-text-file-from-assets/54133627#54133627
+
 class ChartsPage extends StatefulWidget {
   const ChartsPage({Key? key, required this.title}) : super(key: key);
   final String title;
@@ -18,6 +20,12 @@ class ChartsPage extends StatefulWidget {
 
 class ChartsPageState extends State<ChartsPage> {
   late WebViewController _controller;
+  static String htmlFile = 'lib/assets/charts.html';
+  static String jsLibFile = 'lib/assets/chart.min.js';
+  static String jsCodeFile = 'lib/assets/mycharts.js';
+  String htmlCode = '';
+  String jsLib = '';
+  String jsCode = '';
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +47,11 @@ class ChartsPageState extends State<ChartsPage> {
   }
 
   void _loadHtmlFromAssets() async {
-    String fileText = await rootBundle.loadString('lib/assets/charts.html');
+    htmlCode = await rootBundle.loadString(htmlFile);
+    jsLib = await rootBundle.loadString(jsLibFile);
+    jsCode = await rootBundle.loadString(jsCodeFile);
     _controller
-        .loadUrl(Uri.dataFromString(fileText, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
+        .loadUrl(Uri.dataFromString(htmlCode, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 
   Future<String> getData() async {
@@ -51,8 +61,12 @@ class ChartsPageState extends State<ChartsPage> {
   }
 
   runJS(String data) {
+    // first run the JS File
+    _controller.runJavascript(jsLib);
+    _controller.runJavascript(jsCode);
+
     final String escaped = data.replaceAll('\n', '\\n');
-    final String jsString = 'fromFlutter(\'$escaped\')';
+    final String jsString = 'init(\'$escaped\');';
     _controller.runJavascript(jsString);
   }
 }
