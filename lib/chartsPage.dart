@@ -51,7 +51,7 @@ class ChartsPageState extends State<ChartsPage> {
   }
 
   runJS(String data) {
-    final String escaped = data.replaceAll('\n', '');
+    final String escaped = data.replaceAll('\n', '\\n');
     final String jsString = 'fromFlutter(\'$escaped\')';
     _controller.runJavascript(jsString);
   }
