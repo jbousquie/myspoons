@@ -24,25 +24,24 @@ class ChartsPageState extends State<ChartsPage> {
     return Scaffold(
         appBar: AppBar(title: const Text('Charts')),
         body: WebView(
-          initialUrl: 'about: blank',
+          initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: (WebViewController webViewController) {
             webViewController.clearCache();
             _controller = webViewController;
             _loadHtmlFromAssets();
           },
-          onPageFinished: (String _) {
-            Future<String> data = getData();
-            _runJS(data);
+          onPageFinished: (String _) async {
+            String data = await getData();
+            runJS(data);
           },
         ));
   }
 
   void _loadHtmlFromAssets() async {
     String fileText = await rootBundle.loadString('lib/assets/charts.html');
-    _controller.loadUrl(Uri.dataFromString(fileText,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller
+        .loadUrl(Uri.dataFromString(fileText, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 
   Future<String> getData() async {
@@ -51,7 +50,9 @@ class ChartsPageState extends State<ChartsPage> {
     return data;
   }
 
-  _runJS(Future<String> data) {
-    _controller.runJavascript('fromFlutter("$data");');
+  runJS(String data) {
+    final String escaped = data.replaceAll('\n', '');
+    final String jsString = 'fromFlutter(\'$escaped\')';
+    _controller.runJavascript(jsString);
   }
 }
