@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:math';
 
@@ -9,9 +10,12 @@ import 'chartsPage.dart';
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 // https://www.flaticon.com/free-icon/spoon_96164#
 
+// https://greymag.medium.com/flutter-orientation-lock-portrait-only-c98910ebd769
+
 void main() {
-  const myApp = MyApp();
-  runApp(myApp);
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+      .then((value) => {runApp(const MyApp())});
 }
 
 class MyApp extends StatelessWidget {
