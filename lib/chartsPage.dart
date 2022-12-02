@@ -21,7 +21,7 @@ class ChartsPage extends StatefulWidget {
 class ChartsPageState extends State<ChartsPage> {
   late WebViewController _controller;
   static String htmlFile = 'lib/assets/charts.html';
-  static String jsLibFile = 'lib/assets/chart.min.js';
+  static String jsLibFile = 'lib/assets/chart.umd.min.js';
   static String jsCodeFile = 'lib/assets/mycharts.js';
   String htmlCode = '';
   String jsLib = '';
