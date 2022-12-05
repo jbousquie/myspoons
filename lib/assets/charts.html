@@ -3,7 +3,7 @@
     <head>
         <title>Charts</title>
         <meta charset="utf-8">
-        <!--
+        <!--   
         <script src="chart.umd.min.js"></script>
         <script src="mycharts.js"></script>
         -->
@@ -16,20 +16,21 @@
     <script>
         /*
         const dataString = "Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n\
-2022-12-02 10:23:23;5;45;5;10;toujours\n\
-2022-12-02 10:23:34;5;26;3;10;tutu\n\
-2022-12-02 10:23:39;5;73;7;10;popo\n\
+2022-12-02 10:23:23;5;45;5;10;töujours\n\
+2022-12-02 10:23:34;5;26;3;10;Tutu\n\
+2022-12-02 10:23:39;5;73;7;10;péééépo\n\
 2022-12-02 10:23:44;5;58;6;10;ddre\n\
 2022-12-02 10:28:39;5;87;9;10;fffg\n\
 2022-12-02 10:28:45;5;40;4;10;azzazj\n\
-2022-12-02 10:28:48;5;46;5;10;mmmm;\n";
-*/
+2022-12-02 10:28:48;5;46;5;10;mmmm\n";
 
-        var init = function(dataString) {
+        const chartType = 1;
+        */
+        var init = function(chartType, dataString) {
             var ctx = document.getElementById("chartCanvas");
             var myChart = new MyChart(ctx, dataString);
-            myChart.displayBars();
+            myChart.display(chartType);
         }
-        init(dataString);
+        init(chartType, dataString);
     </script>
 </html>

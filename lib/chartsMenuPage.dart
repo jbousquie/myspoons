@@ -13,9 +13,9 @@ class ChartsMenuPage extends StatelessWidget {
         body: buildContent(context));
   }
 
-  destinationPage(BuildContext context) {
+  destinationPage(BuildContext context, int chartType) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return const ChartPage(title: 'Charts');
+      return ChartPage(title: 'Charts', chartType: chartType);
     }));
   }
 
@@ -23,27 +23,27 @@ class ChartsMenuPage extends StatelessWidget {
     List<Widget> menuList = [
       TextButton(
         child: const Text('Chart 1'),
-        onPressed: () => destinationPage(context),
+        onPressed: () => destinationPage(context, 1),
       ),
       TextButton(
         child: const Text('Chart 2'),
-        onPressed: () => destinationPage(context),
+        onPressed: () => destinationPage(context, 2),
       ),
       TextButton(
         child: const Text('Chart 3'),
-        onPressed: () => destinationPage(context),
+        onPressed: () => destinationPage(context, 3),
       ),
       TextButton(
         child: const Text('Chart 4'),
-        onPressed: () => destinationPage(context),
+        onPressed: () => destinationPage(context, 4),
       ),
       TextButton(
         child: const Text('Chart 5'),
-        onPressed: () => destinationPage(context),
+        onPressed: () => destinationPage(context, 5),
       ),
       TextButton(
         child: const Text('Chart 6'),
-        onPressed: () => destinationPage(context),
+        onPressed: () => destinationPage(context, 6),
       ),
     ];
 
