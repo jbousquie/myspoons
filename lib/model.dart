@@ -169,7 +169,7 @@ class SpoonTracker extends ChangeNotifier {
     if (now.month != monthLastSession || now.day != dayLastSession) {
       updateEnergyRate(maxEnergyRate);
       String oldComment = _comment;
-      _comment = 'Automatic maximum value reset';
+      _comment = '[Automatic maximum value reset]';
       logData();
       _comment = oldComment;
     }
