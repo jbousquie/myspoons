@@ -5,7 +5,7 @@ import 'dart:math';
 
 import 'model.dart';
 import 'settingsPage.dart';
-import 'chartsPage.dart';
+import 'chartsMenuPage.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 // https://www.flaticon.com/free-icon/spoon_96164#
@@ -14,7 +14,8 @@ import 'chartsPage.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+  SystemChrome.setPreferredOrientations(
+          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((value) => {runApp(const MyApp())});
 }
 
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
     SpoonTracker spoonTracker = SpoonTracker();
     Settings settings = Settings();
     spoonTracker.linkSettings(settings);
-    spoonTracker.checkLastSession();
+    if (settings.enableMaxSpoonReset) {
+      spoonTracker.checkLastSession();
+    }
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: spoonTracker),
@@ -69,7 +72,7 @@ class MyHomePage extends StatelessWidget {
         IconButton(
             onPressed: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const ChartsPage(title: 'Charts');
+                    return const ChartsMenuPage(title: 'Charts Menu');
                   }))
                 },
             icon: const Icon(Icons.show_chart)),
@@ -87,14 +90,17 @@ class MyHomePage extends StatelessWidget {
           onPressed: () {
             _logData(context);
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Spooned !"), duration: Duration(seconds: 2), backgroundColor: Colors.blueAccent));
+                content: Text("Spooned !"),
+                duration: Duration(seconds: 2),
+                backgroundColor: Colors.blueAccent));
           }),
       //resizeToAvoidBottomInset: false,
     );
   }
 
   buildContent(BuildContext context) {
-    int energyRate = Provider.of<SpoonTracker>(context, listen: true).energyRate;
+    int energyRate =
+        Provider.of<SpoonTracker>(context, listen: true).energyRate;
     int spoonNb = Provider.of<SpoonTracker>(context, listen: true).spoonNb;
 
     return Column(
@@ -113,8 +119,11 @@ class MyHomePage extends StatelessWidget {
   ImageIcon _spoonIcon(int colorIndex, double ratio) {
     return ImageIcon(
       AssetImage(imageIconFile),
-      color: Color.fromARGB(95 + colorIndex * (20 * ratio).round(), 40 + colorIndex * (4 * ratio).round(),
-          28 + colorIndex * (27 * ratio).round(), 50 + colorIndex * (4 * ratio).round()),
+      color: Color.fromARGB(
+          95 + colorIndex * (20 * ratio).round(),
+          40 + colorIndex * (4 * ratio).round(),
+          28 + colorIndex * (27 * ratio).round(),
+          50 + colorIndex * (4 * ratio).round()),
     );
   }
 
@@ -142,7 +151,8 @@ class MyHomePage extends StatelessWidget {
 
   buildInputField(BuildContext context) {
     String comment = Provider.of<SpoonTracker>(context, listen: true).comment;
-    String dateString = Provider.of<SpoonTracker>(context, listen: true).dateString;
+    String dateString =
+        Provider.of<SpoonTracker>(context, listen: true).dateString;
     final String today = DateTime.now().toString().substring(0, 10);
     final String dayFromDateString = dateString.substring(0, 10);
     String label;
@@ -172,7 +182,8 @@ class MyHomePage extends StatelessWidget {
               label: '$energyRate',
               value: energyRate.toDouble(),
               max: 100,
-              onChanged: (double value) => {_updateEnergyRate(context, value.toInt())},
+              onChanged: (double value) =>
+                  {_updateEnergyRate(context, value.toInt())},
             )));
 
     Widget sliderTheme = SliderTheme(

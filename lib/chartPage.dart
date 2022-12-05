@@ -9,16 +9,16 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 // https://stackoverflow.com/questions/44816042/flutter-read-text-file-from-assets/54133627#54133627
 
-class ChartsPage extends StatefulWidget {
-  const ChartsPage({Key? key, required this.title}) : super(key: key);
+class ChartPage extends StatefulWidget {
+  const ChartPage({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
-  ChartsPageState createState() {
-    return ChartsPageState();
+  ChartPageState createState() {
+    return ChartPageState();
   }
 }
 
-class ChartsPageState extends State<ChartsPage> {
+class ChartPageState extends State<ChartPage> {
   late WebViewController _controller;
   static String htmlFile = 'lib/assets/charts.html';
   static String jsLibFile = 'lib/assets/chart.umd.min.js';
@@ -50,8 +50,9 @@ class ChartsPageState extends State<ChartsPage> {
     htmlCode = await rootBundle.loadString(htmlFile);
     jsLib = await rootBundle.loadString(jsLibFile);
     jsCode = await rootBundle.loadString(jsCodeFile);
-    _controller
-        .loadUrl(Uri.dataFromString(htmlCode, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
+    _controller.loadUrl(Uri.dataFromString(htmlCode,
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 
   Future<String> getData() async {
@@ -61,7 +62,7 @@ class ChartsPageState extends State<ChartsPage> {
   }
 
   runJS(String data) {
-    // first run the JS File
+    // first run the JS files
     _controller.runJavascript(jsLib);
     _controller.runJavascript(jsCode);
 
