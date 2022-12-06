@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // ignore: file_names
 import 'model.dart';
+import 'intl.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key, required this.title}) : super(key: key);
@@ -11,12 +12,15 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text(title)), body: buildSettingsContent(context));
+    return Scaffold(
+        appBar: AppBar(title: Text(title)),
+        body: buildSettingsContent(context));
   }
 
   // return a list of DropdownMenuItem from a list of integers
   List<DropdownMenuItem> _listDropdownMenuItemFromList(List<int> list) {
-    List<DropdownMenuItem> itemList = list.map<DropdownMenuItem<int>>((int value) {
+    List<DropdownMenuItem> itemList =
+        list.map<DropdownMenuItem<int>>((int value) {
       return DropdownMenuItem<int>(value: value, child: Text(value.toString()));
     }).toList();
     return itemList;
@@ -24,6 +28,8 @@ class SettingsPage extends StatelessWidget {
 
   buildMaxSpoonNbSelector(BuildContext context) {
     List<int> list = [8, 10, 12, 14, 16, 18, 20];
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     Settings provider = Provider.of<Settings>(context, listen: true);
     int selectedValue = provider.maxSpoonNb;
     bool enableReset = provider.enableMaxSpoonReset;
@@ -31,7 +37,7 @@ class SettingsPage extends StatelessWidget {
 
     return Column(children: [
       Row(children: [
-        const Text('Maximum spoon number : '),
+        Text("${local.txt('set_max_spoon')} : "),
         DropdownButton(
             value: selectedValue,
             items: _listDropdownMenuItemFromList(list),
@@ -47,25 +53,31 @@ class SettingsPage extends StatelessWidget {
               provider.updateMaxSpoonNb(selectedValue, value, resetTime);
               enableReset = value;
             }),
-        const Text('Daily reset the initial spoon\nnumber to its maximum value')
+        Text(local.txt('set_reset_max'))
       ])
     ]);
   }
 
   buildAppNotifierSelector(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: true);
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     return Row(children: [
       Switch(
         value: provider.enableReminder,
-        onChanged: (value) =>
-            {provider.updateReminder(value, provider.reminderPeriod, provider.reminderStart, provider.reminderStop)},
+        onChanged: (value) => {
+          provider.updateReminder(value, provider.reminderPeriod,
+              provider.reminderStart, provider.reminderStop)
+        },
       ),
-      const Text('Enable reminder'),
+      Text(local.txt('set_enable_reminder')),
     ]);
   }
 
   Widget buildAppNotifierParameters(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: true);
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     bool enabled = provider.enableReminder;
     if (!enabled) {
       return const SizedBox(width: 0, height: 0);
@@ -74,42 +86,49 @@ class SettingsPage extends StatelessWidget {
     TimeOfDay notifierStart = provider.reminderStart;
     TimeOfDay notifierStop = provider.reminderStop;
     final localizations = MaterialLocalizations.of(context);
-    final formattedStart = localizations.formatTimeOfDay(notifierStart, alwaysUse24HourFormat: true);
-    final formattedStop = localizations.formatTimeOfDay(notifierStop, alwaysUse24HourFormat: true);
+    final formattedStart = localizations.formatTimeOfDay(notifierStart,
+        alwaysUse24HourFormat: true);
+    final formattedStop = localizations.formatTimeOfDay(notifierStop,
+        alwaysUse24HourFormat: true);
 
     List<int> list = [1, 2, 3, 4, 5, 6, 7, 8];
     return Column(
       children: [
         Row(children: [
-          const Text('Remind me for a week every '),
+          Text("${local.txt('set_remind_every')} "),
           DropdownButton(
               items: _listDropdownMenuItemFromList(list),
               value: period,
               onChanged: (value) {
-                provider.updateReminder(enabled, value, notifierStart, notifierStop);
+                provider.updateReminder(
+                    enabled, value, notifierStart, notifierStop);
               }),
-          const Text(' hour(s)'),
+          Text(" ${local.txt('set_hours')}"),
         ]),
         Row(children: [
-          const Text('        from'),
+          Text("        ${local.txt('set_from')}"),
           TextButton(
             child: Text(formattedStart),
             onPressed: () async {
-              TimeOfDay? startHour = await showTimePicker(context: context, initialTime: notifierStart);
+              TimeOfDay? startHour = await showTimePicker(
+                  context: context, initialTime: notifierStart);
               notifierStart = startHour ?? notifierStart;
-              provider.updateReminder(enabled, period, notifierStart, notifierStop);
+              provider.updateReminder(
+                  enabled, period, notifierStart, notifierStop);
             },
           ),
-          const Text(' to'),
+          Text(" ${local.txt('set_to')}"),
           TextButton(
             child: Text(formattedStop),
             onPressed: () async {
-              TimeOfDay? stopHour = await showTimePicker(context: context, initialTime: notifierStop);
+              TimeOfDay? stopHour = await showTimePicker(
+                  context: context, initialTime: notifierStop);
               notifierStop = stopHour ?? notifierStop;
-              provider.updateReminder(enabled, period, notifierStart, notifierStop);
+              provider.updateReminder(
+                  enabled, period, notifierStart, notifierStop);
             },
           ),
-          const Text('daily')
+          Text(local.txt('set_daily'))
         ])
       ],
     );
@@ -118,19 +137,24 @@ class SettingsPage extends StatelessWidget {
   Widget buildFileResetButton(BuildContext context) {
     ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
     SpoonTracker provider = Provider.of<SpoonTracker>(context, listen: false);
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     Widget resetButton = TextButton(
-        child: const Text('Reset data file'),
+        child: Text(local.txt('set_reset_file')),
         onPressed: () async {
           var confirmed = await showDialog<bool>(
                   context: context,
                   barrierDismissible: false,
                   builder: (BuildContext context) => AlertDialog(
-                          title: const Text('Warning'),
-                          content: const Text(
-                              'This reset will erase all the data collected until now.\n\nDo you confirm this action ?'),
+                          title: Text(local.txt('set_confirm_title')),
+                          content: Text(local.txt('set_confirm_body')),
                           actions: <Widget>[
-                            TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('CANCEL')),
-                            TextButton(onPressed: () => Navigator.pop(context, true), child: const Text('OK'))
+                            TextButton(
+                                onPressed: () => Navigator.pop(context, false),
+                                child: Text(local.txt('set_confirm_cancel'))),
+                            TextButton(
+                                onPressed: () => Navigator.pop(context, true),
+                                child: Text(local.txt('set_confirm_ok')))
                           ])) ??
               false;
           if (confirmed) {
@@ -151,6 +175,8 @@ class SettingsPage extends StatelessWidget {
       buildAppNotifierParameters(context),
       buildFileResetButton(context)
     ];
-    return Padding(padding: const EdgeInsets.all(12.0), child: Column(children: childrenList));
+    return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(children: childrenList));
   }
 }

@@ -8,6 +8,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:io';
 import 'notification_service.dart';
+import 'intl.dart';
 
 class SpoonTracker extends ChangeNotifier {
   static int maxEnergyRate = 100;
@@ -19,12 +20,14 @@ class SpoonTracker extends ChangeNotifier {
   final String _filename = 'myspoons.csv';
   final String _columns =
       'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
-  late Settings settings;
+  final Settings settings = Settings();
   DateTime now = DateTime.now();
   late int dayLastSession = now.day;
   late int monthLastSession = now.month;
+
   SpoonTracker() {
     setbackInitials();
+    settings.spoonTracker = this;
   }
 
   int get energyRate {
@@ -76,11 +79,6 @@ class SpoonTracker extends ChangeNotifier {
     return wd;
   }
 
-  void linkSettings(Settings params) {
-    settings = params;
-    settings.spoonTracker = this;
-  }
-
   Future<File> get localFile async {
     final File f = File(filePath);
     return f;
@@ -110,7 +108,7 @@ class SpoonTracker extends ChangeNotifier {
 
   Future<String> getDataFromFile() async {
     final file = await localFile;
-    String data = 'No data avalaible';
+    String data = settings.local.txt('set_nodata');
     if (await file.exists()) {
       data = file.readAsStringSync();
     }
@@ -191,6 +189,7 @@ class Settings extends ChangeNotifier {
   int minuteStart = 0;
   int hourStop = defaultHourStop;
   int minuteStop = 0;
+  Localization local = const Localization('fr');
 
   TimeOfDay resetMaxSpoonTime =
       TimeOfDay(hour: defaultResetMaxSpoonHour, minute: 0);

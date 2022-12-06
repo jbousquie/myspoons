@@ -6,6 +6,7 @@ import 'dart:math';
 import 'model.dart';
 import 'settingsPage.dart';
 import 'chartsMenuPage.dart';
+import 'intl.dart';
 
 // https://www.freecodecamp.org/news/provider-pattern-in-flutter/
 // https://www.flaticon.com/free-icon/spoon_96164#
@@ -25,11 +26,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SpoonTracker spoonTracker = SpoonTracker();
-    Settings settings = Settings();
-    spoonTracker.linkSettings(settings);
+    Settings settings = spoonTracker.settings;
     if (settings.enableMaxSpoonReset) {
       spoonTracker.checkLastSession();
     }
+    Localization local = settings.local;
     return MultiProvider(
         providers: [
           ChangeNotifierProvider.value(value: spoonTracker),
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          home: MyHomePage(title: 'My Daily Spoons'),
+          home: MyHomePage(title: local.txt('main_title')),
         ));
   }
 }
@@ -67,19 +68,20 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final local = Provider.of<Settings>(context, listen: false).local;
     return Scaffold(
       appBar: AppBar(title: Text(title), actions: [
         IconButton(
             onPressed: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const ChartsMenuPage(title: 'Charts Menu');
+                    return ChartsMenuPage(title: local.txt('chartsmenu_title'));
                   }))
                 },
             icon: const Icon(Icons.show_chart)),
         IconButton(
             onPressed: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const SettingsPage(title: 'Settings');
+                    return SettingsPage(title: local.txt('set_title'));
                   }))
                 },
             icon: const Icon(Icons.settings))
@@ -89,9 +91,9 @@ class MyHomePage extends StatelessWidget {
           child: buttonIcon,
           onPressed: () {
             _logData(context);
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text("Spooned !"),
-                duration: Duration(seconds: 2),
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(local.txt('main_snackbar')),
+                duration: const Duration(seconds: 2),
                 backgroundColor: Colors.blueAccent));
           }),
       //resizeToAvoidBottomInset: false,
@@ -106,7 +108,6 @@ class MyHomePage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        //Text('${energyRate.round()}'),
         Row(children: [
           Expanded(child: buildSpoonGrid(spoonNb, context), flex: 2),
           Expanded(child: buildSlider(context, energyRate))
@@ -151,15 +152,18 @@ class MyHomePage extends StatelessWidget {
 
   buildInputField(BuildContext context) {
     String comment = Provider.of<SpoonTracker>(context, listen: true).comment;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     String dateString =
         Provider.of<SpoonTracker>(context, listen: true).dateString;
     final String today = DateTime.now().toString().substring(0, 10);
     final String dayFromDateString = dateString.substring(0, 10);
     String label;
     if (today != dayFromDateString) {
-      label = 'No spoon yet today';
+      label = local.txt('main_label');
     } else {
-      label = 'Last spoon at ${dateString.substring(11, 16)}';
+      final String tx = local.txt('main_log_date');
+      label = '$tx ${dateString.substring(11, 16)}';
     }
     final textfield = TextField(
       controller: commentController,

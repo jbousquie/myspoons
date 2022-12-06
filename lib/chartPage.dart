@@ -32,7 +32,7 @@ class ChartPageState extends State<ChartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Charts')),
+        appBar: AppBar(title: Text(widget.title)),
         body: WebView(
           initialUrl: 'about:blank',
           javascriptMode: JavascriptMode.unrestricted,

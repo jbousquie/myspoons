@@ -1,6 +1,9 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
 import 'chartPage.dart';
+import 'model.dart';
+import 'intl.dart';
+import 'package:provider/provider.dart';
 
 class ChartsMenuPage extends StatelessWidget {
   const ChartsMenuPage({Key? key, required this.title}) : super(key: key);
@@ -9,41 +12,50 @@ class ChartsMenuPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Charts Menu')),
-        body: buildContent(context));
+        appBar: AppBar(title: Text(title)), body: buildContent(context));
   }
 
-  destinationPage(BuildContext context, int chartType) {
+  destinationPage(BuildContext context, int chartType, String title) {
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return ChartPage(title: 'Charts', chartType: chartType);
+      return ChartPage(title: title, chartType: chartType);
     }));
   }
 
   Widget buildContent(BuildContext context) {
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     List<Widget> menuList = [
       TextButton(
-        child: const Text('Chart 1'),
-        onPressed: () => destinationPage(context, 1),
+        child: Text(local.txt('chartsmenu_chart1')),
+        onPressed: () =>
+            destinationPage(context, 1, local.txt('chartsmenu_chart1')),
       ),
       TextButton(
-        child: const Text('Chart 2'),
-        onPressed: () => destinationPage(context, 2),
+        child: Text(local.txt('chartsmenu_chart2')),
+        onPressed: () =>
+            destinationPage(context, 2, local.txt('chartsmenu_chart2')),
       ),
       TextButton(
-        child: const Text('Chart 3'),
-        onPressed: () => destinationPage(context, 3),
+        child: Text(local.txt('chartsmenu_chart3')),
+        onPressed: () =>
+            destinationPage(context, 3, local.txt('chartsmenu_chart3')),
       ),
       TextButton(
-        child: const Text('Chart 4'),
-        onPressed: () => destinationPage(context, 4),
+        child: Text(local.txt('chartsmenu_chart4')),
+        onPressed: () =>
+            destinationPage(context, 4, local.txt('chartsmenu_chart4')),
       ),
       TextButton(
-        child: const Text('Chart 5'),
-        onPressed: () => destinationPage(context, 5),
+        child: Text(local.txt('chartsmenu_chart5')),
+        onPressed: () =>
+            destinationPage(context, 5, local.txt('chartsmenu_chart5')),
       ),
       TextButton(
-        child: const Text('Chart 6'),
-        onPressed: () => destinationPage(context, 6),
+        child: Text(local.txt('chartsmenu_chart6')),
+        onPressed: () =>
+            destinationPage(context, 6, local.txt('chartsmenu_chart6')),
       ),
     ];
 
