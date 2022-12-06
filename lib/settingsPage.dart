@@ -159,9 +159,9 @@ class SettingsPage extends StatelessWidget {
               false;
           if (confirmed) {
             provider.deleteFile();
-            scaffoldMessenger.showSnackBar(const SnackBar(
-                content: Text("Data file deleted"),
-                duration: Duration(seconds: 2),
+            scaffoldMessenger.showSnackBar(SnackBar(
+                content: Text(local.txt('set_snackbar')),
+                duration: const Duration(seconds: 2),
                 backgroundColor: Colors.blueAccent));
           }
         });
