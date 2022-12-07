@@ -80,6 +80,12 @@ class SpoonTracker extends ChangeNotifier {
     return wd;
   }
 
+  String cleanComment(String comment) {
+    String cleaned =
+        comment.replaceAll(";", ",").replaceAll("'", " ").replaceAll('"', ' ');
+    return cleaned;
+  }
+
   Future<File> get localFile async {
     final File f = File(filePath);
     return f;
@@ -99,8 +105,9 @@ class SpoonTracker extends ChangeNotifier {
       if (!await file.exists()) {
         file.writeAsStringSync(_columns);
       }
+      final String cleaned = cleanComment(comment);
       final row =
-          '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$comment\n';
+          '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$cleaned\n';
       file.writeAsString(row, mode: FileMode.append);
     }
     return file;
