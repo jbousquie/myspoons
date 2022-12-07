@@ -24,13 +24,17 @@ class ChartPageState extends State<ChartPage> {
   late WebViewController _controller;
   static String htmlFile = 'lib/assets/charts.html';
   static String jsLibFile = 'lib/assets/chart.umd.min.js';
+  static String jsLib2File = 'lib/assets/chartjs-plugin-datalabels.min.js';
   static String jsCodeFile = 'lib/assets/mycharts.js';
   String htmlCode = '';
   String jsLib = '';
+  String jsLib2 = '';
   String jsCode = '';
 
   @override
   Widget build(BuildContext context) {
+    final Settings settings = Provider.of<Settings>(context, listen: false);
+    final maxSpoonNb = settings.maxSpoonNb;
     return Scaffold(
         appBar: AppBar(title: Text(widget.title)),
         body: WebView(
@@ -43,7 +47,7 @@ class ChartPageState extends State<ChartPage> {
           },
           onPageFinished: (String _) async {
             String data = await getData();
-            runJS(widget.chartType, data);
+            runJS(widget.chartType, maxSpoonNb, data);
           },
         ));
   }
@@ -51,6 +55,7 @@ class ChartPageState extends State<ChartPage> {
   void _loadHtmlFromAssets() async {
     htmlCode = await rootBundle.loadString(htmlFile);
     jsLib = await rootBundle.loadString(jsLibFile);
+    jsLib2 = await rootBundle.loadString(jsLib2File);
     jsCode = await rootBundle.loadString(jsCodeFile);
     _controller.loadUrl(Uri.dataFromString(htmlCode,
             mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
@@ -63,13 +68,14 @@ class ChartPageState extends State<ChartPage> {
     return data;
   }
 
-  runJS(int chartType, String data) {
+  runJS(int chartType, int maxSpoonNb, String data) {
     // first run the JS files
     _controller.runJavascript(jsLib);
+    _controller.runJavascript(jsLib2);
     _controller.runJavascript(jsCode);
 
     final String escaped = data.replaceAll('\n', '\\n');
-    final String jsString = 'init($chartType,\'$escaped\');';
+    final String jsString = 'init($chartType,$maxSpoonNb,\'$escaped\');';
     _controller.runJavascript(jsString);
   }
 }

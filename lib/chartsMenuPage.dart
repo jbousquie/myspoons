@@ -16,8 +16,6 @@ class ChartsMenuPage extends StatelessWidget {
   }
 
   destinationPage(BuildContext context, int chartType, String title) {
-    final Localization local =
-        Provider.of<Settings>(context, listen: false).local;
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ChartPage(title: title, chartType: chartType);
     }));

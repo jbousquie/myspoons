@@ -44,11 +44,13 @@
 
         const chartType = 2;
         */
-        var init = function(chartType, dataString) {
+        
+        var init = function(chartType, maxSpoonNb, dataString) {
             var ctx = document.getElementById("chartCanvas");
-            var myChart = new MyChart(ctx, dataString);
+            var myChart = new MyChart(ctx, maxSpoonNb, dataString);
             myChart.display(chartType);
-        }
-        init(chartType, dataString);
+        };
+        
+        //init(chartType, maxSpoonNb, dataString);
     </script>
 </html>

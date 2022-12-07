@@ -18,6 +18,7 @@ class SpoonTracker extends ChangeNotifier {
   late String _dateString = stringDateNow();
   final String _path = '/storage/emulated/0/Download';
   final String _filename = 'myspoons.csv';
+  bool hasFilePermission = false;
   final String _columns =
       'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
   final Settings settings = Settings();
@@ -94,8 +95,7 @@ class SpoonTracker extends ChangeNotifier {
   Future<File> _writeData(String dateString, int weekday, int energyRate,
       int spoonNb, int maxSpoonNb, String comment) async {
     final file = await localFile;
-    final bool hasFilePersmission = await requestFilePermission();
-    if (hasFilePersmission) {
+    if (hasFilePermission) {
       if (!await file.exists()) {
         file.writeAsStringSync(_columns);
       }
@@ -116,6 +116,7 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   Future<void> setbackInitials() async {
+    hasFilePermission = await requestFilePermission();
     final prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
     _dateString = prefs.getString('date') ?? stringDateNow();

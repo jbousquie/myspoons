@@ -44,6 +44,7 @@ flutter:
     - lib/assets/icons/spoon.png
     - lib/assets/charts.html
     - lib/assets/chart.umd.min.js
+    - lib/assets/chartjs-plugin-datalabels.min.js
     - lib/assets/mycharts.js
 
   uses-material-design: true

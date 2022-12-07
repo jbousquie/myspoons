@@ -57,7 +57,7 @@ class Localization {
     'set_snackbar': 'Fichier de données supprimé',
     'set_nodata': 'Aucune donnée disponible',
     'main_title': 'Mes cuillères du jour',
-    'main_label': 'Encore aucune cuillère aujourd\'hui',
+    'main_label': 'Rien encore spooné aujourd\'hui',
     'main_log_date': 'Spooné le dernier coup à',
     'main_snackbar': 'Spooné !',
     'chartsmenu_title': 'Menu Visualisation',
