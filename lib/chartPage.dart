@@ -10,8 +10,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 // https://stackoverflow.com/questions/44816042/flutter-read-text-file-from-assets/54133627#54133627
 
 class ChartPage extends StatefulWidget {
-  const ChartPage({Key? key, required this.title, required this.chartType})
-      : super(key: key);
+  const ChartPage({Key? key, required this.title, required this.chartType}) : super(key: key);
   final String title;
   final int chartType;
   @override
@@ -57,9 +56,8 @@ class ChartPageState extends State<ChartPage> {
     jsLib = await rootBundle.loadString(jsLibFile);
     jsLib2 = await rootBundle.loadString(jsLib2File);
     jsCode = await rootBundle.loadString(jsCodeFile);
-    _controller.loadUrl(Uri.dataFromString(htmlCode,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller
+        .loadUrl(Uri.dataFromString(htmlCode, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 
   Future<String> getData() async {

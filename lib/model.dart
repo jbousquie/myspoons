@@ -3,6 +3,7 @@
 // https://davidserrano.io/best-way-to-handle-permissions-in-your-flutter-app
 
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -16,7 +17,7 @@ class SpoonTracker extends ChangeNotifier {
   late int _spoonNb = _computeSpoonNb(_energyRate);
   String _comment = '';
   late String _dateString = stringDateNow();
-  final String _path = '/storage/emulated/0/Download';
+  //final String _path = '/storage/emulated/0/Download';
   final String _filename = 'myspoons.csv';
   bool hasFilePermission = false;
   final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
@@ -55,8 +56,15 @@ class SpoonTracker extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get filePath {
-    return '$_path/$_filename';
+  Future<String> get _path async {
+    // or getApplicationDocumentsDirectory() but the content won't be visible to the user
+    final directory = (await getExternalStorageDirectories(type: StorageDirectory.downloads))!.first;
+    return directory.path;
+  }
+
+  Future<String> get filePath async {
+    String pth = await _path;
+    return '$pth/$_filename';
   }
 
   void updateEnergyRate(int value) {
@@ -85,7 +93,8 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   Future<File> get localFile async {
-    final File f = File(filePath);
+    final fp = await filePath;
+    final File f = File(fp);
     return f;
   }
 
