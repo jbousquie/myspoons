@@ -1,14 +1,15 @@
 class Localization {
-  const Localization(this.language);
-  final String language;
+  Localization(String? lang) : language = lang ?? defaultLanguage;
+  String language;
 
+  static const String defaultLanguage = 'en';
   static const noText = 'no_text_found';
 
   static const en = {
     'set_title': 'Settings',
+    'set_language': 'Language',
     'set_max_spoon': 'Maximum spoon number',
-    'set_reset_max':
-        'Daily reset the initial spoon\nnumber to its maximum value',
+    'set_reset_max': 'Daily reset the initial spoon\nnumber to its maximum value',
     'set_enable_reminder': 'Enable reminder',
     'set_remind_every': 'Remind me for a week every',
     'set_hours': 'hour(s)',
@@ -17,8 +18,7 @@ class Localization {
     'set_daily': 'daily',
     'set_reset_file': 'Reset data file',
     'set_confirm_title': 'Warning',
-    'set_confirm_body':
-        'This reset will erase all the data collected until now.\n\nDo you confirm this action ?',
+    'set_confirm_body': 'This reset will erase all the data collected until now.\n\nDo you confirm this action ?',
     'set_confirm_cancel': 'CANCEL',
     'set_confirm_ok': 'OK',
     'set_snackbar': 'Data file deleted',
@@ -39,9 +39,9 @@ class Localization {
 
   static const fr = {
     'set_title': 'Paramètres',
+    'set_language': 'Langue',
     'set_max_spoon': 'Nombre maximum de cuillères',
-    'set_reset_max':
-        'Réinitialiser tous les jours\n le nombre de cuillères à son maximum ',
+    'set_reset_max': 'Réinitialiser tous les jours\n le nombre de cuillères à son maximum ',
     'set_enable_reminder': 'Activer le rappel automatique',
     'set_remind_every': 'Me rappeler toutes les',
     'set_hours': 'heures pendant une semaine',
@@ -50,8 +50,7 @@ class Localization {
     'set_daily': 'chaque jour',
     'set_reset_file': 'Effacer les données',
     'set_confirm_title': 'Attention',
-    'set_confirm_body':
-        'Cette action va supprimer toutes les données collectées jusqu\'à présent.\n\nConfirmer ?',
+    'set_confirm_body': 'Cette action va supprimer toutes les données collectées jusqu\'à présent.\n\nConfirmer ?',
     'set_confirm_cancel': 'ABANDONNER',
     'set_confirm_ok': 'CONFIRMER',
     'set_snackbar': 'Fichier de données supprimé',

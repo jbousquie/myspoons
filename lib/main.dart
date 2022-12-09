@@ -15,8 +15,7 @@ import 'intl.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-          [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown])
       .then((value) => {runApp(const MyApp())});
 }
 
@@ -68,9 +67,9 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final local = Provider.of<Settings>(context, listen: false).local;
+    final local = Provider.of<Settings>(context, listen: true).local;
     return Scaffold(
-      appBar: AppBar(title: Text(title), actions: [
+      appBar: AppBar(title: Text(local.txt('main_title')), actions: [
         IconButton(
             onPressed: () => {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -101,8 +100,7 @@ class MyHomePage extends StatelessWidget {
   }
 
   buildContent(BuildContext context) {
-    int energyRate =
-        Provider.of<SpoonTracker>(context, listen: true).energyRate;
+    int energyRate = Provider.of<SpoonTracker>(context, listen: true).energyRate;
     int spoonNb = Provider.of<SpoonTracker>(context, listen: true).spoonNb;
 
     return Column(
@@ -120,11 +118,8 @@ class MyHomePage extends StatelessWidget {
   ImageIcon _spoonIcon(int colorIndex, double ratio) {
     return ImageIcon(
       AssetImage(imageIconFile),
-      color: Color.fromARGB(
-          95 + colorIndex * (20 * ratio).round(),
-          40 + colorIndex * (4 * ratio).round(),
-          28 + colorIndex * (27 * ratio).round(),
-          50 + colorIndex * (4 * ratio).round()),
+      color: Color.fromARGB(95 + colorIndex * (20 * ratio).round(), 40 + colorIndex * (4 * ratio).round(),
+          28 + colorIndex * (27 * ratio).round(), 50 + colorIndex * (4 * ratio).round()),
     );
   }
 
@@ -152,10 +147,8 @@ class MyHomePage extends StatelessWidget {
 
   buildInputField(BuildContext context) {
     String comment = Provider.of<SpoonTracker>(context, listen: true).comment;
-    final Localization local =
-        Provider.of<Settings>(context, listen: false).local;
-    String dateString =
-        Provider.of<SpoonTracker>(context, listen: true).dateString;
+    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    String dateString = Provider.of<SpoonTracker>(context, listen: true).dateString;
     final String today = DateTime.now().toString().substring(0, 10);
     final String dayFromDateString = dateString.substring(0, 10);
     String label;
@@ -186,8 +179,7 @@ class MyHomePage extends StatelessWidget {
               label: '$energyRate',
               value: energyRate.toDouble(),
               max: 100,
-              onChanged: (double value) =>
-                  {_updateEnergyRate(context, value.toInt())},
+              onChanged: (double value) => {_updateEnergyRate(context, value.toInt())},
             )));
 
     Widget sliderTheme = SliderTheme(
