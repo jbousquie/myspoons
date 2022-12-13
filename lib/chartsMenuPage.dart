@@ -26,32 +26,50 @@ class ChartsMenuPage extends StatelessWidget {
         Provider.of<Settings>(context, listen: false).local;
     List<Widget> menuList = [
       TextButton(
-        child: Text(local.txt('chartsmenu_chart1')),
+        child: Text(
+          local.txt('chartsmenu_chart1'),
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             destinationPage(context, 1, local.txt('chartsmenu_chart1')),
       ),
       TextButton(
-        child: Text(local.txt('chartsmenu_chart2')),
+        child: Text(
+          local.txt('chartsmenu_chart2'),
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             destinationPage(context, 2, local.txt('chartsmenu_chart2')),
       ),
       TextButton(
-        child: Text(local.txt('chartsmenu_chart3')),
+        child: Text(
+          local.txt('chartsmenu_chart3'),
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             destinationPage(context, 3, local.txt('chartsmenu_chart3')),
       ),
       TextButton(
-        child: Text(local.txt('chartsmenu_chart4')),
+        child: Text(
+          local.txt('chartsmenu_chart4'),
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             destinationPage(context, 4, local.txt('chartsmenu_chart4')),
       ),
       TextButton(
-        child: Text(local.txt('chartsmenu_chart5')),
+        child: Text(
+          local.txt('chartsmenu_chart5'),
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             destinationPage(context, 5, local.txt('chartsmenu_chart5')),
       ),
       TextButton(
-        child: Text(local.txt('chartsmenu_chart6')),
+        child: Text(
+          local.txt('chartsmenu_chart6'),
+          textAlign: TextAlign.center,
+        ),
         onPressed: () =>
             destinationPage(context, 6, local.txt('chartsmenu_chart6')),
       ),
