@@ -15,7 +15,7 @@ class ChartsMenuPage extends StatelessWidget {
         appBar: AppBar(title: Text(title)), body: buildContent(context));
   }
 
-  destinationPage(BuildContext context, int chartType, String title) {
+  destinationPage(BuildContext context, String title, ChartType chartType) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return ChartPage(title: title, chartType: chartType);
     }));
@@ -24,54 +24,94 @@ class ChartsMenuPage extends StatelessWidget {
   Widget buildContent(BuildContext context) {
     final Localization local =
         Provider.of<Settings>(context, listen: false).local;
+    final String title = local.txt('charts_title');
     List<Widget> menuList = [
       TextButton(
         child: Text(
           local.txt('chartsmenu_chart1'),
           textAlign: TextAlign.center,
         ),
-        onPressed: () =>
-            destinationPage(context, 1, local.txt('chartsmenu_chart1')),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 1, title: local.txt('chartsmenu_chart1'));
+          chartType.description = local.txt('chart1_descr');
+
+          destinationPage(context, title, chartType);
+        },
       ),
       TextButton(
         child: Text(
           local.txt('chartsmenu_chart2'),
           textAlign: TextAlign.center,
         ),
-        onPressed: () =>
-            destinationPage(context, 2, local.txt('chartsmenu_chart2')),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 2, title: local.txt('chartsmenu_chart2'));
+          chartType.description = local.txt('chart2_descr');
+          destinationPage(context, title, chartType);
+        },
       ),
       TextButton(
         child: Text(
           local.txt('chartsmenu_chart3'),
           textAlign: TextAlign.center,
         ),
-        onPressed: () =>
-            destinationPage(context, 3, local.txt('chartsmenu_chart3')),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 3, title: local.txt('chartsmenu_chart3'));
+          chartType.description = local.txt('chart3_descr');
+          destinationPage(context, title, chartType);
+        },
       ),
       TextButton(
         child: Text(
           local.txt('chartsmenu_chart4'),
           textAlign: TextAlign.center,
         ),
-        onPressed: () =>
-            destinationPage(context, 4, local.txt('chartsmenu_chart4')),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 4, title: local.txt('chartsmenu_chart4'));
+          chartType.labels = local.jsonMap('week_labels');
+          chartType.description = local.txt('chart4_descr');
+          destinationPage(context, title, chartType);
+        },
       ),
       TextButton(
         child: Text(
           local.txt('chartsmenu_chart5'),
           textAlign: TextAlign.center,
         ),
-        onPressed: () =>
-            destinationPage(context, 5, local.txt('chartsmenu_chart5')),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 5, title: local.txt('chartsmenu_chart5'));
+          chartType.labels = local.jsonMap('week_labels');
+          chartType.description = local.txt('chart5_descr');
+          destinationPage(context, title, chartType);
+        },
       ),
       TextButton(
         child: Text(
           local.txt('chartsmenu_chart6'),
           textAlign: TextAlign.center,
         ),
-        onPressed: () =>
-            destinationPage(context, 6, local.txt('chartsmenu_chart6')),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 6, title: local.txt('chartsmenu_chart6'));
+          chartType.description = local.txt('chart6_descr');
+          destinationPage(context, title, chartType);
+        },
+      ),
+      TextButton(
+        child: Text(
+          local.txt('chartsmenu_chart7'),
+          textAlign: TextAlign.center,
+        ),
+        onPressed: () {
+          final ChartType chartType =
+              ChartType(type: 7, title: local.txt('chartsmenu_chart7'));
+          chartType.description = local.txt('chart7_descr');
+          destinationPage(context, title, chartType);
+        },
       ),
     ];
 

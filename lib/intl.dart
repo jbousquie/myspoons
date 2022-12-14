@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Localization {
   Localization(String? lang) : language = lang ?? defaultLanguage;
   String language;
@@ -35,8 +37,35 @@ class Localization {
     'chartsmenu_chart3': 'Event Rates',
     'chartsmenu_chart4': 'Gains and Losses by Day of the Week',
     'chartsmenu_chart5': 'Event Number by Day of the Week',
-    'chartsmenu_chart6': 'Chart 6',
-    'charts_title': 'Charts'
+    'chartsmenu_chart6': 'Gains and Losses by Hour',
+    'chartsmenu_chart7': 'Event Number by Hour',
+    'charts_title': 'Charts',
+    'chart1_descr':
+        'This chart displays the gains and losses of energy by event type.<br><br>The displayed values are a computation from the frequency and the intensity of each event type.',
+    'chart2_descr':
+        'This chart displays the event type frequencies.<br>The bigger the bar, the most of the time the event type occurs.<br><br>The displayed values are the average intensity of each event type.',
+    'chart3_descr':
+        'This chart displays the event type intensities.<br>The bigger the bar, the more intense the event type.<br><br>The displayed values are the average occurrence numbers of each event type.',
+    'chart4_descr':
+        'This chart displays the gains and losses of energy by day of the week.<br>The bigger the bar, the bigger the gain or the loss.<br><br>The displayed values are the cumulation of the gain and loss intensities.',
+    'chart5_descr':
+        'This chart displays the number of events by day of the week.<br>The bigger the bar, the more numerous the events.<br><br>The displayed values are the cumulation of event numbers.',
+    'chart6_descr':
+        'This chart displays the gains and losses of energy by hour.<br>The bigger the bar, the bigger the gain or the loss.<br><br>The displayed values are the cumulation of gain and loss intensities by hour.',
+    'chart7_descr':
+        'This chart displays the number of events by hour.<br>The bigger the bar, the more numerous the events.<br><br>The displayed values are the cumulation of event numbers by hour.',
+  };
+
+  static const enMap = {
+    'week_labels': [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ]
   };
 
   static const fr = {
@@ -69,15 +98,47 @@ class Localization {
     'chartsmenu_chart3': 'Intensité des situations',
     'chartsmenu_chart4': 'Gains et pertes par jour de la semaine',
     'chartsmenu_chart5': 'Nombre de situations par jour de la semaine',
-    'chartsmenu_chart6': 'Graphique 6',
-    'charts_title': 'Graphiques'
+    'chartsmenu_chart6': 'Gains et pertes par heure',
+    'chartsmenu_chart7': 'Nombre de situations par heure',
+    'charts_title': 'Graphiques',
+    'chart1_descr':
+        'Ce graphique affiche les gains et pertes d&rsquo;énergie par type de situation.<br><br>Les valeurs affichées sont une combinaison de la fréquence et l&rsquo;intensité de chaque type de situation.',
+    'chart2_descr':
+        'Ce graphique affiche les fréquences de chaque type de situation.<br>Plus une barre est longue, plus une situation arrive souvent.<br><br>Les valeurs affichées sont les intensités moyennes de chaque type de situation.',
+    'chart3_descr':
+        'Ce graphique affiche les intensités de chaque type de situation.<br>Plus une barre est longue, plus une situation est intense.<br><br>Les valeurs affichées sont les nombres moyens de survenue de chaque type de situation.',
+    'chart4_descr':
+        'Ce graphique affiche les gains et pertes d&rsquo;énergie par jour de la semaine.<br>Plus une barre est longue, plus une perte ou un gain est important.<br><br>Les valeurs affichées sont les cumuls des intensités des pertes ou des gains.',
+    'chart5_descr':
+        'Ce graphique affiche les nombres de situations par jour de la semaine.<br>Plus une barre est longue, plus le nombre de situation est important.<br><br>Les valeurs affichées sont les cumuls des nombres de situations par jour de la semaine.',
+    'chart6_descr':
+        'Ce graphique affiche les gains et pertes d&rsquo;énergie par heure.<br>Plus une barre est longue, plus une perte ou un gain est important.<br><br>Les valeurs affichées sont les cumuls des intensités des pertes ou des gains par heure.',
+  };
+
+  static const frMap = {
+    'week_labels': [
+      'Lundi',
+      'Mardi',
+      'Mercredi',
+      'Jeudi',
+      'Vendredi',
+      'Samedi',
+      'Dimanche'
+    ]
   };
 
   static const lexicon = {'en': en, 'fr': fr};
+  static const maps = {'en': enMap, 'fr': frMap};
 
   String txt(String item) {
     Map<String, String> lx = lexicon[language] ?? en;
     String tx = lx[item] ?? noText;
+    return tx;
+  }
+
+  String jsonMap(String item) {
+    Map<String, Object> mp = maps[language] ?? en;
+    String tx = jsonEncode(mp[item]);
     return tx;
   }
 }

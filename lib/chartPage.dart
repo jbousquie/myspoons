@@ -10,9 +10,10 @@ import 'package:webview_flutter/webview_flutter.dart';
 // https://stackoverflow.com/questions/44816042/flutter-read-text-file-from-assets/54133627#54133627
 
 class ChartPage extends StatefulWidget {
-  const ChartPage({Key? key, required this.title, required this.chartType}) : super(key: key);
+  const ChartPage({Key? key, required this.title, required this.chartType})
+      : super(key: key);
   final String title;
-  final int chartType;
+  final ChartType chartType;
   @override
   ChartPageState createState() {
     return ChartPageState();
@@ -46,7 +47,9 @@ class ChartPageState extends State<ChartPage> {
           },
           onPageFinished: (String _) async {
             String data = await getData();
-            runJS(widget.chartType, maxSpoonNb, data);
+            final chartType = widget.chartType;
+            runJS(chartType.type, maxSpoonNb, data, chartType.labels,
+                chartType.title, chartType.description);
           },
         ));
   }
@@ -56,8 +59,9 @@ class ChartPageState extends State<ChartPage> {
     jsLib = await rootBundle.loadString(jsLibFile);
     jsLib2 = await rootBundle.loadString(jsLib2File);
     jsCode = await rootBundle.loadString(jsCodeFile);
-    _controller
-        .loadUrl(Uri.dataFromString(htmlCode, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
+    _controller.loadUrl(Uri.dataFromString(htmlCode,
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 
   Future<String> getData() async {
@@ -66,14 +70,24 @@ class ChartPageState extends State<ChartPage> {
     return data;
   }
 
-  runJS(int chartType, int maxSpoonNb, String data) {
+  runJS(int chartType, int maxSpoonNb, String data, String labels, String title,
+      String description) {
     // first run the JS files
     _controller.runJavascript(jsLib);
     _controller.runJavascript(jsLib2);
     _controller.runJavascript(jsCode);
 
     final String escaped = data.replaceAll('\n', '\\n');
-    final String jsString = 'init($chartType,$maxSpoonNb,\'$escaped\');';
+    final String jsString =
+        'init($chartType,$maxSpoonNb,\'$escaped\',\'$labels\',\'$title\',\'$description\');';
     _controller.runJavascript(jsString);
   }
+}
+
+class ChartType {
+  ChartType({required this.type, required this.title});
+  final int type;
+  final String title;
+  String description = '';
+  String labels = '';
 }
