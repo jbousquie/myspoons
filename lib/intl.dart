@@ -11,8 +11,7 @@ class Localization {
     'set_title': 'Settings',
     'set_language': 'Language',
     'set_max_spoon': 'Maximum spoon number',
-    'set_reset_max':
-        'Daily reset the initial spoon\nnumber to its maximum value',
+    'set_reset_max': 'Daily reset the initial spoon\nnumber to its maximum value',
     'set_enable_reminder': 'Enable reminder',
     'set_remind_every': 'Remind me for a week every',
     'set_hours': 'hour(s)',
@@ -21,8 +20,7 @@ class Localization {
     'set_daily': 'daily',
     'set_reset_file': 'Reset data file',
     'set_confirm_title': 'Warning',
-    'set_confirm_body':
-        'This reset will erase all the data collected until now.\n\nDo you confirm this action ?',
+    'set_confirm_body': 'This reset will erase all the data collected until now.\n\nDo you confirm this action ?',
     'set_confirm_cancel': 'CANCEL',
     'set_confirm_ok': 'OK',
     'set_snackbar': 'Data file deleted',
@@ -35,10 +33,12 @@ class Localization {
     'chartsmenu_chart1': 'Event Gains and Losses',
     'chartsmenu_chart2': 'Event Frequencies',
     'chartsmenu_chart3': 'Event Rates',
-    'chartsmenu_chart4': 'Gains and Losses by Day of the Week',
-    'chartsmenu_chart5': 'Event Number by Day of the Week',
-    'chartsmenu_chart6': 'Gains and Losses by Hour',
-    'chartsmenu_chart7': 'Event Number by Hour',
+    'chartsmenu_chart4': 'Gains And Losses By Day Of the Week',
+    'chartsmenu_chart5': 'Event Number By Day Of The Week',
+    'chartsmenu_chart6': 'Gains And Losses By Hour',
+    'chartsmenu_chart7': 'Event Number By Hour',
+    'chartsmenu_chart8': 'Energy Evolution through Time',
+    'chartsmenu_chart9': 'Energy Evolution through Event Occurrences',
     'charts_title': 'Charts',
     'chart1_descr':
         'This chart displays the gains and losses of energy by event type.<br><br>The displayed values are a computation from the frequency and the intensity of each event type.',
@@ -54,26 +54,21 @@ class Localization {
         'This chart displays the gains and losses of energy by hour.<br>The bigger the bar, the bigger the gain or the loss.<br><br>The displayed values are the cumulation of gain and loss intensities by hour.',
     'chart7_descr':
         'This chart displays the number of events by hour.<br>The bigger the bar, the more numerous the events.<br><br>The displayed values are the cumulation of event numbers by hour.',
+    'chart8_descr':
+        'This chart displays the evolution of the energy through time.<br><br>The event names are displayed on each energy level reached.',
+    'chart9_descr':
+        'This chart displays the evolution of the energy through event occurences, no matter the elapsed time between them.<br><br>The event names are displayed on each energy level reached.',
   };
 
   static const enMap = {
-    'week_labels': [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
-    ]
+    'week_labels': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   };
 
   static const fr = {
     'set_title': 'Paramètres',
     'set_language': 'Langue',
     'set_max_spoon': 'Nombre maximum de cuillères',
-    'set_reset_max':
-        'Réinitialiser tous les jours\n le nombre de cuillères à son maximum ',
+    'set_reset_max': 'Réinitialiser tous les jours\n le nombre de cuillères à son maximum ',
     'set_enable_reminder': 'Activer le rappel automatique',
     'set_remind_every': 'Me rappeler toutes les',
     'set_hours': 'heures pendant une semaine',
@@ -82,8 +77,7 @@ class Localization {
     'set_daily': 'chaque jour',
     'set_reset_file': 'Effacer les données',
     'set_confirm_title': 'Attention',
-    'set_confirm_body':
-        'Cette action va supprimer toutes les données collectées jusqu\'à présent.\n\nConfirmer ?',
+    'set_confirm_body': 'Cette action va supprimer toutes les données collectées jusqu\'à présent.\n\nConfirmer ?',
     'set_confirm_cancel': 'ABANDONNER',
     'set_confirm_ok': 'CONFIRMER',
     'set_snackbar': 'Fichier de données supprimé',
@@ -100,31 +94,31 @@ class Localization {
     'chartsmenu_chart5': 'Nombre de situations par jour de la semaine',
     'chartsmenu_chart6': 'Gains et pertes par heure',
     'chartsmenu_chart7': 'Nombre de situations par heure',
+    'chartsmenu_chart8': "Évolution de l'énergie au cours du temps",
+    'chartsmenu_chart9': "Évolution de l'énergie en fonction des situations",
     'charts_title': 'Graphiques',
     'chart1_descr':
-        'Ce graphique affiche les gains et pertes d&rsquo;énergie par type de situation.<br><br>Les valeurs affichées sont une combinaison de la fréquence et l&rsquo;intensité de chaque type de situation.',
+        "Ce graphique affiche les gains et pertes d'énergie par type de situation.<br>Les valeurs affichées sont une combinaison de la fréquence et l'intensité de chaque type de situation.",
     'chart2_descr':
-        'Ce graphique affiche les fréquences de chaque type de situation.<br>Plus une barre est longue, plus une situation arrive souvent.<br><br>Les valeurs affichées sont les intensités moyennes de chaque type de situation.',
+        "Ce graphique affiche les fréquences de chaque type de situation.<br>Plus une barre est longue, plus une situation arrive souvent.<br><br>Les valeurs affichées sont les intensités moyennes de chaque type de situation.",
     'chart3_descr':
-        'Ce graphique affiche les intensités de chaque type de situation.<br>Plus une barre est longue, plus une situation est intense.<br><br>Les valeurs affichées sont les nombres moyens de survenue de chaque type de situation.',
+        "Ce graphique affiche les intensités de chaque type de situation.<br>Plus une barre est longue, plus une situation est intense.<br><br>Les valeurs affichées sont les nombres moyens de survenue de chaque type de situation.",
     'chart4_descr':
-        'Ce graphique affiche les gains et pertes d&rsquo;énergie par jour de la semaine.<br>Plus une barre est longue, plus une perte ou un gain est important.<br><br>Les valeurs affichées sont les cumuls des intensités des pertes ou des gains.',
+        "Ce graphique affiche les gains et pertes d'énergie par jour de la semaine.<br>Plus une barre est longue, plus une perte ou un gain est important.<br><br>Les valeurs affichées sont les cumuls des intensités des pertes ou des gains.",
     'chart5_descr':
-        'Ce graphique affiche les nombres de situations par jour de la semaine.<br>Plus une barre est longue, plus le nombre de situation est important.<br><br>Les valeurs affichées sont les cumuls des nombres de situations par jour de la semaine.',
+        "Ce graphique affiche les nombres de situations par jour de la semaine.<br>Plus une barre est longue, plus le nombre de situations est important.<br><br>Les valeurs affichées sont les cumuls des nombres de situations par jour de la semaine.",
     'chart6_descr':
-        'Ce graphique affiche les gains et pertes d&rsquo;énergie par heure.<br>Plus une barre est longue, plus une perte ou un gain est important.<br><br>Les valeurs affichées sont les cumuls des intensités des pertes ou des gains par heure.',
+        "Ce graphique affiche les gains et pertes d'énergie par heure.<br>Plus une barre est longue, plus une perte ou un gain est important.<br><br>Les valeurs affichées sont les cumuls des intensités des pertes ou des gains par heure.",
+    'chart7_descr':
+        "Ce graphique affiche le nombre de situations survenues par heure.<br>Plus une barre est longue, plus le nombre de situations est important.<br><br>Les valeurs affichées sont les cumuls des nombres de situations par heure.",
+    'chart8_descr':
+        "Ce graphique affiche l'évolution de l'énergie au cours du temps.<br><br>Les noms des situations ayant amené à chaque niveau d'énergie sont affichés.",
+    'chart9_descr':
+        "Ce graphique affiche l'évolution de l'énergie au cours des survenues des situations, indépendamment des périodes de temps écoulées entre elles.<br><br>Les noms des situations ayant amené à chaque niveau d'énergie sont affichés.",
   };
 
   static const frMap = {
-    'week_labels': [
-      'Lundi',
-      'Mardi',
-      'Mercredi',
-      'Jeudi',
-      'Vendredi',
-      'Samedi',
-      'Dimanche'
-    ]
+    'week_labels': ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
   };
 
   static const lexicon = {'en': en, 'fr': fr};

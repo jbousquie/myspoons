@@ -11,8 +11,7 @@ class ChartsMenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: Text(title)), body: buildContent(context));
+    return Scaffold(appBar: AppBar(title: Text(title)), body: buildContent(context));
   }
 
   destinationPage(BuildContext context, String title, ChartType chartType) {
@@ -22,8 +21,7 @@ class ChartsMenuPage extends StatelessWidget {
   }
 
   Widget buildContent(BuildContext context) {
-    final Localization local =
-        Provider.of<Settings>(context, listen: false).local;
+    final Localization local = Provider.of<Settings>(context, listen: false).local;
     final String title = local.txt('charts_title');
     List<Widget> menuList = [
       TextButton(
@@ -32,8 +30,7 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 1, title: local.txt('chartsmenu_chart1'));
+          final ChartType chartType = ChartType(type: 1, title: local.txt('chartsmenu_chart1'));
           chartType.description = local.txt('chart1_descr');
 
           destinationPage(context, title, chartType);
@@ -45,8 +42,7 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 2, title: local.txt('chartsmenu_chart2'));
+          final ChartType chartType = ChartType(type: 2, title: local.txt('chartsmenu_chart2'));
           chartType.description = local.txt('chart2_descr');
           destinationPage(context, title, chartType);
         },
@@ -57,8 +53,7 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 3, title: local.txt('chartsmenu_chart3'));
+          final ChartType chartType = ChartType(type: 3, title: local.txt('chartsmenu_chart3'));
           chartType.description = local.txt('chart3_descr');
           destinationPage(context, title, chartType);
         },
@@ -69,8 +64,7 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 4, title: local.txt('chartsmenu_chart4'));
+          final ChartType chartType = ChartType(type: 4, title: local.txt('chartsmenu_chart4'));
           chartType.labels = local.jsonMap('week_labels');
           chartType.description = local.txt('chart4_descr');
           destinationPage(context, title, chartType);
@@ -82,8 +76,7 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 5, title: local.txt('chartsmenu_chart5'));
+          final ChartType chartType = ChartType(type: 5, title: local.txt('chartsmenu_chart5'));
           chartType.labels = local.jsonMap('week_labels');
           chartType.description = local.txt('chart5_descr');
           destinationPage(context, title, chartType);
@@ -95,8 +88,7 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 6, title: local.txt('chartsmenu_chart6'));
+          final ChartType chartType = ChartType(type: 6, title: local.txt('chartsmenu_chart6'));
           chartType.description = local.txt('chart6_descr');
           destinationPage(context, title, chartType);
         },
@@ -107,9 +99,30 @@ class ChartsMenuPage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
         onPressed: () {
-          final ChartType chartType =
-              ChartType(type: 7, title: local.txt('chartsmenu_chart7'));
+          final ChartType chartType = ChartType(type: 7, title: local.txt('chartsmenu_chart7'));
           chartType.description = local.txt('chart7_descr');
+          destinationPage(context, title, chartType);
+        },
+      ),
+      TextButton(
+        child: Text(
+          local.txt('chartsmenu_chart8'),
+          textAlign: TextAlign.center,
+        ),
+        onPressed: () {
+          final ChartType chartType = ChartType(type: 8, title: local.txt('chartsmenu_chart8'));
+          chartType.description = local.txt('chart8_descr');
+          destinationPage(context, title, chartType);
+        },
+      ),
+      TextButton(
+        child: Text(
+          local.txt('chartsmenu_chart9'),
+          textAlign: TextAlign.center,
+        ),
+        onPressed: () {
+          final ChartType chartType = ChartType(type: 9, title: local.txt('chartsmenu_chart9'));
+          chartType.description = local.txt('chart9_descr');
           destinationPage(context, title, chartType);
         },
       ),

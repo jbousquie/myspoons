@@ -10,8 +10,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 // https://stackoverflow.com/questions/44816042/flutter-read-text-file-from-assets/54133627#54133627
 
 class ChartPage extends StatefulWidget {
-  const ChartPage({Key? key, required this.title, required this.chartType})
-      : super(key: key);
+  const ChartPage({Key? key, required this.title, required this.chartType}) : super(key: key);
   final String title;
   final ChartType chartType;
   @override
@@ -25,10 +24,12 @@ class ChartPageState extends State<ChartPage> {
   static String htmlFile = 'lib/assets/charts.html';
   static String jsLibFile = 'lib/assets/chart.umd.min.js';
   static String jsLib2File = 'lib/assets/chartjs-plugin-datalabels.min.js';
+  static String jsLib3File = 'lib/assets/chartjs-adapter-date-fns.bundle.min.js';
   static String jsCodeFile = 'lib/assets/mycharts.js';
   String htmlCode = '';
   String jsLib = '';
   String jsLib2 = '';
+  String jsLib3 = '';
   String jsCode = '';
 
   @override
@@ -48,8 +49,7 @@ class ChartPageState extends State<ChartPage> {
           onPageFinished: (String _) async {
             String data = await getData();
             final chartType = widget.chartType;
-            runJS(chartType.type, maxSpoonNb, data, chartType.labels,
-                chartType.title, chartType.description);
+            runJS(chartType.type, maxSpoonNb, data, chartType.labels, chartType.title, chartType.description);
           },
         ));
   }
@@ -58,10 +58,10 @@ class ChartPageState extends State<ChartPage> {
     htmlCode = await rootBundle.loadString(htmlFile);
     jsLib = await rootBundle.loadString(jsLibFile);
     jsLib2 = await rootBundle.loadString(jsLib2File);
+    jsLib3 = await rootBundle.loadString(jsLib3File);
     jsCode = await rootBundle.loadString(jsCodeFile);
-    _controller.loadUrl(Uri.dataFromString(htmlCode,
-            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
-        .toString());
+    _controller
+        .loadUrl(Uri.dataFromString(htmlCode, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
   }
 
   Future<String> getData() async {
@@ -70,16 +70,23 @@ class ChartPageState extends State<ChartPage> {
     return data;
   }
 
-  runJS(int chartType, int maxSpoonNb, String data, String labels, String title,
-      String description) {
+  runJS(int chartType, int maxSpoonNb, String data, String labels, String title, String description) {
+    const htmlEscapeMode =
+        HtmlEscapeMode(name: 'custom', escapeLtGt: false, escapeQuot: true, escapeSlash: true, escapeApos: true);
+    const HtmlEscape htmlEscape = HtmlEscape(htmlEscapeMode);
+
     // first run the JS files
     _controller.runJavascript(jsLib);
     _controller.runJavascript(jsLib2);
+    _controller.runJavascript(jsLib3);
     _controller.runJavascript(jsCode);
 
     final String escaped = data.replaceAll('\n', '\\n');
+    final String htmlEscaped = htmlEscape.convert(escaped);
+    final String htmlTitle = htmlEscape.convert(title);
+    final String htmlDescription = htmlEscape.convert(description);
     final String jsString =
-        'init($chartType,$maxSpoonNb,\'$escaped\',\'$labels\',\'$title\',\'$description\');';
+        'init($chartType,$maxSpoonNb,\'$htmlEscaped\',\'$labels\',\'$htmlTitle\',\'$htmlDescription\');';
     _controller.runJavascript(jsString);
   }
 }
