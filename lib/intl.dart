@@ -24,6 +24,11 @@ class Localization {
     'set_confirm_cancel': 'CANCEL',
     'set_confirm_ok': 'OK',
     'set_snackbar': 'Data file deleted',
+    'set_donation_button': 'About My Daily Spoons',
+    'donation_title': 'About',
+    'donation_text':
+        'My Daily Spoon\nversion 1.0.0\n\nThis application allows Aspie (autistic) people to log along the day their energy expressed in number of spoons in order to understand when and what causes energy losses or gains to them.\n\nSpoon Theory :\n',
+    'theory_link': 'https://en.wikipedia.org/wiki/Spoon_theory',
     'set_nodata': 'No data avalaible',
     'main_title': 'My Daily Spoons',
     'main_label': 'No spoon yet today',
@@ -85,6 +90,11 @@ class Localization {
     'main_title': 'Mes cuillères du jour',
     'main_label': 'Rien encore spooné aujourd\'hui',
     'main_log_date': 'Spooné le dernier coup à',
+    'set_donation_button': 'À propos de My Daily Spoons',
+    'donation_title': 'À propos',
+    'donation_text':
+        "My Daily Spoon\nversion 1.0.0\n\nCette application permet d'aider les personnes avec un TSA (autisme Asperger) à comprendre les moments et les causes de leur perte ou gain d'énergie, exprimée en nombre de cuillères, tout au long de la journée, jour après jour.\n\nThéorie des cuillères :\n",
+    'theory_link': 'https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_cuill%C3%A8res',
     'main_snackbar': 'Spooné !',
     'chartsmenu_title': 'Menu Visualisation',
     'chartsmenu_chart1': 'Gains et pertes par situation',
