@@ -32,7 +32,8 @@ class DonationPage extends StatelessWidget {
                       if (await canLaunchUrlString(url)) {
                         await launchUrlString(url);
                       }
-                    })
+                    }),
+              TextSpan(text: local.txt('credits'))
             ]))));
   }
 }
