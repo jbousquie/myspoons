@@ -10,7 +10,8 @@ import 'package:webview_flutter/webview_flutter.dart';
 // https://stackoverflow.com/questions/44816042/flutter-read-text-file-from-assets/54133627#54133627
 
 class ChartPage extends StatefulWidget {
-  const ChartPage({Key? key, required this.title, required this.chartType}) : super(key: key);
+  const ChartPage({Key? key, required this.title, required this.chartType})
+      : super(key: key);
   final String title;
   final ChartType chartType;
   @override
@@ -24,7 +25,8 @@ class ChartPageState extends State<ChartPage> {
   static String htmlFile = 'lib/assets/charts.html';
   static String jsLibFile = 'lib/assets/chart.umd.min.js';
   static String jsLib2File = 'lib/assets/chartjs-plugin-datalabels.min.js';
-  static String jsLib3File = 'lib/assets/chartjs-adapter-date-fns.bundle.min.js';
+  static String jsLib3File =
+      'lib/assets/chartjs-adapter-date-fns.bundle.min.js';
   static String jsCodeFile = 'lib/assets/mycharts.js';
   String htmlCode = '';
   String jsLib = '';
@@ -49,7 +51,8 @@ class ChartPageState extends State<ChartPage> {
           onPageFinished: (String _) async {
             String data = await getData();
             final chartType = widget.chartType;
-            runJS(chartType.type, maxSpoonNb, data, chartType.labels, chartType.title, chartType.description);
+            runJS(chartType.type, maxSpoonNb, data, chartType.labels,
+                chartType.title, chartType.description);
           },
         ));
   }
@@ -60,8 +63,9 @@ class ChartPageState extends State<ChartPage> {
     jsLib2 = await rootBundle.loadString(jsLib2File);
     jsLib3 = await rootBundle.loadString(jsLib3File);
     jsCode = await rootBundle.loadString(jsCodeFile);
-    _controller
-        .loadUrl(Uri.dataFromString(htmlCode, mimeType: 'text/html', encoding: Encoding.getByName('utf-8')).toString());
+    _controller.loadUrl(Uri.dataFromString(htmlCode,
+            mimeType: 'text/html', encoding: Encoding.getByName('utf-8'))
+        .toString());
   }
 
   Future<String> getData() async {
@@ -70,9 +74,14 @@ class ChartPageState extends State<ChartPage> {
     return data;
   }
 
-  runJS(int chartType, int maxSpoonNb, String data, String labels, String title, String description) {
-    const htmlEscapeMode =
-        HtmlEscapeMode(name: 'custom', escapeLtGt: false, escapeQuot: true, escapeSlash: true, escapeApos: true);
+  runJS(int chartType, int maxSpoonNb, String data, String labels, String title,
+      String description) {
+    const htmlEscapeMode = HtmlEscapeMode(
+        name: 'custom',
+        escapeLtGt: false,
+        escapeQuot: true,
+        escapeSlash: true,
+        escapeApos: true);
     const HtmlEscape htmlEscape = HtmlEscape(htmlEscapeMode);
 
     // first run the JS files
