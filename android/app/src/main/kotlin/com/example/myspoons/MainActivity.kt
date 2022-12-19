@@ -1,4 +1,4 @@
-package com.example.myspoons
+package fr.bousquie.myspoons
 
 import io.flutter.embedding.android.FlutterActivity
 
