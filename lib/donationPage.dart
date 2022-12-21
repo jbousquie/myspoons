@@ -31,7 +31,8 @@ class DonationPage extends StatelessWidget {
                       text: local.txt('theory_link'),
                       style: const TextStyle(
                           color: Colors.blueAccent,
-                          fontStyle: FontStyle.italic),
+                          fontStyle: FontStyle.italic,
+                          fontSize: 24),
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           final String url = local.txt('theory_link');
