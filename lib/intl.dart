@@ -30,7 +30,7 @@ class Localization {
     'donation_title': 'About',
     'donation_text':
         'My Daily Spoon\nversion 1.0.0\n\nThis application allows Aspie (autistic) people to log along the day their energy expressed in number of spoons in order to understand when and what causes energy losses or gains to them.\n\nSpoon Theory :\n',
-    'theory_link': 'https://en.wikipedia.org/wiki/Spoon_theory',
+    'theory_link': 'https://en.m.wikipedia.org/wiki/Spoon_theory',
     'credits':
         "\n\n\nCREDITS :\n\nThis is a non-commercial application. It's free and with no ads.\nIts open-source code is available on Github (https://github.com/jbousquie/myspoons).\nIt's coded with Flutter and ChartJS.\nIts icons, designed by FreePik and available on www.flaticon.com, are royalty-free.",
     'set_nodata': 'No data avalaible',
@@ -86,7 +86,7 @@ class Localization {
     'set_language': 'Langue',
     'set_max_spoon': 'Nombre maximum de cuillères',
     'set_reset_max':
-        'Réinitialiser tous les jours\n le nombre de cuillères à son maximum ',
+        'Réinitialiser tous les jours\n le nombre de cuillères\n à son maximum ',
     'set_enable_reminder': 'Activer le rappel automatique',
     'set_remind_every': 'Me rappeler toutes les',
     'set_hours': 'heures chaque jour',
@@ -109,7 +109,7 @@ class Localization {
     'donation_text':
         "My Daily Spoon\nversion 1.0.0\n\nCette application permet d'aider les personnes avec un TSA (autisme Asperger) à comprendre les moments et les causes de leur perte ou gain d'énergie, exprimée en nombre de cuillères, tout au long de la journée, jour après jour.\n\nThéorie des cuillères :\n",
     'theory_link':
-        'https://fr.wikipedia.org/wiki/Th%C3%A9orie_des_cuill%C3%A8res',
+        'https://fr.m.wikipedia.org/wiki/th%c3%a9orie_des_cuill%c3%a8res',
     'credits':
         "\n\n\nCRÉDITS :\n\nCette application est à usage non-commercial. Elle est gratuite et sans publicité.\nSon code en open-source est disponible sur Github (https://github.com/jbousquie/myspoons).\nElle est développé avec Flutter et ChartJS.\nLes icônes utilisées sont libres de droit, produites par FreePik et disponibles sur le site www.flaticon.com.",
     'main_snackbar': 'Spooné !',

@@ -1,7 +1,9 @@
 // ignore: file_names
 import 'package:flutter/gestures.dart';
+// ignore: file_names
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher_string.dart';
+// ignore: file_names
+import 'package:url_launcher/url_launcher.dart';
 import 'intl.dart';
 // ignore: file_names
 import 'package:provider/provider.dart';
@@ -36,8 +38,9 @@ class DonationPage extends StatelessWidget {
                       recognizer: TapGestureRecognizer()
                         ..onTap = () async {
                           final String url = local.txt('theory_link');
-                          if (await canLaunchUrlString(url)) {
-                            await launchUrlString(url);
+                          final Uri uri = Uri.parse(url);
+                          if (await canLaunchUrl(uri)) {
+                            await launchUrl(uri);
                           }
                         }),
                   TextSpan(text: local.txt('credits'))

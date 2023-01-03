@@ -1,5 +1,6 @@
 // ignore: file_names
 import 'package:flutter/material.dart';
+// ignore: file_names
 import 'package:myspoons/donationPage.dart';
 // ignore: file_names
 import 'package:provider/provider.dart';
@@ -60,7 +61,6 @@ class SettingsPage extends StatelessWidget {
                 .toList(),
             onChanged: (value) {
               selectedValue = settings.updateLanguage(value);
-              ;
             },
           )
         ])
