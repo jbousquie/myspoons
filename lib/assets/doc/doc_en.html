@@ -1,0 +1,95 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset ="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+        <style>
+            .container{
+                color: dimGrey;                
+            }
+            h1{
+                margin-bottom: 1.2em;
+                font-size: 3em;
+                text-align: center;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h1>My Daily Spoon<br>Mode d'emploi</h1>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    My Daily Spoons est une petite application pour enregistrer des niveaux d'énergie ressentis au cours de la journée.<br>
+                    Elle permet de plus d'associer à chaque enregistrement d'un niveau d'énergie un court texte désignant la cause ou l'évènement ayant conduit à ce niveau.<br>
+                    <br>
+                    L'utilisation est très simple et tout peut être réalisé avec un seul pouce :<br>
+                    - on règle son niveau d'énergie actuel, compté en nombre de cuillères<br>
+                    - on saisit un ou plusieurs mots associés  à ce niveau d'énergie (facultatif)<br>
+                    - on enregistre la mesure<br>
+                    <br>
+                    ...et on recommence, plus tard, à un autre moment qui nous convient.
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <img src="SpoonMainEN.png" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    Pour régler le niveau d'énergie ou le nombre de cuillères, on déplace simplement verticalement le curseur (le gros rond bleu) jusqu'à la position voulue.<br>
+                    <br>
+                    Pour associer une cause ou un évènement à ce nombre de cuillères, on appuie un coup sur la zone de texte sous les cuillères (le rectangle dans lequel est écrit <i>"Spooné le dernier coup à 14:07"</i> sur l'image de gauche).<br>
+                    <br>
+                    Enfin, pour enregistrer ce nombre de cuillères et cet évènement, on tape un coup sur le bouton "Cuillère", c'est à dire le rond bleu contenant une cuillère.
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    On peut saisir le texte, puis déplacer le curseur ou faire dans l'ordre inverse, comme bon nous semble.<br>
+                    On peut modifier les valeurs autant qu'on le souhaite, rien n'est enregistré tant que le bouton bleu "Cuillère" n'est pas pressé.<br><br>
+                    Quand on presse un coup sur le bouton bleu "Cuillère", le nombre de cuillères, le niveau d'énergie actuel et les mots inscrits dans la zone de texte sont enregistrés, mais aussi l'heure, la date et le nom du jour de la semaine.<br>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <img src="SpoonKeyboard.png"  width="270" height="280" alt="keyboard">
+                </div>
+                <div class="col">
+                    <b>Astuce</b><br><br>
+                    Un petit clavier apparaît quand on appuie un coup dans la zone de texte.<br>
+                    Au lieu de taper sur les lettres du clavier, on peut appuyer une fois sur l'icône représentant un petit micro alors placée sous le bouton bleu "Cuillère" et dicter oralement les mots qu'on souhaite associer au nombre de cuillères en cours.<br>
+                </div>
+            </div>
+            <div class="row mb-5 text-center">
+                <div class="col">
+                    Si vous aimez cette application, n'hésitez pas à <a href="https://www.buymeacoffee.com/jbousquie">me soutenir</a> pour que je continue à l'améliorer</a>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <b>Note 1 :</b> Appuyer sur la touche de validation &check; du clavier fait simplement disparaître ce dernier, mais n'enregistre rien. Pour enregistrer un texte et un nombre de cuillères, il faut bien appuyer sur le bouton bleu "Cuillère".<br>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <b>Note 2 :</b> Pour l'analyse statistique des enregistrements et le tracé des graphiques, seuls les mots d'au moins 4 lettres sont retenus.<br>
+                    L'analyse est plus pertinente quand les mêmes mots simples sont toujours utilisés pour désigner les mêmes choses. <br>
+                    Exemple : <i>"faim", "bruit", "foule", "réunion"</i> plutôt que <i>"j'ai envie de manger", "j'ai faim", "il y a trop de monde", "trop bruyant ici"</i>, etc.
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <b>Note 3 :</b> Saisir son niveau d'énergie à intervalles réguliers (par exemple toutes les heures) ou chaque fois qu'il varie permet d'en suivre les évolutions, c'est à dire d'identifier d'une situation à l'autre, les gains ou les pertes d'énergie.<br><br>
+                    Si on ne saisit pas chaque variation ou pas régulièrement, mais uniquement certains niveaux à certains moments ponctuels dans la journée, alors les notions de gains ou de pertes ne seront plus pertinentes. Les graphiques mesurant des gains ou des pertes ne seront donc pas non plus pertinents.<br>
+                    Dans ce dernier cas, seuls les <u>niveaux</u> d'énergie, mais pas les <u>variations</u> de ces niveaux (gain/perte), seront significatifs.
+            </div>
+        </div>
+    </body>
+</html>
