@@ -11,8 +11,7 @@ class Localization {
     'set_title': 'Settings',
     'set_language': 'Language',
     'set_max_spoon': 'Maximum spoon number',
-    'set_reset_max':
-        'Daily reset the initial spoon\nnumber to its maximum value',
+    'set_reset_max': 'Daily reset the initial spoon\nnumber to its maximum value',
     'set_enable_reminder': 'Enable reminder',
     'set_remind_every': 'Remind me for a week every',
     'set_hours': 'hour(s)',
@@ -21,8 +20,7 @@ class Localization {
     'set_daily': 'daily',
     'set_reset_file': 'Reset data file',
     'set_confirm_title': 'Warning',
-    'set_confirm_body':
-        'This reset will erase all the data collected until now.\n\nDo you confirm this action ?',
+    'set_confirm_body': 'This reset will erase all the data collected until now.\n\nDo you confirm this action ?',
     'set_confirm_cancel': 'CANCEL',
     'set_confirm_ok': 'OK',
     'set_snackbar': 'Data file deleted',
@@ -33,6 +31,9 @@ class Localization {
     'theory_link': 'https://en.m.wikipedia.org/wiki/Spoon_theory',
     'credits':
         "\n\n\nCREDITS :\n\nThis is a non-commercial application. It's free and with no ads.\nIts open-source code is available on Github (https://github.com/jbousquie/myspoons).\nIt's coded with Flutter and ChartJS.\nIts icons, designed by FreePik and available on www.flaticon.com, are royalty-free.",
+    'set_documentation': 'User Manual',
+    'documentation_link': 'https://jerome.bousquie.fr/myspoons/doc/doc_en.html',
+    'set_lefthanded': 'Left-handed mode',
     'set_nodata': 'No data avalaible',
     'main_title': 'My Daily Spoons',
     'main_label': 'No spoon yet today',
@@ -70,23 +71,14 @@ class Localization {
   };
 
   static const enMap = {
-    'week_labels': [
-      'Monday',
-      'Tuesday',
-      'Wednesday',
-      'Thursday',
-      'Friday',
-      'Saturday',
-      'Sunday'
-    ]
+    'week_labels': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
   };
 
   static const fr = {
     'set_title': 'Paramètres',
     'set_language': 'Langue',
     'set_max_spoon': 'Nombre maximum de cuillères',
-    'set_reset_max':
-        'Réinitialiser tous les jours\n le nombre de cuillères\n à son maximum ',
+    'set_reset_max': 'Réinitialiser tous les jours\n le nombre de cuillères\n à son maximum ',
     'set_enable_reminder': 'Activer le rappel automatique',
     'set_remind_every': 'Me rappeler toutes les',
     'set_hours': 'heures chaque jour',
@@ -95,11 +87,13 @@ class Localization {
     'set_daily': 'pendant une semaine',
     'set_reset_file': 'Effacer les données',
     'set_confirm_title': 'Attention',
-    'set_confirm_body':
-        'Cette action va supprimer toutes les données collectées jusqu\'à présent.\n\nConfirmer ?',
+    'set_confirm_body': 'Cette action va supprimer toutes les données collectées jusqu\'à présent.\n\nConfirmer ?',
     'set_confirm_cancel': 'ABANDONNER',
     'set_confirm_ok': 'CONFIRMER',
     'set_snackbar': 'Fichier de données supprimé',
+    'set_documentation': "Mode d'emploi",
+    'set_lefthanded': 'Mode gaucher',
+    'documentation_link': 'https://jerome.bousquie.fr/myspoons/doc/doc_fr.html',
     'set_nodata': 'Aucune donnée disponible',
     'main_title': 'Mes cuillères du jour',
     'main_label': 'Rien encore spooné aujourd\'hui',
@@ -108,8 +102,7 @@ class Localization {
     'donation_title': 'À propos',
     'donation_text':
         "My Daily Spoon\nversion 1.0.0\n\nCette application permet d'aider les personnes avec un TSA (autisme Asperger) à comprendre les moments et les causes de leur perte ou gain d'énergie, exprimée en nombre de cuillères, tout au long de la journée, jour après jour.\n\nThéorie des cuillères :\n",
-    'theory_link':
-        'https://fr.m.wikipedia.org/wiki/th%c3%a9orie_des_cuill%c3%a8res',
+    'theory_link': 'https://fr.m.wikipedia.org/wiki/th%c3%a9orie_des_cuill%c3%a8res',
     'credits':
         "\n\n\nCRÉDITS :\n\nCette application est à usage non-commercial. Elle est gratuite et sans publicité.\nSon code en open-source est disponible sur Github (https://github.com/jbousquie/myspoons).\nElle est développé avec Flutter et ChartJS.\nLes icônes utilisées sont libres de droit, produites par FreePik et disponibles sur le site www.flaticon.com.",
     'main_snackbar': 'Spooné !',
@@ -145,15 +138,7 @@ class Localization {
   };
 
   static const frMap = {
-    'week_labels': [
-      'Lundi',
-      'Mardi',
-      'Mercredi',
-      'Jeudi',
-      'Vendredi',
-      'Samedi',
-      'Dimanche'
-    ]
+    'week_labels': ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']
   };
 
   static const lexicon = {'en': en, 'fr': fr};

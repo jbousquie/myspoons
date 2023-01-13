@@ -68,6 +68,9 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final local = Provider.of<Settings>(context, listen: true).local;
+    final settings = Provider.of<Settings>(context, listen: true);
+    FloatingActionButtonLocation fabLocation =
+        settings.leftHanded ? FloatingActionButtonLocation.startFloat : FloatingActionButtonLocation.endFloat;
     return Scaffold(
       appBar: AppBar(title: Text(local.txt('main_title')), actions: [
         IconButton(
@@ -86,6 +89,7 @@ class MyHomePage extends StatelessWidget {
             icon: const Icon(Icons.settings))
       ]),
       body: Center(child: SingleChildScrollView(child: buildContent(context))),
+      floatingActionButtonLocation: fabLocation,
       floatingActionButton: FloatingActionButton(
           child: buttonIcon,
           onPressed: () {
@@ -95,23 +99,26 @@ class MyHomePage extends StatelessWidget {
                 duration: const Duration(seconds: 2),
                 backgroundColor: Colors.blueAccent));
           }),
-      //resizeToAvoidBottomInset: false,
     );
   }
 
   buildContent(BuildContext context) {
     int energyRate = Provider.of<SpoonTracker>(context, listen: true).energyRate;
     int spoonNb = Provider.of<SpoonTracker>(context, listen: true).spoonNb;
+    final Settings settings = Provider.of<Settings>(context, listen: true);
+    final Row row = settings.leftHanded
+        ? Row(children: [
+            Expanded(child: buildSlider(context, energyRate)),
+            Expanded(child: buildSpoonGrid(spoonNb, context), flex: 2),
+          ])
+        : Row(children: [
+            Expanded(child: buildSpoonGrid(spoonNb, context), flex: 2),
+            Expanded(child: buildSlider(context, energyRate))
+          ]);
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(children: [
-          Expanded(child: buildSpoonGrid(spoonNb, context), flex: 2),
-          Expanded(child: buildSlider(context, energyRate))
-        ]),
-        buildInputField(context)
-      ],
+      children: [row, buildInputField(context)],
     );
   }
 
