@@ -17,7 +17,8 @@ class SpoonTracker extends ChangeNotifier {
   String _comment = '';
   late String _dateString = stringDateNow();
   final String _filename = 'myspoons.csv';
-  final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
+  final String _columns =
+      'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
   final Settings settings = Settings();
   DateTime now = DateTime.now();
   late int dayLastSession = now.day;
@@ -84,7 +85,8 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   String cleanComment(String comment) {
-    String cleaned = comment.replaceAll(";", ",").replaceAll("'", " ").replaceAll('"', ' ');
+    String cleaned =
+        comment.replaceAll(";", ",").replaceAll("'", " ").replaceAll('"', ' ');
     return cleaned;
   }
 
@@ -101,14 +103,15 @@ class SpoonTracker extends ChangeNotifier {
     }
   }
 
-  Future<File> _writeData(
-      String dateString, int weekday, int energyRate, int spoonNb, int maxSpoonNb, String comment) async {
+  Future<File> _writeData(String dateString, int weekday, int energyRate,
+      int spoonNb, int maxSpoonNb, String comment) async {
     final file = await localFile;
     if (!await file.exists()) {
       file.writeAsStringSync(_columns);
     }
     final String cleaned = cleanComment(comment);
-    final row = '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$cleaned\n';
+    final row =
+        '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$cleaned\n';
     file.writeAsString(row, mode: FileMode.append);
     return file;
   }
@@ -143,7 +146,8 @@ class SpoonTracker extends ChangeNotifier {
     await prefs.setInt('energyrate', _energyRate);
     await prefs.setInt('spoonNb', _spoonNb);
     await prefs.setString('comment', _comment);
-    await _writeData(_dateString, weekday, _energyRate, _spoonNb, settings.maxSpoonNb, _comment);
+    await _writeData(_dateString, weekday, _energyRate, _spoonNb,
+        settings.maxSpoonNb, _comment);
 
     DateTime now = DateTime.now();
     monthLastSession = now.month;
@@ -182,7 +186,8 @@ class Settings extends ChangeNotifier {
   int minuteStop = 0;
   Localization local = Localization('en');
 
-  TimeOfDay resetMaxSpoonTime = TimeOfDay(hour: defaultResetMaxSpoonHour, minute: 0);
+  TimeOfDay resetMaxSpoonTime =
+      TimeOfDay(hour: defaultResetMaxSpoonHour, minute: 0);
   TimeOfDay reminderStart = TimeOfDay(hour: defaultHourStart, minute: 0);
   TimeOfDay reminderStop = TimeOfDay(hour: defaultHourStop, minute: 0);
   late DateTime lastNotificationDate;
@@ -200,6 +205,7 @@ class Settings extends ChangeNotifier {
 
   set leftHanded(bool value) {
     _leftHanded = value;
+    storeSettings();
     notifyListeners();
   }
 
@@ -246,15 +252,21 @@ class Settings extends ChangeNotifier {
     return local.language;
   }
 
-  Future<void> updateReminder(bool enabled, int period, TimeOfDay notifierStart, TimeOfDay notifierStop) async {
+  Future<void> updateReminder(bool enabled, int period, TimeOfDay notifierStart,
+      TimeOfDay notifierStop) async {
     localNotificationService.plugin.cancelAll();
     enableReminder = enabled;
     reminderPeriod = period;
     reminderStart = notifierStart;
     reminderStop = notifierStop;
     if (enableReminder) {
-      lastNotificationDate = await localNotificationService.scheduleNotifications(
-          notificationTitle, notificationBody, period, notifierStart, notifierStop);
+      lastNotificationDate =
+          await localNotificationService.scheduleNotifications(
+              notificationTitle,
+              notificationBody,
+              period,
+              notifierStart,
+              notifierStop);
     }
     storeSettings();
     notifyListeners();
