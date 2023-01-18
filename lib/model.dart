@@ -16,6 +16,7 @@ class SpoonTracker extends ChangeNotifier {
   late int _spoonNb = _computeSpoonNb(_energyRate);
   String _comment = '';
   String _exportReport = '';
+  String _uuid = '';
   late String _dateString = stringDateNow();
   final String _filename = 'myspoons.csv';
   final String collectURL = 'https://jerome.bousquie.fr/myspoons/collect/';
@@ -63,6 +64,19 @@ class SpoonTracker extends ChangeNotifier {
   set exportReport(value) {
     _exportReport = value;
     notifyListeners();
+  }
+
+  get uuid async {
+    final prefs = await SharedPreferences.getInstance();
+    _uuid = prefs.getString('uuid') ?? await generateUuid();
+    return _uuid;
+  }
+
+  Future<String> generateUuid() async {
+    final prefs = await SharedPreferences.getInstance();
+    final String uuid = UniqueKey().toString();
+    prefs.setString('uuid', uuid);
+    return uuid;
   }
 
   Future<String> get _path async {

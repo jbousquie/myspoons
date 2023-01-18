@@ -71,7 +71,11 @@ class DataExportPage extends StatelessWidget {
     final String url = provider.collectURL;
     final uri = Uri.parse(url);
     final request = http.MultipartRequest('POST', uri);
-    request.fields['user'] = 'toto';
+    request.fields['name'] = 'myspoons.csv';
+    request.fields['uuid'] = await provider.uuid;
+    request.fields['gender'] = 'F';
+    request.fields['birth'] = '1990';
+    request.fields['lang'] = 'EN';
     request.files.add(http.MultipartFile.fromString('data', data,
         contentType: MediaType('text', 'csv')));
     final response = await request.send();
