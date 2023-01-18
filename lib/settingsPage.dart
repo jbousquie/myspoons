@@ -15,17 +15,22 @@ import 'intl.dart';
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key, required this.title}) : super(key: key);
   final String title;
-  static TextStyle textStyle = const TextStyle(color: Colors.blueGrey, fontSize: 20);
+  static TextStyle textStyle =
+      const TextStyle(color: Colors.blueGrey, fontSize: 20);
 
   @override
   Widget build(BuildContext context) {
-    final Localization local = Provider.of<Settings>(context, listen: true).local;
-    return Scaffold(appBar: AppBar(title: Text(local.txt('set_title'))), body: buildSettingsContent(context));
+    final Localization local =
+        Provider.of<Settings>(context, listen: true).local;
+    return Scaffold(
+        appBar: AppBar(title: Text(local.txt('set_title'))),
+        body: buildSettingsContent(context));
   }
 
   // return a list of DropdownMenuItem from a list of integers
   List<DropdownMenuItem> _listDropdownMenuItemFromList(List<int> list) {
-    List<DropdownMenuItem> itemList = list.map<DropdownMenuItem<int>>((int value) {
+    List<DropdownMenuItem> itemList =
+        list.map<DropdownMenuItem<int>>((int value) {
       return DropdownMenuItem<int>(
           value: value,
           child: Text(
@@ -50,12 +55,13 @@ class SettingsPage extends StatelessWidget {
           DropdownButton(
             value: selectedValue,
             items: languages
-                .map<DropdownMenuItem<String>>((lang) => DropdownMenuItem<String>(
-                    value: lang,
-                    child: Text(
-                      lang,
-                      style: textStyle,
-                    )))
+                .map<DropdownMenuItem<String>>(
+                    (lang) => DropdownMenuItem<String>(
+                        value: lang,
+                        child: Text(
+                          lang,
+                          style: textStyle,
+                        )))
                 .toList(),
             onChanged: (value) {
               selectedValue = settings.updateLanguage(value);
@@ -68,7 +74,8 @@ class SettingsPage extends StatelessWidget {
 
   buildMaxSpoonNbSelector(BuildContext context) {
     List<int> list = [8, 10, 12, 14, 16, 18, 20];
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     Settings provider = Provider.of<Settings>(context, listen: true);
     int selectedValue = provider.maxSpoonNb;
     bool enableReset = provider.enableMaxSpoonReset;
@@ -102,12 +109,15 @@ class SettingsPage extends StatelessWidget {
 
   buildAppNotifierSelector(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: true);
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     return Row(children: [
       Switch(
         value: provider.enableReminder,
-        onChanged: (value) =>
-            {provider.updateReminder(value, provider.reminderPeriod, provider.reminderStart, provider.reminderStop)},
+        onChanged: (value) => {
+          provider.updateReminder(value, provider.reminderPeriod,
+              provider.reminderStart, provider.reminderStop)
+        },
       ),
       Text(
         local.txt('set_enable_reminder'),
@@ -118,7 +128,8 @@ class SettingsPage extends StatelessWidget {
 
   Widget buildAppNotifierParameters(BuildContext context) {
     Settings provider = Provider.of<Settings>(context, listen: true);
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     bool enabled = provider.enableReminder;
     if (!enabled) {
       return const SizedBox(width: 0, height: 0);
@@ -127,8 +138,10 @@ class SettingsPage extends StatelessWidget {
     TimeOfDay notifierStart = provider.reminderStart;
     TimeOfDay notifierStop = provider.reminderStop;
     final localizations = MaterialLocalizations.of(context);
-    final formattedStart = localizations.formatTimeOfDay(notifierStart, alwaysUse24HourFormat: true);
-    final formattedStop = localizations.formatTimeOfDay(notifierStop, alwaysUse24HourFormat: true);
+    final formattedStart = localizations.formatTimeOfDay(notifierStart,
+        alwaysUse24HourFormat: true);
+    final formattedStop = localizations.formatTimeOfDay(notifierStop,
+        alwaysUse24HourFormat: true);
 
     List<int> list = [1, 2, 3, 4, 5, 6, 7, 8];
     return Column(
@@ -139,7 +152,8 @@ class SettingsPage extends StatelessWidget {
               items: _listDropdownMenuItemFromList(list),
               value: period,
               onChanged: (value) {
-                provider.updateReminder(enabled, value, notifierStart, notifierStop);
+                provider.updateReminder(
+                    enabled, value, notifierStart, notifierStop);
               }),
           Text(" ${local.txt('set_hours')}", style: textStyle),
         ]),
@@ -151,9 +165,11 @@ class SettingsPage extends StatelessWidget {
           TextButton(
             child: Text(formattedStart),
             onPressed: () async {
-              TimeOfDay? startHour = await showTimePicker(context: context, initialTime: notifierStart);
+              TimeOfDay? startHour = await showTimePicker(
+                  context: context, initialTime: notifierStart);
               notifierStart = startHour ?? notifierStart;
-              provider.updateReminder(enabled, period, notifierStart, notifierStop);
+              provider.updateReminder(
+                  enabled, period, notifierStart, notifierStop);
             },
           ),
           Text(
@@ -163,9 +179,11 @@ class SettingsPage extends StatelessWidget {
           TextButton(
             child: Text(formattedStop),
             onPressed: () async {
-              TimeOfDay? stopHour = await showTimePicker(context: context, initialTime: notifierStop);
+              TimeOfDay? stopHour = await showTimePicker(
+                  context: context, initialTime: notifierStop);
               notifierStop = stopHour ?? notifierStop;
-              provider.updateReminder(enabled, period, notifierStart, notifierStop);
+              provider.updateReminder(
+                  enabled, period, notifierStart, notifierStop);
             },
           ),
           Text(local.txt('set_daily'), style: textStyle)
@@ -177,7 +195,8 @@ class SettingsPage extends StatelessWidget {
   Widget buildFileResetButton(BuildContext context) {
     ScaffoldMessengerState scaffoldMessenger = ScaffoldMessenger.of(context);
     SpoonTracker provider = Provider.of<SpoonTracker>(context, listen: false);
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     Widget resetButton = TextButton(
         child: Text(local.txt('set_reset_file')),
         onPressed: () async {
@@ -192,7 +211,8 @@ class SettingsPage extends StatelessWidget {
                                 onPressed: () => Navigator.pop(context, false),
                                 child: Text(local.txt('set_confirm_cancel'))),
                             TextButton(
-                                onPressed: () => Navigator.pop(context, true), child: Text(local.txt('set_confirm_ok')))
+                                onPressed: () => Navigator.pop(context, true),
+                                child: Text(local.txt('set_confirm_ok')))
                           ])) ??
               false;
           if (confirmed) {
@@ -207,7 +227,8 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget buildDonationPageButton(BuildContext context) {
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     Widget donationPageButton = TextButton(
       child: Text(local.txt('set_donation_button')),
       onPressed: () => {
@@ -220,11 +241,15 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget buildDocumentationLinkText(BuildContext context) {
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     final RichText documentationLink = RichText(
         text: TextSpan(
-            text: local.txt('set_documentation'),
-            style: const TextStyle(color: Colors.blueAccent, fontStyle: FontStyle.italic, fontSize: 24),
+            text: "\n${local.txt('set_documentation')}\n\n",
+            style: const TextStyle(
+                color: Colors.blueAccent,
+                fontStyle: FontStyle.italic,
+                fontSize: 24),
             recognizer: TapGestureRecognizer()
               ..onTap = () async {
                 final String url = local.txt('documentation_link');
@@ -237,7 +262,8 @@ class SettingsPage extends StatelessWidget {
   }
 
   Widget buildLeftHandSelector(BuildContext context) {
-    final Localization local = Provider.of<Settings>(context, listen: false).local;
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
     final Settings provider = Provider.of<Settings>(context, listen: true);
     final leftHandSelector = Row(children: [
       Switch(
@@ -263,6 +289,8 @@ class SettingsPage extends StatelessWidget {
       buildDonationPageButton(context),
       buildFileResetButton(context)
     ];
-    return Padding(padding: const EdgeInsets.all(12.0), child: Column(children: childrenList));
+    return Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(children: childrenList));
   }
 }

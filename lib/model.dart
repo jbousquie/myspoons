@@ -15,8 +15,10 @@ class SpoonTracker extends ChangeNotifier {
   int _energyRate = maxEnergyRate;
   late int _spoonNb = _computeSpoonNb(_energyRate);
   String _comment = '';
+  String _exportReport = '';
   late String _dateString = stringDateNow();
   final String _filename = 'myspoons.csv';
+  final String collectURL = 'https://jerome.bousquie.fr/myspoons/collect/';
   final String _columns =
       'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
   final Settings settings = Settings();
@@ -51,6 +53,15 @@ class SpoonTracker extends ChangeNotifier {
 
   set comment(value) {
     _comment = value;
+    notifyListeners();
+  }
+
+  get exportReport {
+    return _exportReport;
+  }
+
+  set exportReport(value) {
+    _exportReport = value;
     notifyListeners();
   }
 

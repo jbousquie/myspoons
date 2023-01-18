@@ -58,6 +58,7 @@ class Localization {
     'chartsmenu_chart7': 'Event Number By Hour',
     'chartsmenu_chart8': 'Energy Evolution through Time',
     'chartsmenu_chart9': 'Energy Evolution through Event Occurrences',
+    'chartsmenu_export': 'Data Export',
     'charts_title': 'Charts',
     'chart1_descr':
         'This chart displays the gains and losses of energy by event type.<br><br>The displayed values are a computation from the frequency and the intensity of each event type.',
@@ -77,6 +78,11 @@ class Localization {
         'This chart displays the evolution of the energy through time.<br><br>The event names are displayed on each energy level reached.',
     'chart9_descr':
         'This chart displays the evolution of the energy through event occurences, no matter the elapsed time between them.<br><br>The event names are displayed on each energy level reached.',
+    'button_save': 'Save the data file',
+    'button_send': 'Send the data (experimental)',
+    'export_ok': 'Data sent.\nThank you',
+    'export_not_ok':
+        'Something went wrong while sending the data.\nPlease retry later.'
   };
 
   static const enMap = {
@@ -142,6 +148,7 @@ class Localization {
     'chartsmenu_chart7': 'Nombre de situations par heure',
     'chartsmenu_chart8': "Évolution de l'énergie au cours du temps",
     'chartsmenu_chart9': "Évolution de l'énergie en fonction des situations",
+    'chartsmenu_export': 'Exportation des données',
     'charts_title': 'Graphiques',
     'chart1_descr':
         "Ce graphique affiche les gains et pertes d'énergie par type de situation.<br>Les valeurs affichées sont une combinaison de la fréquence et l'intensité de chaque type de situation.",
@@ -161,6 +168,11 @@ class Localization {
         "Ce graphique affiche l'évolution de l'énergie au cours du temps.<br><br>Les noms des situations ayant amené à chaque niveau d'énergie sont affichés.",
     'chart9_descr':
         "Ce graphique affiche l'évolution de l'énergie au cours des survenues des situations, indépendamment des périodes de temps écoulées entre elles.<br><br>Les noms des situations ayant amené à chaque niveau d'énergie sont affichés.",
+    'button_save': 'Enregistrer le fichier de données au format CSV',
+    'button_send': 'Envoyer les données (expérimental)',
+    'export_ok': 'Données envoyées\nMerci',
+    'export_not_ok':
+        'Échec de l\'envoi des données.\nMerci d\'essayer à nouveau ultérieurement.'
   };
 
   static const frMap = {
