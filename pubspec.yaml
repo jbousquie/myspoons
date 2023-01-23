@@ -25,6 +25,7 @@ dependencies:
   flutter_file_dialog: ^2.3.2
   http: ^0.13.5
   http_parser: ^4.0.2
+  language_picker: ^0.4.3
 
 
   cupertino_icons: ^1.0.2
