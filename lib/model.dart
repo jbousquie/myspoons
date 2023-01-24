@@ -58,7 +58,9 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   get exportReport {
-    return _exportReport;
+    final String tmp = _exportReport;
+    _exportReport = '';
+    return tmp;
   }
 
   set exportReport(value) {

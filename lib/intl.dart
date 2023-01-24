@@ -6,7 +6,7 @@ class Localization {
 
   static const String defaultLanguage = 'en';
   static const noText = 'no_text_found';
-  static const version = '1.1.0';
+  static const version = '1.2.0';
 
   static const en = {
     'set_title': 'Settings',
