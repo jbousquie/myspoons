@@ -20,7 +20,8 @@ class SpoonTracker extends ChangeNotifier {
   late String _dateString = stringDateNow();
   final String _filename = 'myspoons.csv';
   final String collectURL = 'https://jerome.bousquie.fr/myspoons/collect/';
-  final String _columns = 'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
+  final String _columns =
+      'Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n';
   final Settings settings = Settings();
   DateTime now = DateTime.now();
   late int dayLastSession = now.day;
@@ -109,7 +110,8 @@ class SpoonTracker extends ChangeNotifier {
   }
 
   String cleanComment(String comment) {
-    String cleaned = comment.replaceAll(";", ",").replaceAll("'", " ").replaceAll('"', ' ');
+    String cleaned =
+        comment.replaceAll(";", ",").replaceAll("'", " ").replaceAll('"', ' ');
     return cleaned;
   }
 
@@ -126,14 +128,15 @@ class SpoonTracker extends ChangeNotifier {
     }
   }
 
-  Future<File> _writeData(
-      String dateString, int weekday, int energyRate, int spoonNb, int maxSpoonNb, String comment) async {
+  Future<File> _writeData(String dateString, int weekday, int energyRate,
+      int spoonNb, int maxSpoonNb, String comment) async {
     final file = await localFile;
     if (!await file.exists()) {
       file.writeAsStringSync(_columns);
     }
     final String cleaned = cleanComment(comment);
-    final row = '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$cleaned\n';
+    final row =
+        '$dateString;$weekday;$energyRate;$spoonNb;$maxSpoonNb;$cleaned\n';
     file.writeAsString(row, mode: FileMode.append);
     return file;
   }
@@ -168,7 +171,8 @@ class SpoonTracker extends ChangeNotifier {
     await prefs.setInt('energyrate', _energyRate);
     await prefs.setInt('spoonNb', _spoonNb);
     await prefs.setString('comment', _comment);
-    await _writeData(_dateString, weekday, _energyRate, _spoonNb, settings.maxSpoonNb, _comment);
+    await _writeData(_dateString, weekday, _energyRate, _spoonNb,
+        settings.maxSpoonNb, _comment);
 
     DateTime now = DateTime.now();
     monthLastSession = now.month;
@@ -206,8 +210,12 @@ class Settings extends ChangeNotifier {
   int hourStop = defaultHourStop;
   int minuteStop = 0;
   Localization local = Localization('en');
+  String _birthYear = '2000';
+  String _gender = 'F';
+  String _usedLg = 'en';
 
-  TimeOfDay resetMaxSpoonTime = TimeOfDay(hour: defaultResetMaxSpoonHour, minute: 0);
+  TimeOfDay resetMaxSpoonTime =
+      TimeOfDay(hour: defaultResetMaxSpoonHour, minute: 0);
   TimeOfDay reminderStart = TimeOfDay(hour: defaultHourStart, minute: 0);
   TimeOfDay reminderStop = TimeOfDay(hour: defaultHourStop, minute: 0);
   late DateTime lastNotificationDate;
@@ -229,6 +237,36 @@ class Settings extends ChangeNotifier {
     notifyListeners();
   }
 
+  String get birthYear {
+    return _birthYear;
+  }
+
+  set birthYear(String value) {
+    _birthYear = value;
+    storeSettings();
+    notifyListeners();
+  }
+
+  String get gender {
+    return _gender;
+  }
+
+  set gender(String value) {
+    _gender = value;
+    storeSettings();
+    notifyListeners();
+  }
+
+  String get usedLg {
+    return _usedLg;
+  }
+
+  set usedLg(String value) {
+    _usedLg = value;
+    storeSettings();
+    notifyListeners();
+  }
+
   Future<void> setbackInitials() async {
     final prefs = await SharedPreferences.getInstance();
     //await prefs.clear();
@@ -242,6 +280,9 @@ class Settings extends ChangeNotifier {
     minuteStart = prefs.getInt('reminderminutestart') ?? minuteStart;
     hourStop = prefs.getInt('reminderhourstop') ?? hourStop;
     minuteStop = prefs.getInt('reminderminutestop') ?? minuteStop;
+    usedLg = prefs.getString('usedlg') ?? usedLg;
+    gender = prefs.getString('gender') ?? gender;
+    birthYear = prefs.getString('birthyear') ?? birthYear;
 
     reminderStart = TimeOfDay(hour: hourStart, minute: minuteStart);
     reminderStop = TimeOfDay(hour: hourStop, minute: minuteStop);
@@ -272,15 +313,21 @@ class Settings extends ChangeNotifier {
     return local.language;
   }
 
-  Future<void> updateReminder(bool enabled, int period, TimeOfDay notifierStart, TimeOfDay notifierStop) async {
+  Future<void> updateReminder(bool enabled, int period, TimeOfDay notifierStart,
+      TimeOfDay notifierStop) async {
     localNotificationService.plugin.cancelAll();
     enableReminder = enabled;
     reminderPeriod = period;
     reminderStart = notifierStart;
     reminderStop = notifierStop;
     if (enableReminder) {
-      lastNotificationDate = await localNotificationService.scheduleNotifications(
-          notificationTitle, notificationBody, period, notifierStart, notifierStop);
+      lastNotificationDate =
+          await localNotificationService.scheduleNotifications(
+              notificationTitle,
+              notificationBody,
+              period,
+              notifierStart,
+              notifierStop);
     }
     storeSettings();
     notifyListeners();
@@ -303,5 +350,8 @@ class Settings extends ChangeNotifier {
     await prefs.setInt('reminderminutestop', minuteStop);
     String dtst = lastNotificationDate.toString();
     await prefs.setString('lastnotificationdate', dtst);
+    await prefs.setString('gender', gender);
+    await prefs.setString('usedlg', usedLg);
+    await prefs.setString('birthyear', birthYear);
   }
 }

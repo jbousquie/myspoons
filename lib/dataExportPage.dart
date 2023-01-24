@@ -1,4 +1,5 @@
 // ignore: file_names
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:language_picker/languages.dart';
 import 'package:provider/provider.dart';
@@ -83,21 +84,33 @@ class DataExportPage extends StatelessWidget {
   Widget buildSendDataSelectors(BuildContext context) {
     final Settings settings = Provider.of<Settings>(context, listen: true);
     final local = settings.local;
+    final String lg = local.language;
+    final String isoCode = settings.usedLg;
+    final Language usedLanguage = Language.fromIsoCode(isoCode);
+    final Language usrLanguage =
+        (lg == 'fr' && lg == 'en') ? Languages.french : usedLanguage;
+    final birthYear = settings.birthYear;
+    final gender = settings.gender;
+
     final Row rowBirth = Row(children: [
       Text(local.txt('export_birth')),
-      DropdownButton(items: yearList(), onChanged: (value) => {})
+      DropdownButton(
+          value: birthYear,
+          items: yearList(),
+          onChanged: (val) => {settings.birthYear = val})
     ]);
     final Row rowGender = Row(children: [
       Text(
         local.txt('export_gender'),
       ),
       DropdownButton(
+        value: gender,
         items: const [
           DropdownMenuItem(value: 'F', child: Text('F')),
-          DropdownMenuItem(value: 'F', child: Text('M')),
-          DropdownMenuItem(value: 'F', child: Text('N')),
+          DropdownMenuItem(value: 'M', child: Text('M')),
+          DropdownMenuItem(value: 'N', child: Text('N')),
         ],
-        onChanged: (value) => {},
+        onChanged: (value) => {settings.gender = value ?? 'F'},
       )
     ]);
     final Row rowLang = Row(
@@ -105,11 +118,11 @@ class DataExportPage extends StatelessWidget {
         Text(local.txt('export_lang')),
         SizedBox(
             height: 20,
-            width: 80,
+            width: 150,
             child: LanguagePickerDropdown(
-              initialValue: Languages.english,
+              initialValue: usrLanguage,
               itemBuilder: languageItemRow,
-              onValuePicked: (value) => {},
+              onValuePicked: (value) => {settings.usedLg = value.isoCode},
             ))
       ],
     );
@@ -122,7 +135,7 @@ class DataExportPage extends StatelessWidget {
   Widget buildExportReport(BuildContext context) {
     final SpoonTracker provider =
         Provider.of<SpoonTracker>(context, listen: false);
-    final msg = provider.exportReport;
+    final String msg = provider.exportReport;
     final Text reportMsg = Text(msg);
     return reportMsg;
   }
@@ -138,16 +151,16 @@ class DataExportPage extends StatelessWidget {
   Future<String> _sendFile(BuildContext context) async {
     final SpoonTracker provider =
         Provider.of<SpoonTracker>(context, listen: false);
-    final Localization local =
-        Provider.of<Settings>(context, listen: false).local;
+    final Settings settings = Provider.of<Settings>(context, listen: false);
+    final Localization local = settings.local;
     final String data = await provider.getDataFromFile();
     final String url = provider.collectURL;
     final uri = Uri.parse(url);
     final request = http.MultipartRequest('POST', uri);
     request.fields['uuid'] = await provider.uuid;
-    request.fields['gender'] = 'F';
-    request.fields['birth'] = '1990';
-    request.fields['lang'] = 'EN';
+    request.fields['gender'] = settings.gender;
+    request.fields['birth'] = settings.birthYear;
+    request.fields['lang'] = settings.birthYear;
     request.files.add(http.MultipartFile.fromString('data', data,
         contentType: MediaType('text', 'csv'), filename: 'myspoons.csv'));
     final response = await request.send();
