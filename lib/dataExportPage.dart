@@ -1,5 +1,4 @@
 // ignore: file_names
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:language_picker/languages.dart';
 import 'package:provider/provider.dart';
@@ -160,7 +159,8 @@ class DataExportPage extends StatelessWidget {
     request.fields['uuid'] = await provider.uuid;
     request.fields['gender'] = settings.gender;
     request.fields['birth'] = settings.birthYear;
-    request.fields['lang'] = settings.birthYear;
+    request.fields['lang'] = settings.usedLg;
+    request.fields['key'] = 'mY5p00n2';
     request.files.add(http.MultipartFile.fromString('data', data,
         contentType: MediaType('text', 'csv'), filename: 'myspoons.csv'));
     final response = await request.send();
