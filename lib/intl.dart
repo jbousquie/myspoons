@@ -87,9 +87,9 @@ class Localization {
         'Saving the data produces a CSV file (data columns separated by the character ";").\nYou can then open this file in any spreadsheet software in order to compute your own statistics.',
     'export_sendtext':
         'Sending the data will upload your data onto the MySpoons application server. The upload is fully encrypted and anonymous. These data will then be globally analyzed in statistic studies by research institutes or interested practitioners.\n\nYou don\'t need of course to send the data everyday.\nIf you want to, it\'s better to send them only once when you energy tracking is complete, for example after a couple of weeks.\n\nBefore sending, please add your year of birth, your gender and the language you\'ve used to describe the events.',
-    'export_birth': 'Year of birth ',
-    'export_gender': 'Gender (Female, Male, N other)',
-    'export_lang': 'Used Language  '
+    'export_birth': 'Year of birth  :   ',
+    'export_gender': 'Gender (Female, Male, N other)  :   ',
+    'export_lang': 'Used Language  :   '
   };
 
   static const enMap = {
@@ -155,7 +155,7 @@ class Localization {
     'chartsmenu_chart7': 'Nombre de situations par heure',
     'chartsmenu_chart8': "Évolution de l'énergie au cours du temps",
     'chartsmenu_chart9': "Évolution de l'énergie en fonction des situations",
-    'chartsmenu_export': 'Exportation des données',
+    'chartsmenu_export': 'Exportation\ndes données',
     'charts_title': 'Graphiques',
     'chart1_descr':
         "Ce graphique affiche les gains et pertes d'énergie par type de situation.<br>Les valeurs affichées sont une combinaison de la fréquence et l'intensité de chaque type de situation.",
@@ -183,10 +183,10 @@ class Localization {
     'export_savetext':
         'Enregistrer les données produit un fichier CSV (chaque colonne est séparée par le caractère ";").\nCe fichier peut alors être ouvert dans le logiciel tableur de votre choix pour réaliser vos propres statistiques.',
     'export_sendtext':
-        'Envoyer les données permet d\'envoyer vos données de façon complètement anonyme et chiffrée sur le serveur de collecte de l\'application MySpoons.\nCes données seront ensuite utilisées à des fins statistiques globales par les laboratoires de recherche ou les praticiens qui en feront la demande.\n\nIl n\'est évidemment pas nécessaire d\'envoyer les données chaque jour.\nIl est plus judicieux de les envoyer, si vous souhaitez le faire, seulement à la fin de votre suivi, par exemple au bout de quelques semaines.\n\nMerci de préciser, avant d\'envoyer vos données, votre année de naissance, votre genre et la langue que vous avez utilisée pour décrire les situations.',
-    'export_birth': 'Année de naissance ',
-    'export_gender': 'Genre (Féminin, Masculin, N autre) ',
-    'export_lang': 'Langue utilisée  '
+        'Envoyer les données permet de télécharger vos données de façon complètement anonyme et chiffrée sur le serveur de collecte de l\'application MySpoons.\nCes données seront ensuite utilisées à des fins statistiques globales par les laboratoires de recherche ou les praticiens qui en feront la demande.\n\nIl n\'est évidemment pas nécessaire d\'envoyer les données chaque jour.\nIl est plus judicieux de les envoyer, si vous souhaitez le faire, seulement à la fin de votre suivi, par exemple au bout de quelques semaines.\n\nMerci de préciser, avant d\'envoyer vos données, votre année de naissance, votre genre et la langue que vous avez utilisée pour décrire les situations.',
+    'export_birth': 'Année de naissance :   ',
+    'export_gender': 'Genre (Féminin, Masculin, N autre)  :   ',
+    'export_lang': 'Langue utilisée  :   '
   };
 
   static const frMap = {

@@ -12,6 +12,9 @@ import 'intl.dart';
 class DataExportPage extends StatelessWidget {
   const DataExportPage({Key? key, required this.title}) : super(key: key);
   final String title;
+  static TextStyle textStyle =
+      const TextStyle(color: Colors.blueGrey, fontSize: 15);
+
   @override
   Widget build(BuildContext context) {
     final Localization local =
@@ -24,9 +27,13 @@ class DataExportPage extends StatelessWidget {
   Widget buildButtonSave(BuildContext context) {
     final Localization local =
         Provider.of<Settings>(context, listen: true).local;
-    final Text saveText = Text(local.txt('export_savetext'));
+    final Text saveText = Text(
+      local.txt('export_savetext'),
+      style: textStyle,
+    );
     final TextButton buttonSave = TextButton(
-      child: Text(local.txt('button_save')),
+      child:
+          Text(local.txt('button_save'), style: const TextStyle(fontSize: 16)),
       onPressed: () {
         _saveFile(context);
       },
@@ -42,9 +49,10 @@ class DataExportPage extends StatelessWidget {
         Provider.of<Settings>(context, listen: true).local;
     final SpoonTracker provider =
         Provider.of<SpoonTracker>(context, listen: true);
-    final sendText = Text(local.txt('export_sendtext'));
+    final sendText = Text(local.txt('export_sendtext'), style: textStyle);
     final TextButton buttonSave = TextButton(
-      child: Text(local.txt('button_send')),
+      child:
+          Text(local.txt('button_send'), style: const TextStyle(fontSize: 16)),
       onPressed: () async {
         String msg = await _sendFile(context);
         provider.exportReport = msg;
@@ -70,14 +78,21 @@ class DataExportPage extends StatelessWidget {
     final int end = yearNow - 70;
     List<DropdownMenuItem> itemList = [];
     for (var i = start; i > end; i--) {
-      itemList.add(
-          DropdownMenuItem(value: i.toString(), child: Text(i.toString())));
+      itemList.add(DropdownMenuItem(
+          value: i.toString(),
+          child: Text(
+            i.toString(),
+            style: textStyle,
+          )));
     }
     return itemList;
   }
 
   Widget languageItemRow(Language language) {
-    return Text(language.name);
+    return Text(
+      language.name,
+      style: textStyle,
+    );
   }
 
   Widget buildSendDataSelectors(BuildContext context) {
@@ -87,12 +102,15 @@ class DataExportPage extends StatelessWidget {
     final String isoCode = settings.usedLg;
     final Language usedLanguage = Language.fromIsoCode(isoCode);
     final Language usrLanguage =
-        (lg == 'fr' && lg == 'en') ? Languages.french : usedLanguage;
+        (lg == 'fr' && isoCode == 'en') ? Languages.french : usedLanguage;
     final birthYear = settings.birthYear;
     final gender = settings.gender;
 
     final Row rowBirth = Row(children: [
-      Text(local.txt('export_birth')),
+      Text(
+        local.txt('export_birth'),
+        style: textStyle,
+      ),
       DropdownButton(
           value: birthYear,
           items: yearList(),
@@ -101,20 +119,39 @@ class DataExportPage extends StatelessWidget {
     final Row rowGender = Row(children: [
       Text(
         local.txt('export_gender'),
+        style: textStyle,
       ),
       DropdownButton(
         value: gender,
-        items: const [
-          DropdownMenuItem(value: 'F', child: Text('F')),
-          DropdownMenuItem(value: 'M', child: Text('M')),
-          DropdownMenuItem(value: 'N', child: Text('N')),
+        items: [
+          DropdownMenuItem(
+              value: 'F',
+              child: Text(
+                'F',
+                style: textStyle,
+              )),
+          DropdownMenuItem(
+              value: 'M',
+              child: Text(
+                'M',
+                style: textStyle,
+              )),
+          DropdownMenuItem(
+              value: 'N',
+              child: Text(
+                'N',
+                style: textStyle,
+              )),
         ],
         onChanged: (value) => {settings.gender = value ?? 'F'},
       )
     ]);
     final Row rowLang = Row(
       children: [
-        Text(local.txt('export_lang')),
+        Text(
+          local.txt('export_lang'),
+          style: textStyle,
+        ),
         SizedBox(
             height: 20,
             width: 150,
@@ -135,7 +172,10 @@ class DataExportPage extends StatelessWidget {
     final SpoonTracker provider =
         Provider.of<SpoonTracker>(context, listen: false);
     final String msg = provider.exportReport;
-    final Text reportMsg = Text(msg);
+    final Text reportMsg = Text(
+      msg,
+      style: textStyle,
+    );
     return reportMsg;
   }
 

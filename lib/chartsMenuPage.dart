@@ -12,8 +12,28 @@ class ChartsMenuPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Localization local =
+        Provider.of<Settings>(context, listen: false).local;
+    final String titleExport = local.txt('chartsmenu_export');
     return Scaffold(
-        appBar: AppBar(title: Text(title)), body: buildContent(context));
+      appBar: AppBar(title: Text(title)),
+      body: buildContent(context),
+      floatingActionButton: SizedBox(
+          width: 100,
+          height: 100,
+          child: FloatingActionButton(
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return DataExportPage(title: titleExport);
+              }));
+            },
+            child: Text(
+              titleExport,
+              textAlign: TextAlign.center,
+            ),
+          )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 
   destinationPage(BuildContext context, String title, ChartType chartType) {
@@ -139,19 +159,6 @@ class ChartsMenuPage extends StatelessWidget {
           destinationPage(context, title, chartType);
         },
       ),
-      // Export Menu
-      TextButton(
-        child: Text(
-          local.txt('chartsmenu_export'),
-          textAlign: TextAlign.center,
-        ),
-        onPressed: () {
-          String titleExport = local.txt('chartsmenu_export');
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return DataExportPage(title: titleExport);
-          }));
-        },
-      )
     ];
 
     GridView grid = GridView.count(
