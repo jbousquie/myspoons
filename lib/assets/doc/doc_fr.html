@@ -14,7 +14,13 @@
                 font-size: 3em;
                 text-align: center;
             }
-
+            h3{
+                padding-top: 1.5em;
+                padding-bottom: 0.5em;
+            }
+            li{
+                padding-bottom: 0.5em;;
+            }
 
         </style>
     </head>
@@ -22,11 +28,16 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h1>My Daily Spoons<br>Mode d'emploi</h1>
+                    <h1>My Daily Spoons</h1>
+                    <h5><a href="#manual">Mode d'emploi</a></h5>
+                    <h5><a href="#settings">Paramètres</a></h5>
+                    <h5><a href="#charts">Graphiques et données</a></h5>
+                    <h5><a href="#export">Exportation des données</a></h5>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col">
+                    <h3 id="manual">Mode d'emploi</h3>
                     My Daily Spoons est une petite application pour enregistrer des niveaux d'énergie ressentis au cours de la journée.<br>
                     Elle permet de plus d'associer à chaque enregistrement d'un niveau d'énergie un court texte désignant la cause ou l'évènement ayant conduit à ce niveau.<br>
                     <br>
@@ -89,6 +100,114 @@
                     <b>Note 3 :</b> Saisir son niveau d'énergie à intervalles réguliers (par exemple toutes les heures) ou chaque fois qu'il varie permet d'en suivre les évolutions, c'est à dire d'identifier d'une situation à l'autre, les gains ou les pertes d'énergie.<br><br>
                     Si on ne saisit pas chaque variation ou pas régulièrement, mais uniquement certains niveaux à certains moments ponctuels dans la journée, alors les notions de gains ou de pertes ne seront plus pertinentes. Les graphiques mesurant des gains ou des pertes ne seront donc pas non plus pertinents.<br>
                     Dans ce dernier cas, seuls les <u>niveaux</u> d'énergie, mais pas les <u>variations</u> de ces niveaux (gain/perte), seront significatifs.
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h3 id="settings">Paramètres</h3>
+                    Pour accéder à l'écran des paramètres de l'application, il suffit de presser l'icône <img src="SpoonSettingsIcon.jpg" alt="icône paramètres" width="32" height="32" title="Paramètres"> dans la barre bleue de titre en haut.                                     
+                    <br>
+                    <br>
+                    On accède alors à l'écran ci-dessous :<br>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonSettingsFR.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><b>Mode d'emploi :</b> presser sur ce lien affiche cette page de documentation</li>
+                        <li><b>Langue :</b> permet de choisir la langue de l'interface entre anglais (en) et français (fr)</li>
+                        <li><b>Nombre maximum de cuillères :</b> permet de choisir le nombre de cuillères maximum quand le curseur est au plus haut. Les calculs de l'énergie seront toujours faits proportionnellement en tenant compte de cette valeur.</li>
+                        <li><b>Activer le rappel automatique :</b> permet d'activer ou désactiver le rappel automatique qui émettra des notifications (voir plus bas pour son fonctionnement)</li>
+                        <li><b>Mode gaucher :</b> place le curseur et le bouton "Cuillère" à gauche dans l'écran principal</li>
+                        <li><b>À propos de My Daily Spoons :</b> affiche des informations sur la version de l'application</li>
+                        <li><b>Effacer les données :</b> permet de supprimer toutes les données enregistrées jusqu'à présent</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mb-3">
+                Fonctionnement du rappel automatique : 
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonReminderFR.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    Quand le rappel automatique est activé, il est demandé de choisir à quelle fréquence et sur quelle plage horaire il doit intervenir, par exemple toutes les 2 heures chaque jour.<br>
+                    <br>
+                    Le rappel est alors activé par défaut pour une semaine.<br>Chaque modification de l'un des paramètres du rappel (désactivation/ré-activation, modification de la fréquence ou de la plage horaire) relance sa planification pour une semaine à partir du moment de cette modification.<br>
+                    <br>
+                    Quand le rappel est activé, une notification MySpoons est alors envoyée sur l'appareil à la fréquence désirée sur la plage horaire choisie, même si l'application n'est pas ouverte.
+                    <br>
+                    <br>
+                    Désactiver le rappel automatique suffit à supprimer les notifications à venir.
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h3 id="charts">Visualisation des graphiques et données</h3>
+                    Pour accéder à l'écran des graphiques et données de l'application, il suffit de presser l'icône <img src="SpoonChartsIcon.jpg" alt="icône graphiques" width="32" height="32" title="Visualisation des données"> dans la barre bleue de titre en haut.                                     
+                    <br>
+                    <br>
+                    Pour que des graphiques puissent être tracés (ou pour que des données puissent être exportées), il est impératif qu'un certain nombre de données aient déjà été saisies, sans quoi les menus ci-dessous n'afficheront tout simplement rien du tout.<br>
+                    <br>
+                    Rappel : les notions de <i>gain</i> ou de <i>perte</i> d'énergie ne sont pertinents que lorsque l'on saisit son niveau d'énergie soit à intervalle régulier, soit lors de chacune des variations ressenties de ce niveau d'énergie.
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonChartsMenuFR.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><b>Gains et pertes par situation :</b> combinaison de la fréquence et l'intensité de chaque type de situation.</li>
+                        <li><b>Fréquences des situations :</b> fréquences moyennes de chaque type de situation, indépendamment de leur intensité.</li>
+                        <li><b>Intensités des situations :</b> intensités moyennes de chaque type de situation, indépendamment de leur fréquence.</li>
+                        <li><b>Gains et pertes par jour de la semaine :</b> cumuls des intensités des pertes ou des gains par jour de la semaine.</li>
+                        <li><b>Nombre de situations par jour de la semaine :</b> cumuls des nombres de situations par jour de la semaine.</li>
+                        <li><b>Gains et pertes par heure :</b> cumuls des intensités des pertes ou des gains par heure, indépendamment des jours.</li>
+                        <li><b>Nombre de situations par heure :</b> cumuls des nombres de situations par heure, indépendamment des jours.</li>
+                        <li><b>Évolution de l'énergie au cours du temps :</b> courbe temporelle complète de la variation de l'énergie.</li>
+                        <li><b>Évolution de l'énergie en fonction des situations :</b> courbe complète de la variation de l'énergie, indépendante du temps, mais en fonction de la succession des situations.</li>
+                        <li><b>Bouton Exportation des données :</b> affiche l'écran d'exportation des données</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h3 id="export">Exportation des données</h3>
+                    On accède à l'écran d'exportation en passant par l'écran le <a href="#charts">Menu Visualisation</a> des graphiques et des données.                                     
+                    <br>
+                    <br>
+                    Pour que des données puissent être exportées, il est impératif qu'un certain nombre de données aient déjà été saisies, sans quoi l'exportation ne produira aucun résultat.<br>
+                    <br>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonExportFR.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><b>Enregistrer au format CSV :</b> Cette action produit un fichier dont les données sont séparées par le caractère ";".<br>
+                        Les données enregistrées sont les suivantes :<ul>
+                            <li><b>Timestamp :</b> la date et l'heure d'enregistrement de la donnée.</li>
+                            <li><b>WeekDay :</b> le numéro du jour de la semaine. lun = 1, mar = 2, etc. </li>
+                            <li><b>EnergyRate :</b> le niveau d'énergie, entre 0 et 100.</li>
+                            <li><b>SpoonNb :</b> le nombre de cuillères saisi associé.</li>
+                            <li><b>maxSpoonNb :</b> le nombre maximum de cuillères possible alors en vigueur.</li>
+                            <li><b>Comment :</b> le commentaire saisi ou la description de la situation.</li>
+                        </ul>
+                        Ce fichier est enregistrer par défaut dans le répertoire des Téléchargements de l'appareil, mais il peut être sauvé à l'endroit souhaité par l'utilisateur.<br>
+                        Il peut, par exemple, être ensuite envoyé comme pièce jointe par mail pour être ouvert sur un ordinateur dans un logiciel tableur comme Excel.
+                    </li>
+                    <li><b>Envoyer les données :</b> Cette action requiert une connexion à l'Internet. Elle envoie les données de façon anonyme et sécurisée sur le serveur de l'application MySpoon.<br>
+                        Ces données peuvent ensuite globalement être analysées d'un point de vue statistique par des chercheurs ou des praticiens.<br>
+                        Il est recommandé de n'envoyer ses données qu'une seule fois, à la fin de son suivi, après quelques jours ou semaines de saisie.
+
+                    </ul>
+                </div>
             </div>
         </div>
     </body>
