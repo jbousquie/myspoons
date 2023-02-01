@@ -14,19 +14,32 @@
                 font-size: 3em;
                 text-align: center;
             }
-
+            h3{
+                padding-top: 1.5em;
+                padding-bottom: 0.5em;
+            }
+            li{
+                padding-bottom: 0.5em;;
+            }
 
         </style>
     </head>
     <body>
         <div class="container">
             <div class="row">
-                <div class="col">
-                    <h1>My Daily Spoons<br>User Manual</h1>
+                <div class="row">
+                    <div class="col">
+                        <h1>My Daily Spoons</h1>
+                        <h5><a href="#manual">User Manual</a></h5>
+                        <h5><a href="#settings">Settings</a></h5>
+                        <h5><a href="#charts">Charts and Data</a></h5>
+                        <h5><a href="#export">Data Export</a></h5>
+                    </div>
                 </div>
             </div>
             <div class="row mb-5">
                 <div class="col">
+                    <h3 id="manual">User Manual</h3>
                     My Daily Spoons is a small application to log in some felt energy level along the day.<br>
                     It also allows to record aside the enerly level some short text to depict the cause or the event related to this level.<br>
                     <br>
@@ -90,6 +103,116 @@
                     <b>Note 3 :</b> If you log your energy level on a regular basis (for instance, every hour) or every time you feel it's just changed, then the application can spot its variation, gain or loss, from an event to the next one.<br><br>
                     The gain or loss notion is no longer relevant if you just record  only some levels sometimes, but neither regularly nor on each change. Then the charts about gains and losses won't be relevant either.<br>
                     In this case, only the energy <u>levels</u>, not the level energy <u>variations</u> (gain/loss), will be meaningful.
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h3 id="settings">Settings</h3>
+                    Tap the icon <img src="SpoonSettingsIcon.jpg" alt="icône paramètres" width="32" height="32" title="Paramètres"> in the upper blue menu bar to get to the Settings screen.                                     
+                    <br>
+                    <br>
+                    You then get this page :<br>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonSettingsEN.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><b>User Manual :</b> links to this documentation page</li>
+                        <li><b>Language :</b> choose the application interface language from english (en) or french (fr)</li>
+                        <li><b>Maximum spoon number :</b> choose the maximum spoon number when the main screen slider is in the upper position. All the energy rate computations taken then in account this current value.</li>
+                        <li><b>Daily reset the initial spoon number to its maximum value :</b> by default, the slider cursor keeps the last registered position. This option sets back the cursor to its upper position daily every first application start.</li>
+                        <li><b>Enable Reminder :</b> enables or disables the notification system (see below for details)</li>
+                        <li><b>Left-handed mode :</b> toggles the main screen slider and Spoon button to the left side</li>
+                        <li><b>About My Daily Spoons :</b> displays information about the application version</li>
+                        <li><b>Reset data file :</b> deletes all the recorded data until now </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mb-3">
+                Reminder use : 
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonReminderEN.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    When the reminder is enabled, its frequency and time-slot must be set, for example, every 2 hours each day.<br>
+                    <br>
+                    The notifier then starts for a week.<br>Every parameter change (frequency, time-slot, disabling/re-enabling) restarts the notifier for a week from the time of this change.<br>
+                    <br>
+                    Notifications are then sent in the chosen time-slot and frequency even when the application is not running.
+                    <br>
+                    <br>
+                    Just disable the reminder to stop the notification sending.
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h3 id="charts">Charts and Data</h3>
+                    Tap the icon <img src="SpoonChartsIcon.jpg" alt="icône graphiques" width="32" height="32" title="Visualisation des données"> in the upper blue menu bar to get to the Charts screen.                                     
+                    <br>
+                    <br>
+                    So as charts can be plotted (or so as data can be exported), data must first be recorded, otherwise the following menus will show nothing at all.<br>
+                    <br>
+                    Notice : energy <i>gains</i> and <i>losses</i> are relevant only if you record your energy level either regularly or when you feel it has just changed.
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonChartsMenuEN.jpg" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><b>Event Gains and Losses :</b> intensity and frequency mix of energy variation by event type.</li>
+                        <li><b>Event Frequencies :</b> average frequencies by event type, regardless of the intensity.</li>
+                        <li><b>Event Rates :</b> average intensities by event type, regardless of the frequency.</li>
+                        <li><b>Gains And Losses By Day Of The Week :</b>gain and loss intensity cumulations by day of the week.</li>
+                        <li><b>Event Number By Day Of The Week :</b> event type number cumulations by day if the week.</li>
+                        <li><b>Gains And Losses By Hour :</b> gain and losses intensity cumulations by hours, regardless of the day.</li>
+                        <li><b>Event Number By Hour :</b> event type number cumulations by hours, regardless of the day.</li>
+                        <li><b>Energy Evolution Through Time :</b> global energy variation curve through time.</li>
+                        <li><b>Energy Evolution Through Event Occurencies :</b> global energy variation curve, regardless of the time, according to the successive events.</li>
+                        <li><b>Data Export button :</b> shows the data export screen.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <h3 id="export">Data Export</h3>
+                    You get to the Data Export screen from the <a href="#charts">Charts</a> screen.                                     
+                    <br>
+                    <br>
+                    So as data can be exported, data must be recorded first, otherwise the data export process will product nothing.<br>
+                    <br>
+                </div>
+            </div>
+            <div class="row mb-5">
+                <div class="col">
+                    <img src="SpoonExportEN.png" width="270" height="540" alt="screenshot">
+                </div>
+                <div class="col">
+                    <ul>
+                        <li><b>Save the data file :</b> produces a comma-separated-values (CSV) file, the data separator being here the character ";".<br>
+                        The recorded data are :<ul>
+                            <li><b>Timestamp :</b> the date and the time when the data is recorded.</li>
+                            <li><b>WeekDay :</b> the number of the week of the day. mon = 1, tue = 2, etc. </li>
+                            <li><b>EnergyRate :</b> the energy rate from 0 to 100.</li>
+                            <li><b>SpoonNb :</b> the related current spoon number.</li>
+                            <li><b>maxSpoonNb :</b> the related current maximum spoon number.</li>
+                            <li><b>Comment :</b> the text describing the event.</li>
+                        </ul>
+                        By default this file is saved in the Download directory, but you can choose any other location.<br>
+                        You can then, for instance, send this file with an e-mail to a computer where you can open it in a spreadsheet software like Excel.
+                    </li>
+                    <li><b>Send the data :</b> Internet connection required. it sends securely and anonymously the data to the MySpoon application server.<br>
+                        Practionners or researcher can then use them for statistic studies.<br>
+                        It's better to send the data only once when your energy tracking is over, after many days or weeks of recording.<br><br>
+                        Before sending, please set your year of birth, your gender and the language you used to describe the events, so it il will ease the statistic processing.
+
+                    </ul>
+                </div>
             </div>
         </div>
     </body>
