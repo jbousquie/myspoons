@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <style>        
+            body {
+                font-family: Arial, sans-serif; 
+            }
+            #filedrag  {  
+                font-weight: bold;  
+                text-align: center;  
+                padding: 4em 0;  
+                margin: 2em 0;  
+                color: #555;  
+                border: 2px dashed #555;  
+                border-radius: 7px;  
+                cursor: default;  
+              }  
+              
+              #filedrag.hover {  
+                color: #f00;  
+                border-color: #f00;  
+                border-style: solid;  
+                box-shadow: inset 0 3px 4px #888;  
+              }  
+
+        </style>
+
+          
+    </head>
+    <body>
+        <div id="filedrag">glissez-déposez le fichier csv MySpoons ici</div>
+        <label for="datafile">ou sélectionnez le dans l'explorateur : </label>
+        <input type='file' id='filename' name='filename' accept='text/csv,.csv,.txt'><br>
+    </body>
+    <script>
+
+        const selected = document.querySelector('#filedrag');
+        const input = document.querySelector('#filename');
+
+
+        const getFileData = function(file) {
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+                var data = e.target.result;
+                console.log(data);
+            })
+            reader.readAsText(file);
+        }
+
+        const fileDragHover = function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.target.className = (e.type == "dragover" ? "hover" : "");
+        };
+
+        const fileSelectHandler = function(e) {
+            fileDragHover(e);
+            var files = e.target.files || e.dataTransfer.files;
+            var f = files[files.length - 1];
+            selected.innerHTML = f.name + ' sélectionné';
+            getFileData(f);
+        };
+
+        const updateFileInput = function() {
+            const files = input.files;
+            if (files.length == 0) {
+                selected.innerHTML = 'No file selected';
+                return;
+            }
+            var f = files[files.length - 1];
+            getFileData(f);
+        };
+
+        selected.addEventListener('dragover', fileDragHover, false);
+        selected.addEventListener('dragleave', fileDragHover, false);
+        selected.addEventListener('drop', fileSelectHandler, false);
+        input.addEventListener('change', updateFileInput);
+
+    </script>
+</html>
