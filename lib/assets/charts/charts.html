@@ -11,6 +11,9 @@
         
     </head>
     <style>
+        body {
+            font-family: Arial, sans-serif; 
+        }
         #title {
             font-size: 4em;
             color: grey;
@@ -23,44 +26,47 @@
             color: dimgray;
             margin-top: 50px;
         }
+        #filedrag  {  
+            font-weight: bold;  
+            text-align: center;  
+            padding: 4em 0;  
+            margin: 2em 0;  
+            color: #555;  
+            border: 2px dashed #555;  
+            border-radius: 7px;  
+            cursor: default;  
+          }  
+          
+          #filedrag.hover {  
+            color: rgb(28, 231, 38);  
+            border-color: rgb(28, 231, 38);  
+            border-style: solid;  
+            box-shadow: inset 0 3px 4px #888;  
+          }  
+          #menus {
+            cursor: pointer;
+            color: darkblue;
+          }
+          .selectedFile {
+            color: darkgreen;
+          }
     </style>
     <body>
+        
+        <div id="filedrag">glissez-déposez le fichier CSV de MySpoons ici</div>
+        <label for="datafile">ou sélectionnez le dans l'explorateur : </label>
+        <input type='file' id='filename' name='filename' accept='text/csv,.csv,.txt'><br>
         <div id="title"></div>
-       <canvas id="chartCanvas" width="400" height="400" role="img" aria-label="Spoon Charts">
-            <p>Spoon Charts</p>
-        </canvas>
+        <table id="menus">
+            <tr><td><div id="menu1" data-id="1" >menu 1</div></td><td><div id="menu2" data-id="2">menu 2</div></td><td><div id="menu3" data-id="3">menu 3</div></td><td><div id="menu4" data-id="4">menu 4</div></td>
+            </tr>
+            <tr><td><div id="menu5" data-id="5">menu 5</div></td><td><div id="menu6" data-id="6">menu 6</div></td><td><div id="menu7" data-id="7">menu 7</div></td><td><div id="menu8" data-id="8">menu 8</div></td>
+            </tr>
+        </table>
+        <div id="canvasContainer"></div>
         <div id="description"></div>
     </body>
     <script>
-        
-        const dataString = "Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n\
-2022-12-02 10:23:23;5;45;5;10;faim sommeil\n\
-2022-12-02 10:28:34;5;26;3;10;réunion\n\
-2022-12-02 10:32:39;5;73;7;10;marche soleil\n\
-2022-12-02 10:36:44;5;58;6;10;repas\n\
-2022-12-02 10:48:39;5;87;9;10;sieste\n\
-2022-12-02 10:52:45;5;40;4;10;téléphone\n\
-2022-12-04 11:10:23;7;45;5;10;faim sommeil\n\
-2022-12-04 11:23:34;7;26;3;10;réunion\n\
-2022-12-04 11:28:39;7;73;7;10;marche soleil\n\
-2022-12-04 11:35:44;7;58;6;10;repas\n\
-2022-12-04 11:45:39;7;87;9;10;sieste\n\
-2022-12-04 11:55:45;7;40;4;10;téléphone\n\
-2022-12-06 12:01:23;2;45;5;10;faim sommeil\n\
-2022-12-06 12:10:34;2;26;3;10;réunion\n\
-2022-12-06 12:20:39;2;73;7;10;marche soleil\n\
-2022-12-06 12:30:44;2;58;6;10;repas\n\
-2022-12-06 12:40:39;2;87;9;10;sieste\n\
-2022-12-06 12:50:45;2;40;4;10;téléphone\n\
-2022-12-08 14:10:23;4;45;5;10;faim sommeil\n\
-2022-12-08 14:20:34;4;26;3;10;réunion\n\
-2022-12-08 14:30:39;4;73;7;10;marche soleil\n\
-2022-12-08 14:32:44;4;58;6;10;repas\n\
-2022-12-08 14:40:39;4;87;9;10;sieste\n\
-2022-12-08 14:50:45;4;40;4;10;téléphone\n\
-2022-12-10 15:28:48;6;46;5;10;bruit\n";
-
-        
         const en = {
             'chartsmenu_chart1': 'Event Gains and Losses',
             'chartsmenu_chart2': 'Event Frequencies',
@@ -132,7 +138,6 @@
         'chart9_descr':
             "Ce graphique affiche l'évolution de l'énergie au cours des survenues des situations, indépendamment des périodes de temps écoulées entre elles.<br><br>Les noms des situations ayant amené à chaque niveau d'énergie sont affichés.",        
         };
-
         const frMap = {
             'week_labels': [
               'Lundi',
@@ -145,7 +150,6 @@
             ]
           };
 
-        const lexicon = {'en': en, 'fr': fr};
         const maps = {'en': enMap, 'fr': frMap};
 
         const chartTypes = [
@@ -161,32 +165,139 @@
           {title: 'chartsmenu_chart9', descr: 'chart9_descr'}
         ];
 
-
-        const language = 'en';
-        const chartType = 4;
-
-
-
-        const lx = lexicon[language];
+        const selected = document.querySelector('#filedrag');
+        const input = document.querySelector('#filename');
+        const menus = document.querySelector('#menus');
+        const canvContainer = document.querySelector('#canvasContainer');
+        var fileLoaded = false;                             // global : is the file already loaded and read
+        var dataString = '';                                // global : current data set
+        var language = 'en';                                // global : UI language
+        var myChart;
         var labelString = '';
-        if (chartType == 4 || chartType == 5) {
-            const labels = maps[language]['week_labels'];
-            labelString = JSON.stringify(labels);
+
+
+        const lexicon = {'en': en, 'fr': fr};
+
+        const canvasHtml = '<canvas id="chartCanvas" width="400" height="400" role="img" aria-label="Spoon Charts"><p>Spoon Charts</p></canvas>';
+
+        // language selection
+        const docURI = document.documentURI;
+        const uriParams = docURI.split('?');
+        if (uriParams.length > 1) {
+            let params = uriParams[1];
+            if (params.length > 0) {
+                if (params.search('fr') >= 0) {
+                    language = 'fr'
+                }
+            }
+        }
+        const lx = lexicon[language];
+
+
+        const getFileData = function(file) {
+            const reader = new FileReader();
+            reader.addEventListener('load', (e) => {
+                dataString = e.target.result;
+                fileLoaded = true;
+            })
+            reader.readAsText(file);
+        }
+
+        const fileDragHover = function(e) {
+            e.stopPropagation();
+            e.preventDefault();
+            e.target.className = (e.type == "dragover" ? "hover" : "");
+        };
+
+        const fileSelectHandler = function(e) {
+            fileDragHover(e);
+            var files = e.target.files || e.dataTransfer.files;
+            var f = files[files.length - 1];
+            selected.innerHTML = '<span class="selectedFile">' + f.name + ' sélectionné</span>';
+            getFileData(f);
+        };
+
+        const updateFileInput = function() {
+            const files = input.files;
+            if (files.length == 0) {
+                selected.innerHTML = 'No file selected';
+                return;
+            }
+            var f = files[files.length - 1];
+            getFileData(f);
+        };
+
+
+
+        selected.addEventListener('dragover', fileDragHover, false);
+        selected.addEventListener('dragleave', fileDragHover, false);
+        selected.addEventListener('drop', fileSelectHandler, false);
+        input.addEventListener('change', updateFileInput);
+
+        for (let i = 1; i < 9; i++) {
+            let curMenuId = '#menu' + i.toString();
+            let curMenuElem = document.querySelector(curMenuId);
+            curMenuElem.addEventListener('click', (e) => {
+                let menuElem = e.target;
+                let chartType = parseInt(menuElem.dataset['id']);
+                if (fileLoaded) {
+                    if (myChart && myChart.chart) {
+                        myChart.chart.destroy();
+                    }
+                    if (chartType == 4 || chartType == 5) {
+                        const labels = maps[language]['week_labels'];
+                        labelString = JSON.stringify(labels);
+                    }
+                    let titleName = chartTypes[chartType]['title'];
+                    let descrName = chartTypes[chartType]['descr'];
+            
+                    let title = lx[titleName];
+                    let description = lx[descrName];
+                    canvContainer.innerHTML = canvasHtml;
+                    drawChart(chartType, 10, dataString, labelString, title, description);
+                }
+                else {
+                    alert("Vous devez d'abord charger un fichier de données");
+                }
+            })
         }
 
 
-
-        const titleName = chartTypes[chartType]['title'];
-        const descrName = chartTypes[chartType]['descr'];
-
-        const title = lx[titleName];
-        const description = lx[descrName];
-        var init = function(chartType, maxSpoonNb, dataString, labelString, title, description) {
+    /*    
+        var dataString = "Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment\n\
+2022-12-02 10:23:23;5;45;5;10;faim sommeil\n\
+2022-12-02 10:28:34;5;26;3;10;réunion\n\
+2022-12-02 10:32:39;5;73;7;10;marche soleil\n\
+2022-12-02 10:36:44;5;58;6;10;repas\n\
+2022-12-02 10:48:39;5;87;9;10;sieste\n\
+2022-12-02 10:52:45;5;40;4;10;téléphone\n\
+2022-12-04 11:10:23;7;45;5;10;faim sommeil\n\
+2022-12-04 11:23:34;7;26;3;10;réunion\n\
+2022-12-04 11:28:39;7;73;7;10;marche soleil\n\
+2022-12-04 11:35:44;7;58;6;10;repas\n\
+2022-12-04 11:45:39;7;87;9;10;sieste\n\
+2022-12-04 11:55:45;7;40;4;10;téléphone\n\
+2022-12-06 12:01:23;2;45;5;10;faim sommeil\n\
+2022-12-06 12:10:34;2;26;3;10;réunion\n\
+2022-12-06 12:20:39;2;73;7;10;marche soleil\n\
+2022-12-06 12:30:44;2;58;6;10;repas\n\
+2022-12-06 12:40:39;2;87;9;10;sieste\n\
+2022-12-06 12:50:45;2;40;4;10;téléphone\n\
+2022-12-08 14:10:23;4;45;5;10;faim sommeil\n\
+2022-12-08 14:20:34;4;26;3;10;réunion\n\
+2022-12-08 14:30:39;4;73;7;10;marche soleil\n\
+2022-12-08 14:32:44;4;58;6;10;repas\n\
+2022-12-08 14:40:39;4;87;9;10;sieste\n\
+2022-12-08 14:50:45;4;40;4;10;téléphone\n\
+2022-12-10 15:28:48;6;46;5;10;bruit\n";
+*/
+        
+        var drawChart = function(chartType, maxSpoonNb, dataString, labelString, title, description) {
             var ctx = document.getElementById("chartCanvas");
-            var myChart = new MyChart(ctx, maxSpoonNb, dataString);
+            myChart = new MyChart(ctx, maxSpoonNb, dataString);
             myChart.display(chartType, labelString, title, description);
         };
         
-        init(chartType, 10, dataString, labelString, title, description);
+
     </script>
 </html>
