@@ -13,16 +13,17 @@
     <style>
         body {
             font-family: Arial, sans-serif; 
+            color: #555;
         }
         #title {
-            font-size: 4em;
+            font-size: 2em;
             color: grey;
             text-align: center;
-            margin-top: 20px;
-            margin-bottom: 60px;
+            margin-top: 30px;
+            margin-bottom: 15px;
         }
         #description {
-            font-size: 2.5em;
+            font-size: 1.5em;
             color: dimgray;
             margin-top: 50px;
         }
@@ -30,44 +31,90 @@
             font-weight: bold;  
             text-align: center;  
             padding: 4em 0;  
-            margin: 2em 0;  
-            color: #555;  
+            margin-bottom: 1.1em;
             border: 2px dashed #555;  
             border-radius: 7px;  
             cursor: default;  
-          }  
-          
-          #filedrag.hover {  
+            background-color: lightgoldenrodyellow;
+          }   
+        #filedrag.hover {  
             color: rgb(28, 231, 38);  
             border-color: rgb(28, 231, 38);  
             border-style: solid;  
             box-shadow: inset 0 3px 4px #888;  
-          }  
-          #menus {
+        }  
+        #menus {
             cursor: pointer;
             color: darkblue;
-          }
-          .selectedFile {
+            margin-top: 20px;
+        }
+        #header {
+            background-color: beige;
+        }
+        #fileName {
+            font-size: 1.5em;
+            text-align: center;
+            font-style: italic;
+            font-weight: bold;
+        }
+        .selectedFile {
             color: darkgreen;
-          }
+        }
+        .wrongFile {
+            color: darkred;
+        }
+        .box {
+            padding: 20px;
+            display: flex;
+        }
+        .menu {
+            display: flex;
+            text-align: center;
+            padding: 10px;
+        }
+        .menu:hover {
+            font-weight: bold;
+        }
+        .selectedMenu {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        @media print {
+            #header {
+                display: none;
+            }
+        }
     </style>
     <body>
-        
-        <div id="filedrag">glissez-déposez le fichier CSV de MySpoons ici</div>
-        <label for="datafile">ou sélectionnez le dans l'explorateur : </label>
-        <input type='file' id='filename' name='filename' accept='text/csv,.csv,.txt'><br>
-        <div id="title"></div>
-        <table id="menus">
-            <tr><td><div id="menu1" data-id="1" >menu 1</div></td><td><div id="menu2" data-id="2">menu 2</div></td><td><div id="menu3" data-id="3">menu 3</div></td><td><div id="menu4" data-id="4">menu 4</div></td>
-            </tr>
-            <tr><td><div id="menu5" data-id="5">menu 5</div></td><td><div id="menu6" data-id="6">menu 6</div></td><td><div id="menu7" data-id="7">menu 7</div></td><td><div id="menu8" data-id="8">menu 8</div></td>
-            </tr>
-        </table>
-        <div id="canvasContainer"></div>
-        <div id="description"></div>
+        <div id="header">
+            <div id="filedrag">glissez-déposez le fichier CSV de MySpoons ici</div>
+            <label for="datafile" id="inputLabel">ou sélectionnez le dans l'explorateur : </label>
+            <input type='file' id='filename' name='filename' accept='text/csv,.csv,.txt'><br>
+            <div id="menus" class="box">
+                <div id="menu1" data-id="1" class="menu">menu 1</div>
+                <div id="menu2" data-id="2" class="menu">menu 2</div>
+                <div id="menu3" data-id="3" class="menu">menu 3</div>
+                <div id="menu4" data-id="4" class="menu">menu 4</div>
+                <div id="menu5" data-id="5" class="menu">menu 5</div>
+                <div id="menu6" data-id="6" class="menu">menu 6</div>
+                <div id="menu7" data-id="7" class="menu">menu 7</div>
+                <div id="menu8" data-id="8" class="menu">menu 8</div>
+                <div id="menu9" data-id="9" class="menu">menu 9</div>
+            </div>
+        </div>
+        <div id="vz">
+            <div id="title"></div>
+            <div id="fileName"></div>
+            <div id="canvasContainer"></div>
+            <div id="description"></div>
+        </div>
     </body>
     <script>
         const en = {
+            'dragdrop': 'drag and drop the MySpoons CSV file here',
+            'browser': 'or select it from the file browser : ',
+            'nofilealert': 'Please load a data file first',
+            'wrongfile': 'The selected file is not a valid CSV MySpoons file.\nPlease try another file.',
             'chartsmenu_chart1': 'Event Gains and Losses',
             'chartsmenu_chart2': 'Event Frequencies',
             'chartsmenu_chart3': 'Event Rates',
@@ -110,6 +157,10 @@
           };
 
         const fr = {
+            'dragdrop': 'glissez-déposez le fichier CSV de MySpoons ici',
+            'browser': 'ou sélectionnez le dans l\'explorateur : ',
+            'nofilealert': 'Vous devez d\'abord charger un fichier de données',
+            'wrongfile': 'Le fichier sélectionné ne semble pas être un fichier CSV MySpoons valide.\nVeuillez utiliser un autre fichier.',
             'chartsmenu_chart1': 'Gains et pertes par situation',
             'chartsmenu_chart2': 'Fréquence des situations',
             'chartsmenu_chart3': 'Intensité des situations',
@@ -174,6 +225,7 @@
         var language = 'en';                                // global : UI language
         var myChart;
         var labelString = '';
+        var fileName = '';
 
 
         const lexicon = {'en': en, 'fr': fr};
@@ -192,13 +244,24 @@
             }
         }
         const lx = lexicon[language];
+        const fileHeader = "Timestamp;WeekDay;EnergyRate;SpoonNb;maxSpoonNb;Comment";
 
 
         const getFileData = function(file) {
             const reader = new FileReader();
             reader.addEventListener('load', (e) => {
                 dataString = e.target.result;
-                fileLoaded = true;
+                let l = fileHeader.length;
+                let dataHeader = dataString.substring(0, l);
+                if (dataHeader == fileHeader) {
+                    fileLoaded = true;
+                    fileName = file.name;
+                    selected.innerHTML = '<span class="selectedFile">' + file.name + '</span>';
+                }
+                else {
+                    alert(lx['wrongfile']);
+                    selected.innerHTML = '<span class="wrongFile">' + file.name + '</span>';
+                }
             })
             reader.readAsText(file);
         }
@@ -213,7 +276,6 @@
             fileDragHover(e);
             var files = e.target.files || e.dataTransfer.files;
             var f = files[files.length - 1];
-            selected.innerHTML = '<span class="selectedFile">' + f.name + ' sélectionné</span>';
             getFileData(f);
         };
 
@@ -227,6 +289,13 @@
             getFileData(f);
         };
 
+        const unselectMenus = function() {
+            for (let i = 1; i <= 9; i++) {
+                let curMenuId = '#menu' + i.toString();
+                let curMenuElem = document.querySelector(curMenuId);
+                curMenuElem.classList.remove('selectedMenu');
+            }
+        }
 
 
         selected.addEventListener('dragover', fileDragHover, false);
@@ -234,32 +303,46 @@
         selected.addEventListener('drop', fileSelectHandler, false);
         input.addEventListener('change', updateFileInput);
 
-        for (let i = 1; i < 9; i++) {
+        const inputLabel = document.querySelector('#inputLabel');
+        inputLabel.textContent = lx['browser'];
+        selected.textContent = lx['dragdrop'];
+
+        for (let i = 1; i <= 9; i++) {
             let curMenuId = '#menu' + i.toString();
             let curMenuElem = document.querySelector(curMenuId);
+
+            let titleName = chartTypes[i]['title'];
+            let title = lx[titleName];
+            curMenuElem.textContent = title;
+
             curMenuElem.addEventListener('click', (e) => {
                 let menuElem = e.target;
+
                 let chartType = parseInt(menuElem.dataset['id']);
                 if (fileLoaded) {
                     if (myChart && myChart.chart) {
                         myChart.chart.destroy();
+                        const ctx = document.getElementById("chartCanvas");
+                        ctx.remove();
                     }
                     if (chartType == 4 || chartType == 5) {
                         const labels = maps[language]['week_labels'];
                         labelString = JSON.stringify(labels);
                     }
+                    unselectMenus();
+                    menuElem.classList.add('selectedMenu');
                     let titleName = chartTypes[chartType]['title'];
                     let descrName = chartTypes[chartType]['descr'];
             
                     let title = lx[titleName];
                     let description = lx[descrName];
                     canvContainer.innerHTML = canvasHtml;
-                    drawChart(chartType, 10, dataString, labelString, title, description);
+                    drawChart(chartType, 10, dataString, labelString, title, description, fileName);
                 }
                 else {
-                    alert("Vous devez d'abord charger un fichier de données");
+                    alert(lx['nofilealert']);
                 }
-            })
+            });
         }
 
 
@@ -292,8 +375,10 @@
 2022-12-10 15:28:48;6;46;5;10;bruit\n";
 */
         
-        var drawChart = function(chartType, maxSpoonNb, dataString, labelString, title, description) {
-            var ctx = document.getElementById("chartCanvas");
+        var drawChart = function(chartType, maxSpoonNb, dataString, labelString, title, description, fileName) {
+            const fn = document.querySelector('#fileName');
+            fn.textContent = fileName;
+            const ctx = document.getElementById("chartCanvas");
             myChart = new MyChart(ctx, maxSpoonNb, dataString);
             myChart.display(chartType, labelString, title, description);
         };
