@@ -2,80 +2,43 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <style>        
+        <style>
             body {
                 font-family: Arial, sans-serif; 
+                color: #555;
             }
-            #filedrag  {  
-                font-weight: bold;  
-                text-align: center;  
-                padding: 4em 0;  
-                margin: 2em 0;  
-                color: #555;  
-                border: 2px dashed #555;  
-                border-radius: 7px;  
-                cursor: default;  
-              }  
-              
-              #filedrag.hover {  
-                color: #f00;  
-                border-color: #f00;  
-                border-style: solid;  
-                box-shadow: inset 0 3px 4px #888;  
-              }  
-
+            #title {
+                font-size: 4em;
+                color: grey;
+                text-align: center;
+                margin-top: 30px;
+                margin-bottom: 15px;
+            }
+            .box {
+                display: flex;
+                font-size: 2em;
+            }
+            #note {
+                margin-top: 60px;
+                padding: 20px;
+                font-size: 1.2em;
+                font-style: italic;
+            }
+            a {
+                margin: auto;
+                font-size: 3em;
+                font-weight: bold;
+            }
         </style>
-
-          
     </head>
     <body>
-        <div id="filedrag">glissez-déposez le fichier csv MySpoons ici</div>
-        <label for="datafile">ou sélectionnez le dans l'explorateur : </label>
-        <input type='file' id='filename' name='filename' accept='text/csv,.csv,.txt'><br>
+        <div id="title">MySpoons Charts</div>
+        <div class="box">
+            <a href="https://jerome.bousquie.fr/myspoons/charts/charts.html?fr">FR</a><a href="https://jerome.bousquie.fr/myspoons/charts/charts.html">EN</a>
+        </div>
+        <div id="note">
+            <p><b>EN :</b> when reading the user file on this site, no data is sent to the server or towards Internet. Everything is computed locally and only in your browser.</p>
+            <p><b>FR :</b> aucune donnée de l'utilisateur n'est envoyée sur Internet ou n'est récupérée sur le serveur. Tous les traitements sont réalisés localement et uniquement dans le navigateur.</p>
+        </div>
     </body>
-    <script>
-
-        const selected = document.querySelector('#filedrag');
-        const input = document.querySelector('#filename');
-
-
-        const getFileData = function(file) {
-            const reader = new FileReader();
-            reader.addEventListener('load', (e) => {
-                var data = e.target.result;
-                console.log(data);
-            })
-            reader.readAsText(file);
-        }
-
-        const fileDragHover = function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            e.target.className = (e.type == "dragover" ? "hover" : "");
-        };
-
-        const fileSelectHandler = function(e) {
-            fileDragHover(e);
-            var files = e.target.files || e.dataTransfer.files;
-            var f = files[files.length - 1];
-            selected.innerHTML = f.name + ' sélectionné';
-            getFileData(f);
-        };
-
-        const updateFileInput = function() {
-            const files = input.files;
-            if (files.length == 0) {
-                selected.innerHTML = 'No file selected';
-                return;
-            }
-            var f = files[files.length - 1];
-            getFileData(f);
-        };
-
-        selected.addEventListener('dragover', fileDragHover, false);
-        selected.addEventListener('dragleave', fileDragHover, false);
-        selected.addEventListener('drop', fileSelectHandler, false);
-        input.addEventListener('change', updateFileInput);
-
-    </script>
 </html>
