@@ -320,6 +320,7 @@
 
                 let chartType = parseInt(menuElem.dataset['id']);
                 if (fileLoaded) {
+                    labelString = '';
                     if (myChart && myChart.chart) {
                         myChart.chart.destroy();
                         const ctx = document.getElementById("chartCanvas");
