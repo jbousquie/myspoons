@@ -79,9 +79,29 @@
             background-color: yellow;
             font-weight: bold;
         }
+        @page {
+        size: A4 portrait;
+        margin: 0;
+        }
         @media print {
             #header {
                 display: none;
+            }
+            #title {
+                font-size: 1.5em;
+                color: black;
+                text-align: center;
+                margin-top: 10px;
+            }
+            #filename {
+                font-size: 1.2em;
+                color: black;
+                font-weight: bold;
+                text-align: center;
+            }
+            html, body {
+                height: 297mm;
+                width: 210mm;
             }
         }
     </style>
@@ -384,6 +404,5 @@
             myChart.display(chartType, labelString, title, description);
         };
         
-
     </script>
 </html>
